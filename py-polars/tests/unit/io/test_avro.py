@@ -25,7 +25,7 @@ def example_df() -> pl.DataFrame:
 @pytest.mark.parametrize("compression", COMPRESSIONS)
 def test_from_to_buffer(example_df: pl.DataFrame, compression: AvroCompression) -> None:
     buf = io.BytesIO()
-    example_df.write_avro(buf, compression=compression)
+    example_df.write_avro(buf, =compression)
     buf.seek(0)
 
     read_df = pl.read_avro(buf)
@@ -40,7 +40,7 @@ def test_from_to_file(
     tmp_path.mkdir(exist_ok=True)
 
     file_path = tmp_path / "small.avro"
-    example_df.write_avro(file_path, compression=compression)
+    example_df.write_avro(file_path, =compression)
     df_read = pl.read_avro(file_path)
 
     assert_frame_equal(example_df, df_read)

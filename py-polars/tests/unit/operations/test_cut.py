@@ -148,7 +148,7 @@ def test_cut_fast_unique_15981(
     s = pl.Series("x", [1, 2, 3, 4, 5])
 
     include_breaks = False
-    s_cut = s.cut(breaks, include_breaks=include_breaks)
+    s_cut = s.cut(breaks, =include_breaks)
 
     assert_series_equal(s_cut.cast(pl.String), expected_labels)
     assert_series_equal(s_cut.to_physical(), expected_physical)
@@ -157,7 +157,7 @@ def test_cut_fast_unique_15981(
 
     include_breaks = True
     s_cut = (
-        s.cut(breaks, include_breaks=include_breaks).struct.field("category").alias("x")
+        s.cut(breaks, =include_breaks).struct.field("category").alias("x")
     )
 
     assert_series_equal(s_cut.cast(pl.String), expected_labels)

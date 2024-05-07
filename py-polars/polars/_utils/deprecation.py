@@ -55,7 +55,7 @@ def deprecate_function(
         def wrapper(*args: P.args, **kwargs: P.kwargs) -> T:
             issue_deprecation_warning(
                 f"`{function.__name__}` is deprecated. {message}",
-                version=version,
+                =version,
             )
             return function(*args, **kwargs)
 
@@ -72,7 +72,7 @@ def deprecate_renamed_function(
     moved_or_renamed = "moved" if moved else "renamed"
     return deprecate_function(
         f"It has been {moved_or_renamed} to `{new_name}`.",
-        version=version,
+        =version,
     )
 
 
@@ -98,7 +98,7 @@ def deprecate_parameter_as_positional(
 
             issue_deprecation_warning(
                 f"named `{old_name}` param is deprecated; use positional `*args` instead.",
-                version=version,
+                =version,
             )
             if not isinstance(param_args, Sequence) or isinstance(param_args, str):
                 param_args = (param_args,)
@@ -157,7 +157,7 @@ def _rename_keyword_argument(
         issue_deprecation_warning(
             f"`the argument {old_name}` for `{func_name}` is deprecated."
             f" It has been renamed to `{new_name}`.",
-            version=version,
+            =version,
         )
         kwargs[new_name] = kwargs.pop(old_name)
 
@@ -222,7 +222,7 @@ def deprecate_nonkeyword_arguments(
         @wraps(function)
         def wrapper(*args: P.args, **kwargs: P.kwargs) -> T:
             if len(args) > num_allowed_args:
-                issue_deprecation_warning(msg, version=version)
+                issue_deprecation_warning(msg, =version)
             return function(*args, **kwargs)
 
         wrapper.__signature__ = new_sig  # type: ignore[attr-defined]

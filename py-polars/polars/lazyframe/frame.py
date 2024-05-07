@@ -301,13 +301,13 @@ class LazyFrame:
 
         self._ldf = (
             DataFrame(
-                data=data,
-                schema=schema,
-                schema_overrides=schema_overrides,
-                strict=strict,
-                orient=orient,
-                infer_schema_length=infer_schema_length,
-                nan_to_null=nan_to_null,
+                =data,
+                =schema,
+                =schema_overrides,
+                =strict,
+                =orient,
+                =infer_schema_length,
+                =nan_to_null,
             )
             .lazy()
             ._ldf
@@ -1070,7 +1070,7 @@ naive plan: (run LazyFrame.explain(optimized=True) to see the optimized plan)
             import matplotlib.image as mpimg
             import matplotlib.pyplot as plt
 
-            plt.figure(figsize=figsize)
+            plt.figure(=figsize)
             img = mpimg.imread(BytesIO(graph))
             plt.imshow(img)
             plt.show()
@@ -1614,7 +1614,7 @@ naive plan: (run LazyFrame.explain(optimized=True) to see the optimized plan)
             )
             import matplotlib.pyplot as plt
 
-            fig, ax = plt.subplots(1, figsize=figsize)
+            fig, ax = plt.subplots(1, =figsize)
 
             max_val = timings["end"][-1]
             timings_ = timings.reverse()
@@ -2059,22 +2059,22 @@ naive plan: (run LazyFrame.explain(optimized=True) to see the optimized plan)
         >>> lf.sink_parquet("out.parquet")  # doctest: +SKIP
         """
         lf = self._set_sink_optimizations(
-            type_coercion=type_coercion,
-            predicate_pushdown=predicate_pushdown,
-            projection_pushdown=projection_pushdown,
-            simplify_expression=simplify_expression,
-            slice_pushdown=slice_pushdown,
-            no_optimization=no_optimization,
+            =type_coercion,
+            =predicate_pushdown,
+            =projection_pushdown,
+            =simplify_expression,
+            =slice_pushdown,
+            =no_optimization,
         )
 
         return lf.sink_parquet(
             path=normalize_filepath(path),
-            compression=compression,
-            compression_level=compression_level,
-            statistics=statistics,
-            row_group_size=row_group_size,
-            data_pagesize_limit=data_pagesize_limit,
-            maintain_order=maintain_order,
+            =compression,
+            =compression_level,
+            =statistics,
+            =row_group_size,
+            =data_pagesize_limit,
+            =maintain_order,
         )
 
     @unstable()
@@ -2133,19 +2133,15 @@ naive plan: (run LazyFrame.explain(optimized=True) to see the optimized plan)
         >>> lf.sink_ipc("out.arrow")  # doctest: +SKIP
         """
         lf = self._set_sink_optimizations(
-            type_coercion=type_coercion,
-            predicate_pushdown=predicate_pushdown,
-            projection_pushdown=projection_pushdown,
-            simplify_expression=simplify_expression,
-            slice_pushdown=slice_pushdown,
-            no_optimization=no_optimization,
+            =type_coercion,
+            =predicate_pushdown,
+            =projection_pushdown,
+            =simplify_expression,
+            =slice_pushdown,
+            =no_optimization,
         )
 
-        return lf.sink_ipc(
-            path=path,
-            compression=compression,
-            maintain_order=maintain_order,
-        )
+        return lf.sink_ipc(=path, =compression, =maintain_order)
 
     @deprecate_renamed_parameter("quote", "quote_char", version="0.19.8")
     @deprecate_renamed_parameter("has_header", "include_header", version="0.19.13")
@@ -2266,29 +2262,29 @@ naive plan: (run LazyFrame.explain(optimized=True) to see the optimized plan)
             null_value = None
 
         lf = self._set_sink_optimizations(
-            type_coercion=type_coercion,
-            predicate_pushdown=predicate_pushdown,
-            projection_pushdown=projection_pushdown,
-            simplify_expression=simplify_expression,
-            slice_pushdown=slice_pushdown,
-            no_optimization=no_optimization,
+            =type_coercion,
+            =predicate_pushdown,
+            =projection_pushdown,
+            =simplify_expression,
+            =slice_pushdown,
+            =no_optimization,
         )
 
         return lf.sink_csv(
-            path=path,
-            include_bom=include_bom,
-            include_header=include_header,
+            =path,
+            =include_bom,
+            =include_header,
             separator=ord(separator),
-            line_terminator=line_terminator,
+            =line_terminator,
             quote_char=ord(quote_char),
-            batch_size=batch_size,
-            datetime_format=datetime_format,
-            date_format=date_format,
-            time_format=time_format,
-            float_precision=float_precision,
-            null_value=null_value,
-            quote_style=quote_style,
-            maintain_order=maintain_order,
+            =batch_size,
+            =datetime_format,
+            =date_format,
+            =time_format,
+            =float_precision,
+            =null_value,
+            =quote_style,
+            =maintain_order,
         )
 
     @unstable()
@@ -2343,15 +2339,15 @@ naive plan: (run LazyFrame.explain(optimized=True) to see the optimized plan)
         >>> lf.sink_ndjson("out.ndjson")  # doctest: +SKIP
         """
         lf = self._set_sink_optimizations(
-            type_coercion=type_coercion,
-            predicate_pushdown=predicate_pushdown,
-            projection_pushdown=projection_pushdown,
-            simplify_expression=simplify_expression,
-            slice_pushdown=slice_pushdown,
-            no_optimization=no_optimization,
+            =type_coercion,
+            =predicate_pushdown,
+            =projection_pushdown,
+            =simplify_expression,
+            =slice_pushdown,
+            =no_optimization,
         )
 
-        return lf.sink_json(path=path, maintain_order=maintain_order)
+        return lf.sink_json(=path, =maintain_order)
 
     def _set_sink_optimizations(
         self,
@@ -5729,8 +5725,8 @@ naive plan: (run LazyFrame.explain(optimized=True) to see the optimized plan)
                 predicate_pushdown,
                 projection_pushdown,
                 slice_pushdown,
-                streamable=streamable,
-                schema=schema,
+                =streamable,
+                =schema,
                 validate_output=validate_output_schema,
             )
         )
@@ -5904,7 +5900,7 @@ naive plan: (run LazyFrame.explain(optimized=True) to see the optimized plan)
         columns = parse_as_list_of_expressions(column, *more_columns)
 
         return self.with_columns(
-            [wrap_expr(e).set_sorted(descending=descending) for e in columns]
+            [wrap_expr(e).set_sorted(=descending) for e in columns]
         )
 
     @unstable()
@@ -6111,9 +6107,9 @@ naive plan: (run LazyFrame.explain(optimized=True) to see the optimized plan)
         result = (
             self.join(
                 other.select(*right_on, *right_other, *validity),
-                left_on=left_on,
-                right_on=right_on,
-                how=how,
+                =left_on,
+                =right_on,
+                =how,
                 suffix=tmp_name,
             )
             .with_columns(
@@ -6181,7 +6177,7 @@ naive plan: (run LazyFrame.explain(optimized=True) to see the optimized plan)
             Settings this to `True` blocks the possibility
             to run on the streaming engine.
         """
-        return self.group_by(by, *more_by, maintain_order=maintain_order)
+        return self.group_by(by, *more_by, =maintain_order)
 
     @deprecate_renamed_function("rolling", version="0.19.0")
     def groupby_rolling(
@@ -6237,11 +6233,11 @@ naive plan: (run LazyFrame.explain(optimized=True) to see the optimized plan)
         """
         return self.rolling(
             index_column,
-            period=period,
-            offset=offset,
-            closed=closed,
+            =period,
+            =offset,
+            =closed,
             group_by=by,
-            check_sorted=check_sorted,
+            =check_sorted,
         )
 
     @deprecate_renamed_function("rolling", version="0.19.9")
@@ -6298,11 +6294,11 @@ naive plan: (run LazyFrame.explain(optimized=True) to see the optimized plan)
         """
         return self.rolling(
             index_column,
-            period=period,
-            offset=offset,
-            closed=closed,
+            =period,
+            =offset,
+            =closed,
             group_by=by,
-            check_sorted=check_sorted,
+            =check_sorted,
         )
 
     @deprecate_renamed_function("group_by_dynamic", version="0.19.0")
@@ -6388,15 +6384,15 @@ naive plan: (run LazyFrame.explain(optimized=True) to see the optimized plan)
         """  # noqa: W505
         return self.group_by_dynamic(
             index_column,
-            every=every,
-            period=period,
-            offset=offset,
-            truncate=truncate,
-            include_boundaries=include_boundaries,
-            closed=closed,
+            =every,
+            =period,
+            =offset,
+            =truncate,
+            =include_boundaries,
+            =closed,
             group_by=by,
-            start_by=start_by,
-            check_sorted=check_sorted,
+            =start_by,
+            =check_sorted,
         )
 
     @deprecate_renamed_function("map_batches", version="0.19.0")
@@ -6446,13 +6442,13 @@ naive plan: (run LazyFrame.explain(optimized=True) to see the optimized plan)
         """
         return self.map_batches(
             function,
-            predicate_pushdown=predicate_pushdown,
-            projection_pushdown=projection_pushdown,
-            slice_pushdown=slice_pushdown,
-            no_optimizations=no_optimizations,
-            schema=schema,
-            validate_output_schema=validate_output_schema,
-            streamable=streamable,
+            =predicate_pushdown,
+            =projection_pushdown,
+            =slice_pushdown,
+            =no_optimizations,
+            =schema,
+            =validate_output_schema,
+            =streamable,
         )
 
     @deprecate_function("Use `shift` instead.", version="0.19.12")
@@ -6476,7 +6472,7 @@ naive plan: (run LazyFrame.explain(optimized=True) to see the optimized plan)
         n
             Number of places to shift (may be negative).
         """
-        return self.shift(n, fill_value=fill_value)
+        return self.shift(n, =fill_value)
 
     @deprecate_renamed_function("gather_every", version="0.19.14")
     def take_every(self, n: int, offset: int = 0) -> Self:

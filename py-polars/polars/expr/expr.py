@@ -4797,28 +4797,24 @@ class Expr:
 
                 with warnings.catch_warnings():
                     warnings.simplefilter("ignore", PolarsInefficientMapWarning)
-                    return x.map_elements(
-                        inner, return_dtype=return_dtype, skip_nulls=skip_nulls
-                    )
+                    return x.map_elements(inner, =return_dtype, =skip_nulls)
 
         else:
 
             def wrap_f(x: Series) -> Series:  # pragma: no cover
                 with warnings.catch_warnings():
                     warnings.simplefilter("ignore", PolarsInefficientMapWarning)
-                    return x.map_elements(
-                        function, return_dtype=return_dtype, skip_nulls=skip_nulls
-                    )
+                    return x.map_elements(function, =return_dtype, =skip_nulls)
 
         if strategy == "thread_local":
-            return self.map_batches(wrap_f, agg_list=True, return_dtype=return_dtype)
+            return self.map_batches(wrap_f, agg_list=True, =return_dtype)
         elif strategy == "threading":
 
             def wrap_threading(x: Series) -> Series:
                 def get_lazy_promise(df: DataFrame) -> LazyFrame:
                     return df.lazy().select(
                         F.col("x").map_batches(
-                            wrap_f, agg_list=True, return_dtype=return_dtype
+                            wrap_f, agg_list=True, =return_dtype
                         )
                     )
 
@@ -4852,7 +4848,7 @@ class Expr:
                 return F.concat(out, rechunk=False)
 
             return self.map_batches(
-                wrap_threading, agg_list=True, return_dtype=return_dtype
+                wrap_threading, agg_list=True, =return_dtype
             )
         else:
             msg = f"strategy {strategy!r} is not supported"
@@ -11309,7 +11305,7 @@ class Expr:
         agg_list
             Aggregate list
         """
-        return self.map_batches(function, return_dtype, agg_list=agg_list)
+        return self.map_batches(function, return_dtype, =agg_list)
 
     @deprecate_renamed_function("map_elements", version="0.19.0")
     def apply(
@@ -11354,10 +11350,10 @@ class Expr:
         """
         return self.map_elements(
             function,
-            return_dtype=return_dtype,
-            skip_nulls=skip_nulls,
-            pass_name=pass_name,
-            strategy=strategy,
+            =return_dtype,
+            =skip_nulls,
+            =pass_name,
+            =strategy,
         )
 
     @deprecate_renamed_function("rolling_map", version="0.19.0")
@@ -11395,7 +11391,7 @@ class Expr:
             Set the labels at the center of the window
         """
         return self.rolling_map(
-            function, window_size, weights, min_periods, center=center
+            function, window_size, weights, min_periods, =center
         )
 
     @deprecate_renamed_function("is_first_distinct", version="0.19.3")
@@ -11443,7 +11439,7 @@ class Expr:
         lower_bound
             Lower bound.
         """
-        return self.clip(lower_bound=lower_bound)
+        return self.clip(=lower_bound)
 
     @deprecate_function("Use `clip` instead.", version="0.19.12")
     def clip_max(
@@ -11460,7 +11456,7 @@ class Expr:
         upper_bound
             Upper bound.
         """
-        return self.clip(upper_bound=upper_bound)
+        return self.clip(=upper_bound)
 
     @deprecate_function("Use `shift` instead.", version="0.19.12")
     @deprecate_renamed_parameter("periods", "n", version="0.19.11")
@@ -11483,7 +11479,7 @@ class Expr:
         n
             Number of places to shift (may be negative).
         """
-        return self.shift(n, fill_value=fill_value)
+        return self.shift(n, =fill_value)
 
     @deprecate_function(
         "Use `polars.plugins.register_plugin_function` instead.", version="0.20.16"
@@ -11559,14 +11555,14 @@ class Expr:
         return register_plugin_function(
             plugin_path=lib,
             function_name=symbol,
-            args=args,
-            kwargs=kwargs,
-            is_elementwise=is_elementwise,
-            changes_length=changes_length,
-            returns_scalar=returns_scalar,
+            =args,
+            =kwargs,
+            =is_elementwise,
+            =changes_length,
+            =returns_scalar,
             cast_to_supertype=cast_to_supertypes,
-            input_wildcard_expansion=input_wildcard_expansion,
-            pass_name_to_apply=pass_name_to_apply,
+            =input_wildcard_expansion,
+            =pass_name_to_apply,
         )
 
     @deprecate_renamed_function("register_plugin", version="0.19.12")
@@ -11583,14 +11579,14 @@ class Expr:
         cast_to_supertypes: bool = False,
     ) -> Expr:
         return self.register_plugin(
-            lib=lib,
-            symbol=symbol,
-            args=args,
-            kwargs=kwargs,
-            is_elementwise=is_elementwise,
-            input_wildcard_expansion=input_wildcard_expansion,
+            =lib,
+            =symbol,
+            =args,
+            =kwargs,
+            =is_elementwise,
+            =input_wildcard_expansion,
             returns_scalar=auto_explode,
-            cast_to_supertypes=cast_to_supertypes,
+            =cast_to_supertypes,
         )
 
     @deprecate_renamed_function("gather_every", version="0.19.14")
@@ -11640,7 +11636,7 @@ class Expr:
         reverse
             Reverse the operation.
         """
-        return self.cum_sum(reverse=reverse)
+        return self.cum_sum(=reverse)
 
     @deprecate_renamed_function("cum_prod", version="0.19.14")
     def cumprod(self, *, reverse: bool = False) -> Self:
@@ -11655,7 +11651,7 @@ class Expr:
         reverse
             Reverse the operation.
         """
-        return self.cum_prod(reverse=reverse)
+        return self.cum_prod(=reverse)
 
     @deprecate_renamed_function("cum_min", version="0.19.14")
     def cummin(self, *, reverse: bool = False) -> Self:
@@ -11670,7 +11666,7 @@ class Expr:
         reverse
             Reverse the operation.
         """
-        return self.cum_min(reverse=reverse)
+        return self.cum_min(=reverse)
 
     @deprecate_renamed_function("cum_max", version="0.19.14")
     def cummax(self, *, reverse: bool = False) -> Self:
@@ -11685,7 +11681,7 @@ class Expr:
         reverse
             Reverse the operation.
         """
-        return self.cum_max(reverse=reverse)
+        return self.cum_max(=reverse)
 
     @deprecate_renamed_function("cum_count", version="0.19.14")
     def cumcount(self, *, reverse: bool = False) -> Self:
@@ -11700,7 +11696,7 @@ class Expr:
         reverse
             Reverse the operation.
         """
-        return self.cum_count(reverse=reverse)
+        return self.cum_count(=reverse)
 
     @deprecate_function(
         "It has been renamed to `replace`."
@@ -11735,7 +11731,7 @@ class Expr:
         return_dtype
             Set return dtype to override automatic return dtype determination.
         """
-        return self.replace(mapping, default=default, return_dtype=return_dtype)
+        return self.replace(mapping, =default, =return_dtype)
 
     @classmethod
     def from_json(cls, value: str) -> Self:

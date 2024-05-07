@@ -37,14 +37,14 @@ def test_std(dtype: type[pl.DataType]) -> None:
         df = pl.DataFrame(
             [
                 pl.Series("groups", ["a", "a", "b", "b"]),
-                pl.Series("values", [1, 2, 3, 4], dtype=dtype),
+                pl.Series("values", [1, 2, 3, 4], =dtype),
             ]
         )
     else:
         df = pl.DataFrame(
             [
                 pl.Series("groups", ["a", "a", "b", "b"]),
-                pl.Series("values", [1.0, 2.0, 3.0, 4.0], dtype=dtype),
+                pl.Series("values", [1.0, 2.0, 3.0, 4.0], =dtype),
             ]
         )
 
@@ -251,7 +251,7 @@ def test_window_functions_list_types() -> None:
 def test_sorted_window_expression() -> None:
     size = 10
     df = pl.DataFrame(
-        {"a": np.random.randint(10, size=size), "b": np.random.randint(10, size=size)}
+        {"a": np.random.randint(10, =size), "b": np.random.randint(10, =size)}
     )
     expr = (pl.col("a") + pl.col("b")).over("b").alias("computed")
 

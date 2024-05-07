@@ -138,12 +138,12 @@ def read_delta(
 
     dl_tbl = _get_delta_lake_table(
         table_path=resolved_uri,
-        version=version,
-        storage_options=storage_options,
-        delta_table_options=delta_table_options,
+        =version,
+        =storage_options,
+        =delta_table_options,
     )
 
-    return from_arrow(dl_tbl.to_pyarrow_table(columns=columns, **pyarrow_options))  # type: ignore[return-value]
+    return from_arrow(dl_tbl.to_pyarrow_table(=columns, **pyarrow_options))  # type: ignore[return-value]
 
 
 def scan_delta(
@@ -271,9 +271,9 @@ def scan_delta(
     resolved_uri = _resolve_delta_lake_uri(source)
     dl_tbl = _get_delta_lake_table(
         table_path=resolved_uri,
-        version=version,
-        storage_options=storage_options,
-        delta_table_options=delta_table_options,
+        =version,
+        =storage_options,
+        =delta_table_options,
     )
 
     pa_ds = dl_tbl.to_pyarrow_dataset(**pyarrow_options)
@@ -314,14 +314,14 @@ def _get_delta_lake_table(
     if not isinstance(version, (str, datetime)):
         dl_tbl = deltalake.DeltaTable(
             table_path,
-            version=version,
-            storage_options=storage_options,
+            =version,
+            =storage_options,
             **delta_table_options,
         )
     else:
         dl_tbl = deltalake.DeltaTable(
             table_path,
-            storage_options=storage_options,
+            =storage_options,
             **delta_table_options,
         )
         dl_tbl.load_as_version(version)

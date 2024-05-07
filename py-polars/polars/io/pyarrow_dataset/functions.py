@@ -69,8 +69,4 @@ def scan_pyarrow_dataset(
     │ true  ┆ 2.0    ┆ 1970-05-04 │
     └───────┴────────┴────────────┘
     """
-    return _scan_pyarrow_dataset(
-        source,
-        allow_pyarrow_filter=allow_pyarrow_filter,
-        batch_size=batch_size,
-    )
+    return _scan_pyarrow_dataset(source, =allow_pyarrow_filter, =batch_size)

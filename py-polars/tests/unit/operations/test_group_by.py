@@ -536,7 +536,7 @@ def test_group_by_dynamic_overlapping_groups_flat_apply_multiple_5038(
             .with_columns(pl.col("a").dt.replace_time_zone(time_zone))
             .lazy()
             .set_sorted("a")
-            .group_by_dynamic("a", every=every, period=period)
+            .group_by_dynamic("a", =every, =period)
             .agg([pl.col("b").var().sqrt().alias("corr")])
         )
         .collect()
@@ -641,8 +641,8 @@ def test_group_by_binary_agg_with_literal() -> None:
 def test_overflow_mean_partitioned_group_by_5194(dtype: pl.PolarsDataType) -> None:
     df = pl.DataFrame(
         [
-            pl.Series("data", [10_00_00_00] * 100_000, dtype=dtype),
-            pl.Series("group", [1, 2] * 50_000, dtype=dtype),
+            pl.Series("data", [10_00_00_00] * 100_000, =dtype),
+            pl.Series("group", [1, 2] * 50_000, =dtype),
         ]
     )
     result = df.group_by("group").agg(pl.col("data").mean()).sort(by="group")
@@ -1038,7 +1038,7 @@ def test_boolean_min_max_agg() -> None:
             "c_min": [120],
             "c_max": [321],
         },
-        schema=schema,
+        =schema,
     )
     assert_frame_equal(result, expected)
 
@@ -1057,6 +1057,6 @@ def test_boolean_min_max_agg() -> None:
             "c_min": [133],
             "c_max": [276],
         },
-        schema=schema,
+        =schema,
     )
     assert_frame_equal(result, expected)

@@ -62,7 +62,7 @@ class PolarsDataFrame(InterchangeDataFrame):
                 "\n\nUse the default `nan_as_null=False`."
             )
             raise NotImplementedError(msg)
-        return PolarsDataFrame(self._df, allow_copy=allow_copy)
+        return PolarsDataFrame(self._df, =allow_copy)
 
     @property
     def metadata(self) -> dict[str, Any]:

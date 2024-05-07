@@ -31,13 +31,11 @@ def test_against_np_busday_count(
     result = (
         pl.DataFrame({"start": [start], "end": [end]})
         .select(
-            n=pl.business_day_count(
-                "start", "end", week_mask=week_mask, holidays=holidays
-            )
+            n=pl.business_day_count("start", "end", =week_mask, =holidays)
         )["n"]
         .item()
     )
-    expected = np.busday_count(start, end, weekmask=week_mask, holidays=holidays)
+    expected = np.busday_count(start, end, weekmask=week_mask, =holidays)
     if start > end and parse_version(np.__version__) < parse_version("1.25"):
         # Bug in old versions of numpy
         reject()

@@ -82,7 +82,7 @@ def test_string_concat_errors(invalid_concat: str) -> None:
 
 def test_string_left_right_reverse() -> None:
     df = pl.DataFrame({"txt": ["abcde", "abc", "a", None]})
-    ctx = pl.SQLContext(df=df)
+    ctx = pl.SQLContext(=df)
     res = ctx.execute(
         """
         SELECT
@@ -109,7 +109,7 @@ def test_string_left_right_reverse() -> None:
 def test_string_left_negative_expr() -> None:
     # negative values and expressions
     df = pl.DataFrame({"s": ["alphabet", "alphabet"], "n": [-6, 6]})
-    with pl.SQLContext(df=df, eager_execution=True) as sql:
+    with pl.SQLContext(=df, eager_execution=True) as sql:
         res = sql.execute(
             """
             SELECT
@@ -143,7 +143,7 @@ def test_string_left_negative_expr() -> None:
 def test_string_right_negative_expr() -> None:
     # negative values and expressions
     df = pl.DataFrame({"s": ["alphabet", "alphabet"], "n": [-6, 6]})
-    with pl.SQLContext(df=df, eager_execution=True) as sql:
+    with pl.SQLContext(=df, eager_execution=True) as sql:
         res = sql.execute(
             """
             SELECT
@@ -231,7 +231,7 @@ def test_string_like(pattern: str, like: str, expected: list[int]) -> None:
             "txt": ["ABC", "abc", "000", "A[0]*C", "a0c?"],
         }
     )
-    with pl.SQLContext(df=df) as ctx:
+    with pl.SQLContext(=df) as ctx:
         for not_ in ("", "NOT "):
             out = ctx.execute(
                 f"""SELECT idx FROM df WHERE txt {not_}{like} '{pattern}'"""
@@ -301,7 +301,7 @@ def test_string_position() -> None:
 
 def test_string_replace() -> None:
     df = pl.DataFrame({"words": ["Yemeni coffee is the best coffee", "", None]})
-    with pl.SQLContext(df=df) as ctx:
+    with pl.SQLContext(=df) as ctx:
         out = ctx.execute(
             """
             SELECT
@@ -325,7 +325,7 @@ def test_string_substr() -> None:
     df = pl.DataFrame(
         {"scol": ["abcdefg", "abcde", "abc", None], "n": [-2, 3, 2, None]}
     )
-    with pl.SQLContext(df=df) as ctx:
+    with pl.SQLContext(=df) as ctx:
         res = ctx.execute(
             """
             SELECT

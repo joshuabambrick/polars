@@ -95,7 +95,7 @@ def test_time_range_start_equals_end() -> None:
 def test_time_range_start_equals_end_open(closed: ClosedInterval) -> None:
     t = time(12, 0)
 
-    result = pl.time_range(t, t, closed=closed, eager=True)
+    result = pl.time_range(t, t, =closed, eager=True)
 
     expected = pl.Series("literal", dtype=pl.Time)
     assert_series_equal(result, expected)
@@ -110,7 +110,7 @@ def test_time_range_start_later_than_end() -> None:
 @pytest.mark.parametrize("interval", [timedelta(0), timedelta(minutes=-10)])
 def test_time_range_invalid_step(interval: timedelta) -> None:
     with pytest.raises(pl.ComputeError, match="`interval` must be positive"):
-        pl.time_range(time(11), time(12), interval=interval, eager=True)
+        pl.time_range(time(11), time(12), =interval, eager=True)
 
 
 def test_time_range_lit_lazy() -> None:
@@ -158,7 +158,7 @@ def test_time_range_lit_eager() -> None:
             end=time(23, 59, 59),
             interval="5h45m10s333ms",
             closed="right",
-            eager=eager,
+            =eager,
         ).alias("tm")
     )
     if not eager:
@@ -171,10 +171,7 @@ def test_time_range_lit_eager() -> None:
 
     # validate unset start/end
     tm = pl.select(
-        pl.time_range(
-            interval="5h45m10s333ms",
-            eager=eager,
-        ).alias("tm")
+        pl.time_range(interval="5h45m10s333ms", =eager).alias("tm")
     )
     if not eager:
         tm = tm.select(pl.col("tm").explode())
@@ -190,7 +187,7 @@ def test_time_range_lit_eager() -> None:
         pl.time_range(
             start=pl.lit(time(23, 59, 59, 999980)),
             interval="10000ns",
-            eager=eager,
+            =eager,
         ).alias("tm")
     )
     tm = tm.select(pl.col("tm").explode())

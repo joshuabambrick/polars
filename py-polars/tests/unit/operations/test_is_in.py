@@ -167,7 +167,7 @@ def test_is_in_invalid_shape() -> None:
 
 @pytest.mark.parametrize("dtype", [pl.Float32, pl.Float64])
 def test_is_in_float(dtype: pl.PolarsDataType) -> None:
-    s = pl.Series([float("nan"), 0.0], dtype=dtype)
+    s = pl.Series([float("nan"), 0.0], =dtype)
     result = s.is_in([-0.0, -float("nan")])
     expected = pl.Series([True, True], dtype=pl.Boolean)
     assert_series_equal(result, expected)
@@ -247,8 +247,8 @@ def test_is_in_date_range() -> None:
 @StringCache()
 @pytest.mark.parametrize("dtype", [pl.Categorical, pl.Enum(["a", "b", "c"])])
 def test_cat_is_in_series(dtype: pl.DataType) -> None:
-    s = pl.Series(["a", "b", "c", None], dtype=dtype)
-    s2 = pl.Series(["b", "c"], dtype=dtype)
+    s = pl.Series(["a", "b", "c", None], =dtype)
+    s2 = pl.Series(["b", "c"], =dtype)
     expected = pl.Series([False, True, True, None])
     assert_series_equal(s.is_in(s2), expected)
 
@@ -259,8 +259,8 @@ def test_cat_is_in_series(dtype: pl.DataType) -> None:
 @StringCache()
 def test_cat_is_in_series_non_existent() -> None:
     dtype = pl.Categorical
-    s = pl.Series(["a", "b", "c", None], dtype=dtype)
-    s2 = pl.Series(["a", "d", "e"], dtype=dtype)
+    s = pl.Series(["a", "b", "c", None], =dtype)
+    s2 = pl.Series(["a", "d", "e"], =dtype)
     expected = pl.Series([True, False, False, None])
     assert_series_equal(s.is_in(s2), expected)
 
@@ -271,7 +271,7 @@ def test_cat_is_in_series_non_existent() -> None:
 @StringCache()
 def test_enum_is_in_series_non_existent() -> None:
     dtype = pl.Enum(["a", "b", "c"])
-    s = pl.Series(["a", "b", "c", None], dtype=dtype)
+    s = pl.Series(["a", "b", "c", None], =dtype)
     s2_str = pl.Series(["a", "d", "e"])
     expected = pl.Series([True, False, False, None])
     assert_series_equal(s.is_in(s2_str), expected)
@@ -280,7 +280,7 @@ def test_enum_is_in_series_non_existent() -> None:
 @StringCache()
 @pytest.mark.parametrize("dtype", [pl.Categorical, pl.Enum(["a", "b", "c"])])
 def test_cat_is_in_with_lit_str(dtype: pl.DataType) -> None:
-    s = pl.Series(["a", "b", "c", None], dtype=dtype)
+    s = pl.Series(["a", "b", "c", None], =dtype)
     lit = ["b"]
     expected = pl.Series([False, True, False, None])
 
@@ -290,7 +290,7 @@ def test_cat_is_in_with_lit_str(dtype: pl.DataType) -> None:
 @StringCache()
 @pytest.mark.parametrize("dtype", [pl.Categorical, pl.Enum(["a", "b", "c"])])
 def test_cat_is_in_with_lit_str_non_existent(dtype: pl.DataType) -> None:
-    s = pl.Series(["a", "b", "c", None], dtype=dtype)
+    s = pl.Series(["a", "b", "c", None], =dtype)
     lit = ["d"]
     expected = pl.Series([False, False, False, None])
 
@@ -301,11 +301,11 @@ def test_cat_is_in_with_lit_str_non_existent(dtype: pl.DataType) -> None:
 @pytest.mark.parametrize("dtype", [pl.Categorical, pl.Enum(["a", "b", "c"])])
 def test_cat_is_in_with_lit_str_cache_setup(dtype: pl.DataType) -> None:
     # init the global cache
-    _ = pl.Series(["c", "b", "a"], dtype=dtype)
+    _ = pl.Series(["c", "b", "a"], =dtype)
 
-    assert_series_equal(pl.Series(["a"], dtype=dtype).is_in(["a"]), pl.Series([True]))
-    assert_series_equal(pl.Series(["b"], dtype=dtype).is_in(["b"]), pl.Series([True]))
-    assert_series_equal(pl.Series(["c"], dtype=dtype).is_in(["c"]), pl.Series([True]))
+    assert_series_equal(pl.Series(["a"], =dtype).is_in(["a"]), pl.Series([True]))
+    assert_series_equal(pl.Series(["b"], =dtype).is_in(["b"]), pl.Series([True]))
+    assert_series_equal(pl.Series(["c"], =dtype).is_in(["c"]), pl.Series([True]))
 
 
 def test_is_in_with_wildcard_13809() -> None:
@@ -316,7 +316,7 @@ def test_is_in_with_wildcard_13809() -> None:
 
 @pytest.mark.parametrize("dtype", [pl.Categorical, pl.Enum(["a", "b", "c", "d"])])
 def test_cat_is_in_from_str(dtype: pl.DataType) -> None:
-    s = pl.Series(["c", "c", "b"], dtype=dtype)
+    s = pl.Series(["c", "c", "b"], =dtype)
 
     # test local
     assert_series_equal(

@@ -246,7 +246,7 @@ def read_database(  # noqa: D417
             return read_database_uri(
                 query,
                 uri=connection,
-                schema_overrides=schema_overrides,
+                =schema_overrides,
                 **kwargs,
             )
 
@@ -258,14 +258,11 @@ def read_database(  # noqa: D417
 
     # return frame from arbitrary connections using the executor abstraction
     with ConnectionExecutor(connection) as cx:
-        return cx.execute(
-            query=query,
-            options=execute_options,
-        ).to_polars(
-            batch_size=batch_size,
-            iter_batches=iter_batches,
-            schema_overrides=schema_overrides,
-            infer_schema_length=infer_schema_length,
+        return cx.execute(=query, options=execute_options).to_polars(
+            =batch_size,
+            =iter_batches,
+            =schema_overrides,
+            =infer_schema_length,
         )
 
 
@@ -405,11 +402,11 @@ def read_database_uri(
         return _read_sql_connectorx(
             query,
             connection_uri=uri,
-            partition_on=partition_on,
-            partition_range=partition_range,
-            partition_num=partition_num,
-            protocol=protocol,
-            schema_overrides=schema_overrides,
+            =partition_on,
+            =partition_range,
+            =partition_num,
+            =protocol,
+            =schema_overrides,
         )
     elif engine == "adbc":
         if not isinstance(query, str):
@@ -418,8 +415,8 @@ def read_database_uri(
         return _read_sql_adbc(
             query,
             connection_uri=uri,
-            schema_overrides=schema_overrides,
-            execute_options=execute_options,
+            =schema_overrides,
+            =execute_options,
         )
     else:
         msg = f"engine must be one of {{'connectorx', 'adbc'}}, got {engine!r}"

@@ -144,7 +144,7 @@ def range_to_series(
     dtype = dtype or Int64
     if dtype.is_integer():
         range = F.int_range(  # type: ignore[call-overload]
-            start=rng.start, end=rng.stop, step=rng.step, dtype=dtype, eager=True
+            start=rng.start, end=rng.stop, step=rng.step, =dtype, eager=True
         )
     else:
         range = F.int_range(
@@ -473,11 +473,7 @@ def _get_stack_locals(
 
 # this is called from rust
 def _polars_warn(msg: str, category: type[Warning] = UserWarning) -> None:
-    warnings.warn(
-        msg,
-        category=category,
-        stacklevel=find_stacklevel(),
-    )
+    warnings.warn(msg, =category, stacklevel=find_stacklevel())
 
 
 def in_terminal_that_supports_colour() -> bool:

@@ -33,7 +33,7 @@ def _scan_pyarrow_dataset(
     batch_size
         The maximum row count for scanned pyarrow record batches.
     """
-    func = partial(_scan_pyarrow_dataset_impl, ds, batch_size=batch_size)
+    func = partial(_scan_pyarrow_dataset_impl, ds, =batch_size)
     return pl.LazyFrame._scan_python_function(
         ds.schema, func, pyarrow=allow_pyarrow_filter
     )

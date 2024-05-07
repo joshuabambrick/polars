@@ -275,7 +275,7 @@ def test_concat() -> None:
 
 @pytest.mark.parametrize("dtype", [pl.Int64, pl.Float64, pl.String, pl.Boolean])
 def test_eq_missing_list_and_primitive(dtype: PolarsDataType) -> None:
-    s1 = pl.Series([None, None], dtype=dtype)
+    s1 = pl.Series([None, None], =dtype)
     s2 = pl.Series([None, None], dtype=pl.List(dtype))
 
     expected = pl.Series([True, True])
@@ -915,7 +915,7 @@ def test_set_np_array_boolean_mask() -> None:
 @pytest.mark.parametrize("dtype", [np.int32, np.int64, np.uint32, np.uint64])
 def test_set_np_array(dtype: Any) -> None:
     a = pl.Series("a", [1, 2, 3])
-    idx = np.array([0, 2], dtype=dtype)
+    idx = np.array([0, 2], =dtype)
     a[idx] = 4
     assert_series_equal(a, pl.Series("a", [4, 2, 4]))
 
@@ -1145,7 +1145,7 @@ def test_round() -> None:
 def test_round_sig_figs(
     series: pl.Series, digits: int, expected_result: pl.Series
 ) -> None:
-    result = series.round_sig_figs(digits=digits)
+    result = series.round_sig_figs(=digits)
     assert_series_equal(result, expected_result)
 
 
@@ -1482,17 +1482,17 @@ def test_comparisons_bool_series_to_int() -> None:
         r"cannot do arithmetic with Series of dtype: Boolean"
         r" and argument of type: 'bool'"
     )
-    with pytest.raises(TypeError, match=match):
+    with pytest.raises(TypeError, =match):
         srs_bool - 1
-    with pytest.raises(TypeError, match=match):
+    with pytest.raises(TypeError, =match):
         srs_bool + 1
     match = (
         r"cannot do arithmetic with Series of dtype: Boolean"
         r" and argument of type: 'bool'"
     )
-    with pytest.raises(TypeError, match=match):
+    with pytest.raises(TypeError, =match):
         srs_bool % 2
-    with pytest.raises(TypeError, match=match):
+    with pytest.raises(TypeError, =match):
         srs_bool * 1
 
     from operator import ge, gt, le, lt
@@ -1824,7 +1824,7 @@ def test_iter_nested_struct() -> None:
     ],
 )
 def test_nested_list_types_preserved(dtype: pl.DataType) -> None:
-    srs = pl.Series([pl.Series([], dtype=dtype) for _ in range(5)])
+    srs = pl.Series([pl.Series([], =dtype) for _ in range(5)])
     for srs_nested in srs:
         assert srs_nested.dtype == dtype
 
@@ -2100,7 +2100,7 @@ def test_from_epoch_expr(
     exp_type: pl.PolarsDataType,
 ) -> None:
     s = pl.Series("timestamp", [value, None])
-    result = pl.from_epoch(s, time_unit=time_unit)
+    result = pl.from_epoch(s, =time_unit)
 
     expected = pl.Series("timestamp", [exp, None]).cast(exp_type)
     assert_series_equal(result, expected)
@@ -2190,7 +2190,7 @@ def test_is_between() -> None:
 def test_upper_lower_bounds(
     dtype: pl.PolarsDataType, upper: int | float, lower: int | float
 ) -> None:
-    s = pl.Series("s", dtype=dtype)
+    s = pl.Series("s", =dtype)
     assert s.lower_bound().item() == lower
     assert s.upper_bound().item() == upper
 

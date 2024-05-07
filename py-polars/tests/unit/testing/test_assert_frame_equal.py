@@ -263,7 +263,7 @@ def test_compare_frame_equal_nested_nans() -> None:
     assert_frame_not_equal(df3, df4)
     for check_dtype in (True, False):
         with pytest.raises(AssertionError, match="mismatch|different"):
-            assert_frame_equal(df3, df4, check_dtype=check_dtype)
+            assert_frame_equal(df3, df4, =check_dtype)
 
 
 def test_assert_frame_equal_pass() -> None:

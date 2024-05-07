@@ -39,14 +39,14 @@ def test_nan_aggregations() -> None:
 
 @pytest.mark.parametrize("descending", [True, False])
 def test_sorted_nan_max_12931(descending: bool) -> None:
-    s = pl.Series("x", [1.0, 2.0, float("nan")]).sort(descending=descending)
+    s = pl.Series("x", [1.0, 2.0, float("nan")]).sort(=descending)
 
     assert s.max() == 2.0
     assert s.arg_max() == 1
 
     # Test full-nan
     s = pl.Series("x", [float("nan"), float("nan"), float("nan")]).sort(
-        descending=descending
+        =descending
     )
 
     out = s.max()
@@ -57,7 +57,7 @@ def test_sorted_nan_max_12931(descending: bool) -> None:
     # * sorted descending: (index of right-most NaN) + 1, saturating addition at s.len()
     assert s.arg_max() == (0, 2)[descending]
 
-    s = pl.Series("x", [1.0, 2.0, 3.0]).sort(descending=descending)
+    s = pl.Series("x", [1.0, 2.0, 3.0]).sort(=descending)
 
     assert s.max() == 3.0
     assert s.arg_max() == (2, 0)[descending]
@@ -174,7 +174,7 @@ def test_group_by_float() -> None:
                     out = out.drop_nulls()
 
                 out = (
-                    out.group_by(group_keys, maintain_order=maintain_order)  # type: ignore[assignment]
+                    out.group_by(group_keys, =maintain_order)  # type: ignore[assignment]
                     .agg("index")
                     .sort(pl.col("index").list.get(0))
                     .select("index")
@@ -222,20 +222,20 @@ def test_joins() -> None:
     ):
         how = "left"
         expect = pl.Series("rhs", [True, True, True, True, None, None])
-        out = df.join(rhs, on=join_on, how=how).sort("index").select("rhs").to_series()  # type: ignore[arg-type]
+        out = df.join(rhs, on=join_on, =how).sort("index").select("rhs").to_series()  # type: ignore[arg-type]
         assert_series_equal(expect, out)
 
         how = "inner"
         expect = pl.Series("index", [0, 1, 2, 3], dtype=pl.UInt32)
         out = (
-            df.join(rhs, on=join_on, how=how).sort("index").select("index").to_series()  # type: ignore[arg-type]
+            df.join(rhs, on=join_on, =how).sort("index").select("index").to_series()  # type: ignore[arg-type]
         )
         assert_series_equal(expect, out)
 
         how = "outer"
         expect = pl.Series("rhs", [True, True, True, True, None, None, True])
         out = (
-            df.join(rhs, on=join_on, how=how)  # type: ignore[arg-type]
+            df.join(rhs, on=join_on, =how)  # type: ignore[arg-type]
             .sort("index", nulls_last=True)
             .select("rhs")
             .to_series()
@@ -245,7 +245,7 @@ def test_joins() -> None:
         how = "semi"
         expect = pl.Series("x", [-0.0, 0.0, float("-nan"), float("nan")])
         out = (
-            df.join(rhs, on=join_on, how=how)  # type: ignore[arg-type]
+            df.join(rhs, on=join_on, =how)  # type: ignore[arg-type]
             .sort("index", nulls_last=True)
             .select("x")
             .to_series()
@@ -255,7 +255,7 @@ def test_joins() -> None:
         how = "anti"
         expect = pl.Series("x", [1.0, None])
         out = (
-            df.join(rhs, on=join_on, how=how)  # type: ignore[arg-type]
+            df.join(rhs, on=join_on, =how)  # type: ignore[arg-type]
             .sort("index", nulls_last=True)
             .select("x")
             .to_series()

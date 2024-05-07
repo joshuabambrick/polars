@@ -209,7 +209,7 @@ def cum_count(*columns: str, reverse: bool = False) -> Expr:
             return F.int_range(F.len(), 0, step=-1, dtype=UInt32).alias("cum_count")
         else:
             return F.int_range(1, F.len() + 1, dtype=UInt32).alias("cum_count")
-    return F.col(*columns).cum_count(reverse=reverse)
+    return F.col(*columns).cum_count(=reverse)
 
 
 @deprecate_parameter_as_positional("column", version="0.20.4")
@@ -1026,7 +1026,7 @@ def map_groups(
             function,
             return_dtype,
             map_groups=True,
-            returns_scalar=returns_scalar,
+            =returns_scalar,
         )
     )
 
@@ -1061,7 +1061,7 @@ def apply(
     Expr
         Expression with the data type given by `return_dtype`.
     """
-    return map_groups(exprs, function, return_dtype, returns_scalar=returns_scalar)
+    return map_groups(exprs, function, return_dtype, =returns_scalar)
 
 
 def fold(

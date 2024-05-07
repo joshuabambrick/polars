@@ -106,7 +106,7 @@ def test_rolling_negative_offset_crossing_dst(time_zone: str | None) -> None:
                 datetime(2021, 11, 6),
                 datetime(2021, 11, 9),
                 "1d",
-                time_zone=time_zone,
+                =time_zone,
                 eager=True,
             ),
             "value": [1, 4, 9, 155],
@@ -121,7 +121,7 @@ def test_rolling_negative_offset_crossing_dst(time_zone: str | None) -> None:
                 datetime(2021, 11, 6),
                 datetime(2021, 11, 9),
                 "1d",
-                time_zone=time_zone,
+                =time_zone,
                 eager=True,
             ),
             "value": [[1, 4], [4, 9], [9, 155], [155]],
@@ -156,14 +156,14 @@ def test_rolling_non_negative_offset_9077(
                 datetime(2021, 11, 6),
                 datetime(2021, 11, 9),
                 "1d",
-                time_zone=time_zone,
+                =time_zone,
                 eager=True,
             ),
             "value": [1, 4, 9, 155],
         }
     )
     result = df.rolling(
-        index_column="datetime", period="2d", offset=offset, closed=closed
+        index_column="datetime", period="2d", =offset, =closed
     ).agg(pl.col("value"))
     expected = pl.DataFrame(
         {
@@ -171,7 +171,7 @@ def test_rolling_non_negative_offset_9077(
                 datetime(2021, 11, 6),
                 datetime(2021, 11, 9),
                 "1d",
-                time_zone=time_zone,
+                =time_zone,
                 eager=True,
             ),
             "value": expected_values,

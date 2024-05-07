@@ -34,7 +34,7 @@ def test_streaming_outer_joins() -> None:
         "outer_coalesce",
     ]
     for how in join_strategies:
-        q = dfa.lazy().join(dfb.lazy(), on="a", how=how).sort(["idx"])
+        q = dfa.lazy().join(dfb.lazy(), on="a", =how).sort(["idx"])
         a = q.collect(streaming=True)
         b = q.collect(streaming=False)
         assert_frame_equal(a, b)
@@ -61,12 +61,12 @@ def test_streaming_joins() -> None:
 
     join_strategies: list[Literal["inner", "left"]] = ["inner", "left"]
     for how in join_strategies:
-        pd_result = dfa.merge(dfb, on="a", how=how)
+        pd_result = dfa.merge(dfb, on="a", =how)
         pd_result.columns = pd.Index(["a", "b", "b_right"])
 
         pl_result = (
             dfa_pl.lazy()
-            .join(dfb_pl.lazy(), on="a", how=how)
+            .join(dfb_pl.lazy(), on="a", =how)
             .sort(["a", "b"], maintain_order=True)
             .collect(streaming=True)
         )
@@ -78,11 +78,11 @@ def test_streaming_joins() -> None:
         )
         assert_frame_equal(a, pl_result, check_dtype=False)
 
-        pd_result = dfa.merge(dfb, on=["a", "b"], how=how)
+        pd_result = dfa.merge(dfb, on=["a", "b"], =how)
 
         pl_result = (
             dfa_pl.lazy()
-            .join(dfb_pl.lazy(), on=["a", "b"], how=how)
+            .join(dfb_pl.lazy(), on=["a", "b"], =how)
             .sort(["a", "b"])
             .collect(streaming=True)
         )
@@ -160,16 +160,16 @@ def test_join_null_matches(streaming: bool) -> None:
     )
     # Semi
     assert df_a.join(df_b, on="a", how="semi", join_nulls=True).collect(
-        streaming=streaming
+        =streaming
     )["idx_a"].to_list() == [0, 1, 2]
     assert df_a.join(df_b, on="a", how="semi", join_nulls=False).collect(
-        streaming=streaming
+        =streaming
     )["idx_a"].to_list() == [1, 2]
 
     # Inner
     expected = pl.DataFrame({"idx_a": [2, 1], "a": [2, 1], "idx_b": [1, 2]})
     assert_frame_equal(
-        df_a.join(df_b, on="a", how="inner").collect(streaming=streaming), expected
+        df_a.join(df_b, on="a", how="inner").collect(=streaming), expected
     )
 
     # Left
@@ -177,7 +177,7 @@ def test_join_null_matches(streaming: bool) -> None:
         {"idx_a": [0, 1, 2], "a": [None, 1, 2], "idx_b": [None, 2, 1]}
     )
     assert_frame_equal(
-        df_a.join(df_b, on="a", how="left").collect(streaming=streaming), expected
+        df_a.join(df_b, on="a", how="left").collect(=streaming), expected
     )
     # Outer
     expected = pl.DataFrame(
@@ -210,14 +210,14 @@ def test_join_null_matches_multiple_keys(streaming: bool) -> None:
 
     expected = pl.DataFrame({"a": [1], "idx": [1], "c": [50]})
     assert_frame_equal(
-        df_a.join(df_b, on=["a", "idx"], how="inner").collect(streaming=streaming),
+        df_a.join(df_b, on=["a", "idx"], how="inner").collect(=streaming),
         expected,
     )
     expected = pl.DataFrame(
         {"a": [None, 1, 2], "idx": [0, 1, 2], "c": [None, 50, None]}
     )
     assert_frame_equal(
-        df_a.join(df_b, on=["a", "idx"], how="left").collect(streaming=streaming),
+        df_a.join(df_b, on=["a", "idx"], how="left").collect(=streaming),
         expected,
     )
 

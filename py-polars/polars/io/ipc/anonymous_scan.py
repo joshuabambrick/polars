@@ -15,9 +15,9 @@ def _scan_ipc_fsspec(
     source: str,
     storage_options: dict[str, object] | None = None,
 ) -> LazyFrame:
-    func = partial(_scan_ipc_impl, source, storage_options=storage_options)
+    func = partial(_scan_ipc_impl, source, =storage_options)
 
-    with prepare_file_arg(source, storage_options=storage_options) as data:
+    with prepare_file_arg(source, =storage_options) as data:
         schema = polars.io.ipc.read_ipc_schema(data)
 
     return pl.LazyFrame._scan_python_function(schema, func)
@@ -42,4 +42,4 @@ def _scan_ipc_impl(  # noqa: D417
     """
     from polars import read_ipc
 
-    return read_ipc(source, columns=columns, n_rows=n_rows, **kwargs)
+    return read_ipc(source, =columns, =n_rows, **kwargs)

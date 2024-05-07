@@ -336,7 +336,7 @@ def test_from_dicts_schema_override() -> None:
     for n_infer in (0, 3, 5, 8, 10, 100):
         df = pl.DataFrame(
             data=(data1 + data2),
-            schema=schema,  # type: ignore[arg-type]
+            =schema,  # type: ignore[arg-type]
             infer_schema_length=n_infer,
         )
         assert df.schema == schema

@@ -34,7 +34,7 @@ def test_datetime_range() -> None:
             datetime(2020, 1, 1),
             date(2020, 1, 2),
             "2h",
-            time_unit=time_unit,
+            =time_unit,
             eager=True,
         )
         assert rng.dtype.time_unit == time_unit  # type: ignore[attr-defined]
@@ -87,7 +87,7 @@ def test_datetime_range_precision(
     micros = 986759
     start = datetime(2000, 5, 30, 1, 53, 4, micros)
     stop = datetime(2000, 5, 31, 1, 53, 4, micros)
-    result = pl.datetime_range(start, stop, time_unit=time_unit, eager=True)
+    result = pl.datetime_range(start, stop, =time_unit, eager=True)
     expected_start = start.replace(microsecond=expected_micros)
     expected_stop = stop.replace(microsecond=expected_micros)
     assert result[0] == expected_start
@@ -424,7 +424,7 @@ def test_datetime_range_schema_upcasts_to_datetime(
         datetime_range=pl.datetime_ranges(
             pl.col("start"),
             pl.col("end"),
-            interval=interval,
+            =interval,
             time_unit=input_time_unit,
             time_zone=input_time_zone,
         )
@@ -458,7 +458,7 @@ def test_datetime_range_schema_upcasts_to_datetime(
     result_single = pl.datetime_range(
         date(2020, 1, 1),
         date(2020, 1, 3),
-        interval=interval,
+        =interval,
         time_unit=input_time_unit,
         time_zone=input_time_zone,
         eager=True,
@@ -503,7 +503,7 @@ def test_datetime_range_end_of_month_5441(
 ) -> None:
     start = date(2020, 1, 31)
     stop = date(2020, 3, 31)
-    result = pl.datetime_range(start, stop, interval="1mo", closed=closed, eager=True)
+    result = pl.datetime_range(start, stop, interval="1mo", =closed, eager=True)
     expected = pl.Series("literal", expected_values)
     assert_series_equal(result, expected)
 

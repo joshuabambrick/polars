@@ -75,7 +75,7 @@ def test_error_on_invalid_series_init() -> None:
             TypeError,
             match=f"'float' object cannot be interpreted as a {py_type.__name__!r}",
         ):
-            pl.Series([1.5, 2.0, 3.75], dtype=dtype)
+            pl.Series([1.5, 2.0, 3.75], =dtype)
 
     with pytest.raises(
         TypeError, match="'float' object cannot be interpreted as an integer"
@@ -271,7 +271,7 @@ def test_series_concat_err(how: ConcatMethod) -> None:
         ValueError,
         match="Series only supports 'vertical' concat strategy",
     ):
-        pl.concat([s, s], how=how)
+        pl.concat([s, s], =how)
 
 
 def test_invalid_sort_by() -> None:

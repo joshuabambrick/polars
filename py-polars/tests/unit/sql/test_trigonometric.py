@@ -15,7 +15,7 @@ def test_arctan2() -> None:
         }
     )
 
-    sql = pl.SQLContext(df=df)
+    sql = pl.SQLContext(=df)
     res = sql.execute(
         """
         SELECT
@@ -40,7 +40,7 @@ def test_trig() -> None:
         }
     )
 
-    ctx = pl.SQLContext(df=df)
+    ctx = pl.SQLContext(=df)
     res = ctx.execute(
         """
         SELECT

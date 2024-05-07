@@ -47,11 +47,7 @@ class TestWriteDatabase:
         table_name = "test_create"
 
         assert (
-            df.write_database(
-                table_name=table_name,
-                connection=test_db_uri,
-                engine=engine,
-            )
+            df.write_database(=table_name, connection=test_db_uri, =engine)
             == 2
         )
         result = pl.read_database(
@@ -78,27 +74,23 @@ class TestWriteDatabase:
         table_name = f"test_append_{engine}"
 
         assert (
-            df.write_database(
-                table_name=table_name,
-                connection=test_db_uri,
-                engine=engine,
-            )
+            df.write_database(=table_name, connection=test_db_uri, =engine)
             == 3
         )
         with pytest.raises(Exception):  # noqa: B017
             df.write_database(
-                table_name=table_name,
+                =table_name,
                 connection=test_db_uri,
                 if_table_exists="fail",
-                engine=engine,
+                =engine,
             )
 
         assert (
             df.write_database(
-                table_name=table_name,
+                =table_name,
                 connection=test_db_uri,
                 if_table_exists="replace",
-                engine=engine,
+                =engine,
             )
             == 3
         )
@@ -110,10 +102,10 @@ class TestWriteDatabase:
 
         assert (
             df[:2].write_database(
-                table_name=table_name,
+                =table_name,
                 connection=test_db_uri,
                 if_table_exists="append",
-                engine=engine,
+                =engine,
             )
             == 2
         )
@@ -140,7 +132,7 @@ class TestWriteDatabase:
             df.write_database(
                 table_name=qualified_table_name,
                 connection=test_db_uri,
-                engine=engine,
+                =engine,
             )
             == 3
         )
@@ -149,7 +141,7 @@ class TestWriteDatabase:
                 table_name=qualified_table_name,
                 connection=test_db_uri,
                 if_table_exists="replace",
-                engine=engine,
+                =engine,
             )
             == 3
         )
@@ -169,7 +161,7 @@ class TestWriteDatabase:
             df.write_database(
                 connection="sqlite:///:memory:",
                 table_name="w.x.y.z",
-                engine=engine,
+                =engine,
             )
 
         with pytest.raises(

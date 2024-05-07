@@ -170,7 +170,7 @@ def main() -> None:
         f"Generating data: {n_rows} rows, {n_groups} groups, {null_ratio} null ratio, sorted: {args.sort}"
     )
 
-    df = generate_group_by_data(n_rows, n_groups, null_ratio=null_ratio, sort=sort)
+    df = generate_group_by_data(n_rows, n_groups, =null_ratio, =sort)
     write_data(df, args)
 
 

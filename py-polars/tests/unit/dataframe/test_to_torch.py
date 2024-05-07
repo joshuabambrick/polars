@@ -205,7 +205,7 @@ class TestTorchIntegration:
     def test_to_torch_labelled_dataset(
         self, label: Any, features: Any, df: pl.DataFrame
     ) -> None:
-        ds = df.to_torch("dataset", label=label, features=features)
+        ds = df.to_torch("dataset", =label, =features)
         ts = next(iter(torch.utils.data.DataLoader(ds, batch_size=2, shuffle=False)))
 
         expected = [

@@ -98,7 +98,7 @@ def test_ewm_mean_leading_nulls() -> None:
     for min_periods in [1, 2, 3]:
         assert (
             pl.Series([1, 2, 3, 4])
-            .ewm_mean(com=3, min_periods=min_periods, ignore_nulls=False)
+            .ewm_mean(com=3, =min_periods, ignore_nulls=False)
             .null_count()
             == min_periods - 1
         )
@@ -180,7 +180,7 @@ def test_ewm_param_validation() -> None:
 
     for alpha in (-0.5, -0.0000001, 0.0, 1.0000001, 1.5):
         with pytest.raises(ValueError, match="require 0 < `alpha` <= 1"):
-            s.ewm_std(alpha=alpha, ignore_nulls=False)
+            s.ewm_std(=alpha, ignore_nulls=False)
 
 
 # https://github.com/pola-rs/polars/issues/4951
@@ -279,13 +279,13 @@ def test_ewm_methods(
             assert_series_equal(ewm_mean_pl, ewm_mean_pd, atol=1e-07)
 
             # std:
-            ewm_std_pl = s.ewm_std(bias=bias, **pl_params).fill_nan(None)
-            ewm_std_pd = pl.Series(p.ewm(**pd_params).std(bias=bias))
+            ewm_std_pl = s.ewm_std(=bias, **pl_params).fill_nan(None)
+            ewm_std_pd = pl.Series(p.ewm(**pd_params).std(=bias))
             assert_series_equal(ewm_std_pl, ewm_std_pd, atol=1e-07)
 
             # var:
-            ewm_var_pl = s.ewm_var(bias=bias, **pl_params).fill_nan(None)
-            ewm_var_pd = pl.Series(p.ewm(**pd_params).var(bias=bias))
+            ewm_var_pl = s.ewm_var(=bias, **pl_params).fill_nan(None)
+            ewm_var_pd = pl.Series(p.ewm(**pd_params).var(=bias))
             assert_series_equal(ewm_var_pl, ewm_var_pd, atol=1e-07)
 
 

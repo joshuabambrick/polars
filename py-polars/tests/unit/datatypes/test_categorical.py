@@ -503,7 +503,7 @@ def test_stringcache() -> None:
 def test_categorical_sort_order_by_parameter(
     dtype: PolarsDataType, outcome: list[str]
 ) -> None:
-    s = pl.Series(["foo", "bar", "baz"], dtype=dtype)
+    s = pl.Series(["foo", "bar", "baz"], =dtype)
     df = pl.DataFrame({"cat": s})
     assert df.sort(["cat"])["cat"].to_list() == outcome
 
@@ -781,7 +781,7 @@ def test_sort_categorical_retain_none(
                 pl.Series(
                     "e",
                     ["foo", None, "bar", "ham", None],
-                    dtype=pl.Categorical(ordering=ordering),
+                    dtype=pl.Categorical(=ordering),
                 )
             ]
         )

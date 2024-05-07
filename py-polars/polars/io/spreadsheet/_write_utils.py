@@ -128,17 +128,17 @@ def _xl_apply_conditional_formats(
                 fmt = {"type": fmt}
             if isinstance(cols, str):
                 col_range = _xl_column_range(
-                    df, table_start, cols, include_header=include_header
+                    df, table_start, cols, =include_header
                 )
             else:
                 col_range = _xl_column_multi_range(
-                    df, table_start, cols, include_header=include_header
+                    df, table_start, cols, =include_header
                 )
                 if " " in col_range:
                     col = next(iter(cols))
                     fmt["multi_range"] = col_range
                     col_range = _xl_column_range(
-                        df, table_start, col, include_header=include_header
+                        df, table_start, col, =include_header
                     )
 
             if "format" in fmt:
@@ -212,10 +212,10 @@ def _xl_column_multi_range(
             df,
             table_start,
             (m["min"]["idx"], m["max"]["idx"]),
-            include_header=include_header,
+            =include_header,
         )
     return " ".join(
-        _xl_column_range(df, table_start, col, include_header=include_header)
+        _xl_column_range(df, table_start, col, =include_header)
         for col in cols
     )
 
@@ -290,7 +290,7 @@ def _xl_inject_sparklines(
         raise RuntimeError(msg)
 
     spk_row, spk_col, _, _ = _xl_column_range(
-        df, table_start, col, include_header=include_header, as_range=False
+        df, table_start, col, =include_header, as_range=False
     )
     data_start_col = table_start[1] + m["min"]["idx"]
     data_end_col = table_start[1] + m["max"]["idx"]

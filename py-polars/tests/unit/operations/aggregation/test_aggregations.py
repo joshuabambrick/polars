@@ -359,7 +359,7 @@ def test_binary_op_agg_context_no_simplify_expr_12423() -> None:
             pl.LazyFrame({"x": [1]})
             .group_by("x")
             .agg(y=pl.lit(1) * pl.lit(1))
-            .collect(simplify_expression=simplify_expression),
+            .collect(=simplify_expression),
         )
 
 
@@ -404,7 +404,7 @@ def test_nan_inf_aggregation() -> None:
 
 @pytest.mark.parametrize("dtype", [pl.Int16, pl.UInt16])
 def test_int16_max_12904(dtype: pl.PolarsDataType) -> None:
-    s = pl.Series([None, 1], dtype=dtype)
+    s = pl.Series([None, 1], =dtype)
 
     assert s.min() == 1
     assert s.max() == 1

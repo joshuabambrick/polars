@@ -157,7 +157,7 @@ def test_date_range_end_of_month_5441(
 ) -> None:
     start = date(2020, 1, 31)
     stop = date(2020, 3, 31)
-    result = pl.date_range(start, stop, interval="1mo", closed=closed, eager=True)
+    result = pl.date_range(start, stop, interval="1mo", =closed, eager=True)
     expected = pl.Series("literal", expected_values)
     assert_series_equal(result, expected)
 
@@ -224,7 +224,7 @@ def test_date_range_schema_no_upcast(
         pl.date_ranges(
             pl.col("start"),
             pl.col("end"),
-            interval=interval,
+            =interval,
             time_unit=input_time_unit,
             time_zone=input_time_zone,
         ).alias("date_range")
@@ -277,7 +277,7 @@ def test_date_range_schema_no_upcast2(
             pl.date_ranges(
                 pl.col("start"),
                 pl.col("end"),
-                interval=interval,
+                =interval,
                 time_unit=input_time_unit,
                 time_zone=input_time_zone,
             ).alias("date_range")

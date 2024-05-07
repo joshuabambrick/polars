@@ -20,13 +20,13 @@ if TYPE_CHECKING:
 def test_to_numpy(order: IndexOrder, f_contiguous: bool, c_contiguous: bool) -> None:
     df = pl.DataFrame({"a": [1, 2, 3], "b": [1.0, 2.0, 3.0]})
 
-    out_array = df.to_numpy(order=order)
+    out_array = df.to_numpy(=order)
     expected_array = np.array([[1.0, 1.0], [2.0, 2.0], [3.0, 3.0]], dtype=np.float64)
     assert_array_equal(out_array, expected_array)
     assert out_array.flags["F_CONTIGUOUS"] == f_contiguous
     assert out_array.flags["C_CONTIGUOUS"] == c_contiguous
 
-    structured_array = df.to_numpy(structured=True, order=order)
+    structured_array = df.to_numpy(structured=True, =order)
     expected_array = np.array(
         [(1, 1.0), (2, 2.0), (3, 3.0)], dtype=[("a", "<i8"), ("b", "<f8")]
     )
@@ -115,7 +115,7 @@ def test_df_to_numpy_decimal(use_pyarrow: bool) -> None:
     decimal_data = [D("1.234"), D("2.345"), D("-3.456")]
     df = pl.Series("n", decimal_data).to_frame()
 
-    result = df.to_numpy(use_pyarrow=use_pyarrow)
+    result = df.to_numpy(=use_pyarrow)
 
     expected = np.array(decimal_data).reshape((-1, 1))
     assert_array_equal(result, expected)

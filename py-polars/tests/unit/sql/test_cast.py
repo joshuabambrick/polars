@@ -22,7 +22,7 @@ def test_cast() -> None:
     )
     # test various dtype casts, using standard ("CAST <col> AS <dtype>")
     # and postgres-specific ("<col>::<dtype>") cast syntax
-    with pl.SQLContext(df=df, eager_execution=True) as ctx:
+    with pl.SQLContext(=df, eager_execution=True) as ctx:
         res = ctx.execute(
             """
             SELECT
@@ -142,7 +142,7 @@ def test_cast() -> None:
     ]
 
     with pytest.raises(ComputeError, match="unsupported use of FORMAT in CAST"):
-        pl.SQLContext(df=df, eager_execution=True).execute(
+        pl.SQLContext(=df, eager_execution=True).execute(
             "SELECT CAST(a AS STRING FORMAT 'HEX') FROM df"
         )
 
@@ -168,7 +168,7 @@ def test_cast_errors(values: Any, cast_op: str, error: str) -> None:
 def test_cast_json() -> None:
     df = pl.DataFrame({"txt": ['{"a":[1,2,3],"b":["x","y","z"],"c":5.0}']})
 
-    with pl.SQLContext(df=df, eager_execution=True) as ctx:
+    with pl.SQLContext(=df, eager_execution=True) as ctx:
         for json_cast in ("txt::json", "CAST(txt AS JSON)"):
             res = ctx.execute(f"SELECT {json_cast} AS j FROM df")
 

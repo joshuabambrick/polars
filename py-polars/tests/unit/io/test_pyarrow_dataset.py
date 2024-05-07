@@ -21,7 +21,7 @@ def helper_dataset_test(
 ) -> None:
     dset = ds.dataset(file_path, format="ipc")
     expected = pl.scan_ipc(file_path).pipe(query).collect()
-    out = pl.scan_pyarrow_dataset(dset, batch_size=batch_size).pipe(query).collect()
+    out = pl.scan_pyarrow_dataset(dset, =batch_size).pipe(query).collect()
     assert_frame_equal(out, expected)
     if n_expected is not None:
         assert len(out) == n_expected
@@ -84,9 +84,9 @@ def test_dataset_foo(df: pl.DataFrame, tmp_path: Path) -> None:
         helper_dataset_test(
             file_path,
             lambda lf, closed=closed: lf.filter(  # type: ignore[misc]
-                pl.col("int").is_between(1, 3, closed=closed)
+                pl.col("int").is_between(1, 3, =closed)
             ).select("bools", "floats", "date"),
-            n_expected=n_expected,
+            =n_expected,
         )
     # this predicate is not supported by pyarrow
     # check if we still do it on our side

@@ -21,7 +21,7 @@ def test_div() -> None:
             "b": [-100.5, 7.0, 2.5, None, -3.14],
         }
     )
-    with pl.SQLContext(df=df, eager_execution=True) as ctx:
+    with pl.SQLContext(=df, eager_execution=True) as ctx:
         res = ctx.execute(
             """
             SELECT

@@ -76,9 +76,9 @@ def read_ndjson(
 
     pydf = PyDataFrame.read_ndjson(
         source,
-        ignore_errors=ignore_errors,
-        schema=schema,
-        schema_overrides=schema_overrides,
+        =ignore_errors,
+        =schema,
+        =schema_overrides,
     )
     return wrap_df(pydf)
 

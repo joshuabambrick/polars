@@ -43,23 +43,15 @@ def _scan(
     row_index_offset = 0 if row_index is None else row_index.offset
 
     if suffix == ".ipc":
-        result = pl.scan_ipc(
-            file_path,
-            row_index_name=row_index_name,
-            row_index_offset=row_index_offset,
-        )
+        result = pl.scan_ipc(file_path, =row_index_name, =row_index_offset)
     elif suffix == ".parquet":
-        result = pl.scan_parquet(
-            file_path,
-            row_index_name=row_index_name,
-            row_index_offset=row_index_offset,
-        )
+        result = pl.scan_parquet(file_path, =row_index_name, =row_index_offset)
     elif suffix == ".csv":
         result = pl.scan_csv(
             file_path,
-            schema=schema,
-            row_index_name=row_index_name,
-            row_index_offset=row_index_offset,
+            =schema,
+            =row_index_name,
+            =row_index_offset,
         )
     else:
         msg = f"Unknown suffix {suffix}"
@@ -131,7 +123,7 @@ def data_file_single(session_tmp_dir: Path, data_file_extension: str) -> _DataFi
     )
     assert max_rows_per_batch < df.height
     _write(df_with_chunk_size_limit(df, max_rows_per_batch), file_path)
-    return _DataFile(path=file_path, df=df)
+    return _DataFile(path=file_path, =df)
 
 
 @pytest.fixture(scope="session")
@@ -170,7 +162,7 @@ def data_file_glob(session_tmp_dir: Path, data_file_extension: str) -> _DataFile
         )
         row_offset += row_count
     return _DataFile(
-        path=(session_tmp_dir / "data_*").with_suffix(data_file_extension), df=df
+        path=(session_tmp_dir / "data_*").with_suffix(data_file_extension), =df
     )
 
 

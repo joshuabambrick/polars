@@ -156,42 +156,42 @@ def read_parquet(
             raise TypeError(msg)
         return _read_parquet_with_pyarrow(
             source,
-            columns=columns,
-            storage_options=storage_options,
-            pyarrow_options=pyarrow_options,
-            memory_map=memory_map,
+            =columns,
+            =storage_options,
+            =pyarrow_options,
+            =memory_map,
         )
 
     # Read file and bytes inputs using `read_parquet`
     elif isinstance(source, (io.IOBase, bytes)):
         return _read_parquet_binary(
             source,
-            columns=columns,
-            n_rows=n_rows,
-            parallel=parallel,
-            row_index_name=row_index_name,
-            row_index_offset=row_index_offset,
-            low_memory=low_memory,
-            use_statistics=use_statistics,
-            rechunk=rechunk,
+            =columns,
+            =n_rows,
+            =parallel,
+            =row_index_name,
+            =row_index_offset,
+            =low_memory,
+            =use_statistics,
+            =rechunk,
         )
 
     # For other inputs, defer to `scan_parquet`
     lf = scan_parquet(
         source,  # type: ignore[arg-type]
         n_rows=n_rows,
-        row_index_name=row_index_name,
-        row_index_offset=row_index_offset,
-        parallel=parallel,
-        use_statistics=use_statistics,
-        hive_partitioning=hive_partitioning,
-        hive_schema=hive_schema,
-        rechunk=rechunk,
-        low_memory=low_memory,
+        =row_index_name,
+        =row_index_offset,
+        =parallel,
+        =use_statistics,
+        =hive_partitioning,
+        =hive_schema,
+        =rechunk,
+        =low_memory,
         cache=False,
-        storage_options=storage_options,
-        retries=retries,
-        glob=glob,
+        =storage_options,
+        =retries,
+        =glob,
     )
 
     if columns is not None:
@@ -220,12 +220,12 @@ def _read_parquet_with_pyarrow(
     with prepare_file_arg(
         source,  # type: ignore[arg-type]
         use_pyarrow=True,
-        storage_options=storage_options,
+        =storage_options,
     ) as source_prep:
         pa_table = pyarrow_parquet.read_table(
             source_prep,
-            memory_map=memory_map,
-            columns=columns,
+            =memory_map,
+            =columns,
             **pyarrow_options,
         )
     return from_arrow(pa_table)  # type: ignore[return-value]
@@ -249,14 +249,14 @@ def _read_parquet_binary(
     with prepare_file_arg(source) as source_prep:
         pydf = PyDataFrame.read_parquet(
             source_prep,
-            columns=columns,
-            projection=projection,
-            n_rows=n_rows,
-            row_index=row_index,
-            parallel=parallel,
-            use_statistics=use_statistics,
-            rechunk=rechunk,
-            low_memory=low_memory,
+            =columns,
+            =projection,
+            =n_rows,
+            =row_index,
+            =parallel,
+            =use_statistics,
+            =rechunk,
+            =low_memory,
         )
     return wrap_df(pydf)
 
@@ -393,19 +393,19 @@ def scan_parquet(
 
     return _scan_parquet_impl(
         source,
-        n_rows=n_rows,
-        cache=cache,
-        parallel=parallel,
-        rechunk=rechunk,
-        row_index_name=row_index_name,
-        row_index_offset=row_index_offset,
-        storage_options=storage_options,
-        low_memory=low_memory,
-        use_statistics=use_statistics,
-        hive_partitioning=hive_partitioning,
-        hive_schema=hive_schema,
-        retries=retries,
-        glob=glob,
+        =n_rows,
+        =cache,
+        =parallel,
+        =rechunk,
+        =row_index_name,
+        =row_index_offset,
+        =storage_options,
+        =low_memory,
+        =use_statistics,
+        =hive_partitioning,
+        =hive_schema,
+        =retries,
+        =glob,
     )
 
 
@@ -448,10 +448,10 @@ def _scan_parquet_impl(
         parse_row_index_args(row_index_name, row_index_offset),
         low_memory,
         cloud_options=storage_options,
-        use_statistics=use_statistics,
-        hive_partitioning=hive_partitioning,
-        hive_schema=hive_schema,
-        retries=retries,
-        glob=glob,
+        =use_statistics,
+        =hive_partitioning,
+        =hive_schema,
+        =retries,
+        =glob,
     )
     return wrap_ldf(pylf)

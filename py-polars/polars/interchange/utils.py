@@ -130,7 +130,7 @@ def _temporal_dtype_to_polars_dtype(format_str: str, dtype: Dtype) -> PolarsData
         time_unit = match.group(1) + "s"
         time_zone = match.group(2) or None
         return Datetime(
-            time_unit=time_unit,  # type: ignore[arg-type]
+            =time_unit,  # type: ignore[arg-type]
             time_zone=time_zone,
         )
     elif format_str == "tdD":
@@ -139,7 +139,7 @@ def _temporal_dtype_to_polars_dtype(format_str: str, dtype: Dtype) -> PolarsData
         return Time
     elif (match := re.fullmatch(r"tD([mun])", format_str)) is not None:
         time_unit = match.group(1) + "s"
-        return Duration(time_unit=time_unit)  # type: ignore[arg-type]
+        return Duration(=time_unit)  # type: ignore[arg-type]
 
     msg = f"unsupported temporal data type: {dtype!r}"
     raise NotImplementedError(msg)

@@ -97,9 +97,9 @@ def test_to_from_buffer(
     df = df[["list_str"]]
     print(df)
     buf = io.BytesIO()
-    df.write_parquet(buf, compression=compression, use_pyarrow=use_pyarrow)
+    df.write_parquet(buf, =compression, =use_pyarrow)
     buf.seek(0)
-    read_df = pl.read_parquet(buf, use_pyarrow=use_pyarrow)
+    read_df = pl.read_parquet(buf, =use_pyarrow)
     print(read_df)
     assert_frame_equal(df, read_df, categorical_as_str=True)
 
@@ -132,7 +132,7 @@ def test_to_from_file(
     tmp_path.mkdir(exist_ok=True)
 
     file_path = tmp_path / "small.avro"
-    df.write_parquet(file_path, compression=compression)
+    df.write_parquet(file_path, =compression)
     read_df = pl.read_parquet(file_path)
     assert_frame_equal(df, read_df, categorical_as_str=True)
 
@@ -200,7 +200,7 @@ def test_parquet_datetime(compression: ParquetCompression, use_pyarrow: bool) ->
     df = pl.DataFrame(data)
     df = df.with_columns(df["datetime"].cast(pl.Datetime))
 
-    df.write_parquet(f, use_pyarrow=use_pyarrow, compression=compression)
+    df.write_parquet(f, =use_pyarrow, =compression)
     f.seek(0)
     read = pl.read_parquet(f)
     assert_frame_equal(read, df)
@@ -592,7 +592,7 @@ def test_parquet_rle_non_nullable_12814() -> None:
         pl.select(x=pl.arange(0, 1025, dtype=pl.Int64) // 10).to_series().to_arrow()
     )
     schema = pa.schema([pa.field("foo", pa.int64(), nullable=False)])
-    table = pa.Table.from_arrays([column], schema=schema)
+    table = pa.Table.from_arrays([column], =schema)
 
     f = io.BytesIO()
     pq.write_table(table, f, data_page_size=1)
@@ -727,7 +727,7 @@ def test_utc_timezone_normalization_13670(tmp_path: Path) -> None:
         pq.write_table(
             pa.table(
                 {"c1": [1234567890123] * 10},
-                schema=pa.schema([pa.field("c1", pa.timestamp("ms", tz=tz))]),
+                schema=pa.schema([pa.field("c1", pa.timestamp("ms", =tz))]),
             ),
             path,
         )

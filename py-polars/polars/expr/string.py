@@ -304,22 +304,22 @@ class ExprStringNameSpace:
         ]
         """
         if dtype == Date:
-            return self.to_date(format, strict=strict, exact=exact, cache=cache)
+            return self.to_date(format, =strict, =exact, =cache)
         elif dtype == Datetime:
             time_unit = dtype.time_unit  # type: ignore[union-attr]
             time_zone = dtype.time_zone  # type: ignore[union-attr]
             return self.to_datetime(
                 format,
-                time_unit=time_unit,
-                time_zone=time_zone,
-                strict=strict,
-                exact=exact,
-                cache=cache,
-                use_earliest=use_earliest,
-                ambiguous=ambiguous,
+                =time_unit,
+                =time_zone,
+                =strict,
+                =exact,
+                =cache,
+                =use_earliest,
+                =ambiguous,
             )
         elif dtype == Time:
-            return self.to_time(format, strict=strict, cache=cache)
+            return self.to_time(format, =strict, =cache)
         else:
             msg = "`dtype` must be of type {Date, Datetime, Time}"
             raise ValueError(msg)
@@ -2456,7 +2456,7 @@ class ExprStringNameSpace:
         """
         if base is None:
             base = 2
-        return self.to_integer(base=base, strict=strict).cast(Int32, strict=strict)
+        return self.to_integer(base=base, strict=strict).cast(Int32, =strict)
 
     @deprecate_renamed_function("strip_chars", version="0.19.3")
     def strip(self, characters: str | None = None) -> Expr:

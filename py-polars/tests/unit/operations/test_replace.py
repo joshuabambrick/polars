@@ -67,19 +67,19 @@ def test_replace_str_to_cat() -> None:
 
 def test_replace_enum() -> None:
     dtype = pl.Enum(["a", "b", "c", "d"])
-    s = pl.Series(["a", "b", "c"], dtype=dtype)
+    s = pl.Series(["a", "b", "c"], =dtype)
     old = ["a", "b"]
-    new = pl.Series(["c", "d"], dtype=dtype)
+    new = pl.Series(["c", "d"], =dtype)
 
     result = s.replace(old, new)
 
-    expected = pl.Series(["c", "d", "c"], dtype=dtype)
+    expected = pl.Series(["c", "d", "c"], =dtype)
     assert_series_equal(result, expected)
 
 
 def test_replace_enum_to_str() -> None:
     dtype = pl.Enum(["a", "b", "c", "d"])
-    s = pl.Series(["a", "b", "c"], dtype=dtype)
+    s = pl.Series(["a", "b", "c"], =dtype)
 
     result = s.replace({"a": "c", "b": "d"})
 
@@ -535,18 +535,18 @@ def test_replace_cat_str(
         for old, new, expected in [
             ("a", "c", pl.Series("s", ["c", None], dtype=pl.Utf8)),
             (["a", "b"], ["c", "d"], pl.Series("s", ["c", "d"], dtype=pl.Utf8)),
-            (pl.lit("a", dtype=dtype), "c", pl.Series("s", ["c", None], dtype=pl.Utf8)),
+            (pl.lit("a", =dtype), "c", pl.Series("s", ["c", None], dtype=pl.Utf8)),
             (
-                pl.Series(["a", "b"], dtype=dtype),
+                pl.Series(["a", "b"], =dtype),
                 ["c", "d"],
                 pl.Series("s", ["c", "d"], dtype=pl.Utf8),
             ),
         ]:
-            s = pl.Series("s", ["a", "b"], dtype=dtype)
+            s = pl.Series("s", ["a", "b"], =dtype)
             s_replaced = s.replace(old, new, default=None)  # type: ignore[arg-type]
             assert_series_equal(s_replaced, expected)
 
-            s = pl.Series("s", ["a", "b"], dtype=dtype)
+            s = pl.Series("s", ["a", "b"], =dtype)
             s_replaced = s.replace(old, new, default="OTHER")  # type: ignore[arg-type]
             assert_series_equal(s_replaced, expected.fill_null("OTHER"))
 

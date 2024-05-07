@@ -37,7 +37,7 @@ def test_fallback_with_dtype_strict(
     dtype: pl.PolarsDataType, values: list[Any], strict: bool
 ) -> None:
     result = wrap_s(
-        PySeries.new_from_any_values_and_dtype("", values, dtype, strict=strict)
+        PySeries.new_from_any_values_and_dtype("", values, dtype, =strict)
     )
     assert result.to_list() == values
 
@@ -240,7 +240,7 @@ def test_fallback_with_dtype_nonstrict(
 def test_fallback_without_dtype(
     expected_dtype: pl.PolarsDataType, values: list[Any], strict: bool
 ) -> None:
-    result = wrap_s(PySeries.new_from_any_values("", values, strict=strict))
+    result = wrap_s(PySeries.new_from_any_values("", values, =strict))
     assert result.to_list() == values
     assert result.dtype == expected_dtype
 

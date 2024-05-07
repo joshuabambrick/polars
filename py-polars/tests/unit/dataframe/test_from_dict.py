@@ -15,7 +15,7 @@ def test_from_dict_with_column_order() -> None:
     schema = {"a": pl.UInt8, "b": pl.UInt32}
     data = {"b": [3, 4], "a": [1, 2]}
     for df in (
-        pl.DataFrame(data, schema=schema),
+        pl.DataFrame(data, =schema),
         pl.DataFrame(data, schema=["a", "b"], schema_overrides=schema),
     ):
         # ┌─────┬─────┐
@@ -242,7 +242,7 @@ def test_from_dict_duration_subseconds() -> None:
 )
 def test_from_dict_cast_logical_type(dtype: pl.DataType, data: Any) -> None:
     schema = {"data": dtype}
-    df = pl.DataFrame({"data": [data]}, schema=schema)
+    df = pl.DataFrame({"data": [data]}, =schema)
     physical_dict = df.cast(pl.Int64).to_dict()
 
     df_from_dicts = pl.from_dicts(
@@ -251,7 +251,7 @@ def test_from_dict_cast_logical_type(dtype: pl.DataType, data: Any) -> None:
                 "data": physical_dict["data"][0],
             }
         ],
-        schema=schema,
+        =schema,
     )
 
     assert_frame_equal(df_from_dicts, df)

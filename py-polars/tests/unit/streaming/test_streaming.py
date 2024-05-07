@@ -187,7 +187,7 @@ def test_streaming_generic_left_and_inner_join_from_disk(tmp_path: Path) -> None
 
     join_strategies: list[JoinStrategy] = ["left", "inner"]
     for how in join_strategies:
-        q = lf0.join(lf1, left_on="id", right_on="id_r", how=how)
+        q = lf0.join(lf1, left_on="id", right_on="id_r", =how)
         assert_frame_equal(q.collect(streaming=True), q.collect(streaming=False))
 
 
@@ -215,12 +215,8 @@ def test_stream_empty_file(tmp_path: Path) -> None:
         "KLN_NR": pl.String,
     }
 
-    df = pl.DataFrame(
-        {
-            "KLN_NR": [],
-        },
-        schema=schema,
-    )
+    df = pl.DataFrame({
+            "KLN_NR": [], }, =schema)
     df.write_parquet(p)
     assert pl.scan_parquet(p).collect(streaming=True).schema == schema
 
@@ -278,7 +274,7 @@ def test_boolean_agg_schema() -> None:
 
     for streaming in [True, False]:
         assert (
-            agg_df.collect(streaming=streaming).schema
+            agg_df.collect(=streaming).schema
             == agg_df.schema
             == {"x": pl.Int64, "max_y": pl.Boolean}
         )
@@ -301,7 +297,7 @@ def test_streaming_csv_headers_but_no_data_13770(tmp_path: Path) -> None:
 
     schema = {"name": pl.String, "age": pl.Int32}
     df = (
-        pl.scan_csv(tmp_path / "header_no_data.csv", schema=schema)
+        pl.scan_csv(tmp_path / "header_no_data.csv", =schema)
         .head()
         .collect(streaming=True)
     )

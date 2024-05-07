@@ -86,12 +86,7 @@ def from_dict(
     └─────┴─────┘
     """
     return wrap_df(
-        dict_to_pydf(
-            data,
-            schema=schema,
-            schema_overrides=schema_overrides,
-            strict=strict,
-        )
+        dict_to_pydf(data, =schema, =schema_overrides, =strict)
     )
 
 
@@ -197,10 +192,10 @@ def from_dicts(
 
     return pl.DataFrame(
         data,
-        schema=schema,
-        schema_overrides=schema_overrides,
-        strict=strict,
-        infer_schema_length=infer_schema_length,
+        =schema,
+        =schema_overrides,
+        =strict,
+        =infer_schema_length,
     )
 
 
@@ -279,11 +274,11 @@ def from_records(
     return wrap_df(
         sequence_to_pydf(
             data,
-            schema=schema,
-            schema_overrides=schema_overrides,
-            strict=strict,
-            orient=orient,
-            infer_schema_length=infer_schema_length,
+            =schema,
+            =schema_overrides,
+            =strict,
+            =orient,
+            =infer_schema_length,
         )
     )
 
@@ -344,9 +339,7 @@ def from_numpy(
     └─────┴─────┘
     """
     return wrap_df(
-        numpy_to_pydf(
-            data, schema=schema, orient=orient, schema_overrides=schema_overrides
-        )
+        numpy_to_pydf(data, =schema, =orient, =schema_overrides)
     )
 
 
@@ -431,27 +424,15 @@ def from_arrow(
     """  # noqa: W505
     if isinstance(data, (pa.Table, pa.RecordBatch)):
         return wrap_df(
-            arrow_to_pydf(
-                data=data,
-                rechunk=rechunk,
-                schema=schema,
-                schema_overrides=schema_overrides,
-            )
+            arrow_to_pydf(=data, =rechunk, =schema, =schema_overrides)
         )
     elif isinstance(data, (pa.Array, pa.ChunkedArray)):
         name = getattr(data, "_name", "") or ""
-        s = wrap_s(arrow_to_pyseries(name, data, rechunk=rechunk))
-        s = pl.DataFrame(
-            data=s,
-            schema=schema,
-            schema_overrides=schema_overrides,
-        ).to_series()
+        s = wrap_s(arrow_to_pyseries(name, data, =rechunk))
+        s = pl.DataFrame(data=s, =schema, =schema_overrides).to_series()
         return s if (name or schema or schema_overrides) else s.alias("")
     elif not data:
-        return pl.DataFrame(
-            schema=schema,
-            schema_overrides=schema_overrides,
-        )
+        return pl.DataFrame(=schema, =schema_overrides)
 
     if isinstance(data, Iterable):
         pa_table = pa.Table.from_batches(
@@ -460,12 +441,7 @@ def from_arrow(
             )
         )
         return wrap_df(
-            arrow_to_pydf(
-                data=pa_table,
-                rechunk=rechunk,
-                schema=schema,
-                schema_overrides=schema_overrides,
-            )
+            arrow_to_pydf(data=pa_table, =rechunk, =schema, =schema_overrides)
         )
 
     msg = f"expected PyArrow Table, Array, or one or more RecordBatches; got {type(data).__name__!r}"
@@ -565,15 +541,15 @@ def from_pandas(
     ]
     """
     if isinstance(data, (pd.Series, pd.Index, pd.DatetimeIndex)):
-        return wrap_s(pandas_to_pyseries("", data, nan_to_null=nan_to_null))
+        return wrap_s(pandas_to_pyseries("", data, =nan_to_null))
     elif isinstance(data, pd.DataFrame):
         return wrap_df(
             pandas_to_pydf(
                 data,
-                schema_overrides=schema_overrides,
-                rechunk=rechunk,
-                nan_to_null=nan_to_null,
-                include_index=include_index,
+                =schema_overrides,
+                =rechunk,
+                =nan_to_null,
+                =include_index,
             )
         )
     else:
@@ -730,7 +706,7 @@ def _from_dataframe_repr(m: re.Match[str]) -> DataFrame:
             raise NotImplementedError(msg)
 
     # construct DataFrame from string series and cast from repr to native dtype
-    df = pl.DataFrame(data=data, orient="col", schema=list(schema))
+    df = pl.DataFrame(=data, orient="col", schema=list(schema))
     if no_dtypes:
         if df.is_empty():
             # if no dtypes *and* empty, default to string
@@ -773,9 +749,9 @@ def _from_series_repr(m: re.Match[str]) -> Series:
     values = [(None if v == "null" else v) for v in values if v not in ("…", "...")]
 
     if not values:
-        return pl.Series(name=name, values=values, dtype=dtype)
+        return pl.Series(=name, =values, =dtype)
     else:
-        srs = pl.Series(name=name, values=values, dtype=String)
+        srs = pl.Series(=name, =values, dtype=String)
         if dtype is None:
             return srs
         elif dtype in (Categorical, String):
@@ -827,4 +803,4 @@ def from_dataframe(df: SupportsInterchange, *, allow_copy: bool = True) -> DataF
     """
     from polars.interchange.from_dataframe import from_dataframe
 
-    return from_dataframe(df, allow_copy=allow_copy)
+    return from_dataframe(df, =allow_copy)

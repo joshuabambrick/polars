@@ -50,9 +50,9 @@ def test_compare_series_nans_assert_equal() -> None:
             check_msg = "Series are different.*value mismatch.*"
 
         with pytest.raises(AssertionError, match=check_msg):
-            assert_series_equal(srs1, srs2, check_exact=check_exact)
+            assert_series_equal(srs1, srs2, =check_exact)
         with pytest.raises(AssertionError, match=check_msg):
-            assert_series_equal(srs1, srs3, check_exact=check_exact)
+            assert_series_equal(srs1, srs3, =check_exact)
 
     srs4 = pl.Series([1.0, 2.0, 3.0, 4.0, None, 6.0])
     srs5 = pl.Series([1.0, 2.0, 3.0, 4.0, nan, 6.0])
@@ -145,9 +145,9 @@ def test_assert_series_equal_int_overflow() -> None:
     s2 = pl.Series([1, -128], dtype=pl.Int8)
 
     for check_exact in (True, False):
-        assert_series_equal(s0, s0, check_exact=check_exact)
+        assert_series_equal(s0, s0, =check_exact)
         with pytest.raises(AssertionError):
-            assert_series_equal(s1, s2, check_exact=check_exact)
+            assert_series_equal(s1, s2, =check_exact)
 
 
 @pytest.mark.parametrize(
@@ -609,7 +609,7 @@ def test_assert_series_equal_array_equal(check_exact: bool) -> None:
     s2 = pl.Series([[1.0, 2.0], [3.0, 4.2]], dtype=pl.Array(pl.Float64, 2))
 
     with pytest.raises(AssertionError):
-        assert_series_equal(s1, s2, check_exact=check_exact)
+        assert_series_equal(s1, s2, =check_exact)
 
 
 def test_series_equal_nested_lengths_mismatch() -> None:
@@ -625,11 +625,11 @@ def test_series_equal_decimals(check_exact: bool) -> None:
     s1 = pl.Series([D("1.00000"), D("2.00000")], dtype=pl.Decimal)
     s2 = pl.Series([D("1.00000"), D("2.00001")], dtype=pl.Decimal)
 
-    assert_series_equal(s1, s1, check_exact=check_exact)
-    assert_series_equal(s2, s2, check_exact=check_exact)
+    assert_series_equal(s1, s1, =check_exact)
+    assert_series_equal(s2, s2, =check_exact)
 
     with pytest.raises(AssertionError, match="exact value mismatch"):
-        assert_series_equal(s1, s2, check_exact=check_exact)
+        assert_series_equal(s1, s2, =check_exact)
 
 
 def test_assert_series_equal_w_large_integers_12328() -> None:

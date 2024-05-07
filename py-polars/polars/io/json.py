@@ -93,8 +93,8 @@ def read_json(
 
     pydf = PyDataFrame.read_json(
         source,
-        infer_schema_length=infer_schema_length,
-        schema=schema,
-        schema_overrides=schema_overrides,
+        =infer_schema_length,
+        =schema,
+        =schema_overrides,
     )
     return wrap_df(pydf)

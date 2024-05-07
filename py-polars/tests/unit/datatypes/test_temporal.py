@@ -549,7 +549,7 @@ def test_rolling() -> None:
 
     period: str | timedelta
     for period in ("2d", timedelta(days=2)):  # type: ignore[assignment]
-        out = df.rolling(index_column="dt", period=period).agg(
+        out = df.rolling(index_column="dt", =period).agg(
             [
                 pl.sum("a").alias("sum_a"),
                 pl.min("a").alias("min_a"),
@@ -601,7 +601,7 @@ def test_upsample(
             every="1mo",
             group_by="admin",
             maintain_order=True,
-            offset=offset,
+            =offset,
         ).select(pl.all().forward_fill())
     # this print will panic if timezones feature is not activated
     # don't remove
@@ -705,7 +705,7 @@ def test_upsample_crossing_dst(
             "time": pl.datetime_range(
                 datetime(2021, 11, 6),
                 datetime(2021, 11, 8),
-                time_zone=time_zone,
+                =time_zone,
                 eager=True,
             ),
             "values": [1, 2, 3],
@@ -722,7 +722,7 @@ def test_upsample_crossing_dst(
         context_manager = contextlib.nullcontext()
 
     with context_manager:
-        result = df.upsample(time_column="time", every="1d", offset=offset)
+        result = df.upsample(time_column="time", every="1d", =offset)
     expected = pl.DataFrame(
         {
             "time": expected_time,
@@ -814,7 +814,7 @@ def test_upsample_index(
         }
     ).with_columns(pl.col("index").cast(dtype))
     result = (
-        df.upsample(time_column="index", group_by="groups", every=every)
+        df.upsample(time_column="index", group_by="groups", =every)
         .fill_null(strategy=fill)
         .sort(["groups", "index"])
     )
@@ -859,12 +859,7 @@ def test_upsample_index_invalid(
     # tuple, so we nest them instead.
     with pytest.raises(pl.InvalidOperationError, match=r"must be a parsed integer"):  # noqa: SIM117
         with pytest.deprecated_call():
-            df.upsample(
-                time_column="index",
-                every=every,
-                offset=offset,
-                maintain_order=maintain_order,
-            )
+            df.upsample(time_column="index", =every, =offset, =maintain_order)
 
 
 def test_microseconds_accuracy() -> None:
@@ -973,7 +968,7 @@ def test_rolling_mean_3020() -> None:
 
     period: str | timedelta
     for period in ("1w", timedelta(days=7)):  # type: ignore[assignment]
-        result = df.rolling(index_column="Date", period=period).agg(
+        result = df.rolling(index_column="Date", =period).agg(
             pl.col("val").mean().alias("val_mean")
         )
         expected = pl.DataFrame(
@@ -1017,7 +1012,7 @@ def test_asof_join() -> None:
     ]
     quotes = pl.DataFrame(
         {
-            "dates": pl.Series(dates).str.strptime(pl.Datetime, format=format),
+            "dates": pl.Series(dates).str.strptime(pl.Datetime, =format),
             "ticker": ticker,
             "bid": [720.5, 51.95, 51.97, 51.99, 720.50, 97.99, 720.50, 52.01],
         }
@@ -1038,7 +1033,7 @@ def test_asof_join() -> None:
     ]
     trades = pl.DataFrame(
         {
-            "dates": pl.Series(dates).str.strptime(pl.Datetime, format=format),
+            "dates": pl.Series(dates).str.strptime(pl.Datetime, =format),
             "ticker": ticker,
             "bid": [51.95, 51.95, 720.77, 720.92, 98.0],
         }
@@ -1141,7 +1136,7 @@ def test_temporal_dtypes_map_elements(
                     pl.col("timestamp")
                     .map_elements(
                         lambda x: const_dtm,
-                        skip_nulls=skip_nulls,
+                        =skip_nulls,
                         return_dtype=pl.Datetime,
                     )
                     .alias("const_dtm"),
@@ -1149,14 +1144,14 @@ def test_temporal_dtypes_map_elements(
                     pl.col("timestamp")
                     .map_elements(
                         lambda x: x and x.date(),
-                        skip_nulls=skip_nulls,
+                        =skip_nulls,
                         return_dtype=pl.Date,
                     )
                     .alias("date"),
                     pl.col("timestamp")
                     .map_elements(
                         lambda x: x and x.time(),
-                        skip_nulls=skip_nulls,
+                        =skip_nulls,
                         return_dtype=pl.Time,
                     )
                     .alias("time"),
@@ -1635,7 +1630,7 @@ def test_replace_time_zone_from_to(
 ) -> None:
     ts = pl.Series(["2020-01-01"]).str.strptime(pl.Datetime(time_unit))
     result = ts.dt.replace_time_zone(from_tz).dt.replace_time_zone(to_tz).item()
-    expected = datetime(2020, 1, 1, 0, 0, tzinfo=tzinfo)
+    expected = datetime(2020, 1, 1, 0, 0, =tzinfo)
     assert result == expected
 
 
@@ -1820,7 +1815,7 @@ def test_replace_time_zone_ambiguous_with_use_earliest(
     ambiguous: Ambiguous, expected: datetime
 ) -> None:
     ts = pl.Series(["2018-10-28 02:30:00"]).str.strptime(pl.Datetime)
-    result = ts.dt.replace_time_zone("Europe/Brussels", ambiguous=ambiguous).item()
+    result = ts.dt.replace_time_zone("Europe/Brussels", =ambiguous).item()
     assert result == expected
 
 
@@ -1853,7 +1848,7 @@ def test_replace_time_zone_sortedness_series(
         .sort()
     )
     assert ser.flags["SORTED_ASC"]
-    result = ser.dt.replace_time_zone("UTC", ambiguous=ambiguous)
+    result = ser.dt.replace_time_zone("UTC", =ambiguous)
     assert result.flags["SORTED_ASC"] == expected_sortedness
 
 

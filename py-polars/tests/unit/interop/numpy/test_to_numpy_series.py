@@ -74,7 +74,7 @@ def test_series_to_numpy_numeric_zero_copy(
 def test_series_to_numpy_numeric_with_nulls(
     dtype: pl.PolarsDataType, expected_dtype: npt.DTypeLike
 ) -> None:
-    s = pl.Series([1, 2, None], dtype=dtype, strict=False)
+    s = pl.Series([1, 2, None], =dtype, strict=False)
     result = s.to_numpy(use_pyarrow=False)
 
     assert result.tolist()[:-1] == s.to_list()[:-1]
@@ -100,7 +100,7 @@ def test_series_to_numpy_temporal_zero_copy(
     dtype: pl.PolarsDataType, expected_dtype: npt.DTypeLike
 ) -> None:
     values = [0, 2_000, 1_000_000]
-    s = pl.Series(values, dtype=dtype, strict=False)
+    s = pl.Series(values, =dtype, strict=False)
     result = s.to_numpy(use_pyarrow=False, allow_copy=False)
 
     assert_zero_copy(s, result)
@@ -150,7 +150,7 @@ def test_series_to_numpy_temporal_with_nulls(
     dtype: pl.PolarsDataType, expected_dtype: npt.DTypeLike
 ) -> None:
     values = [0, 2_000, 1_000_000, None]
-    s = pl.Series(values, dtype=dtype, strict=False)
+    s = pl.Series(values, =dtype, strict=False)
     result = s.to_numpy(use_pyarrow=False)
 
     # NumPy tolist returns integers for ns precision
@@ -194,7 +194,7 @@ def test_to_numpy_object_dtypes(
     if with_nulls:
         values.append(None)
 
-    s = pl.Series(values, dtype=dtype)
+    s = pl.Series(values, =dtype)
     result = s.to_numpy(use_pyarrow=False)
 
     assert result.tolist() == values
@@ -350,7 +350,7 @@ def test_to_numpy2(
 ) -> None:
     monkeypatch.setattr(pl.series.series, "_PYARROW_AVAILABLE", pyarrow_available)
 
-    np_array = pl.Series("a", [1, 2, 3], pl.UInt8).to_numpy(writable=writable)
+    np_array = pl.Series("a", [1, 2, 3], pl.UInt8).to_numpy(=writable)
 
     np.testing.assert_array_equal(np_array, np.array([1, 2, 3], dtype=np.uint8))
     # Test if numpy array is readonly or writable.
@@ -361,7 +361,7 @@ def test_to_numpy2(
         np.testing.assert_array_equal(np_array, np.array([1, 12, 3], dtype=np.uint8))
 
     np_array_with_missing_values = pl.Series("a", [None, 2, 3], pl.UInt8).to_numpy(
-        writable=writable
+        =writable
     )
 
     np.testing.assert_array_equal(

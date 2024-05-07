@@ -137,7 +137,7 @@ def test_map_elements_all_types() -> None:
     ]
     # test we don't panic
     for dtype in dtypes:
-        pl.Series([1, 2, 3, 4, 5], dtype=dtype).map_elements(lambda x: x)
+        pl.Series([1, 2, 3, 4, 5], =dtype).map_elements(lambda x: x)
 
 
 def test_map_elements_type_propagation() -> None:

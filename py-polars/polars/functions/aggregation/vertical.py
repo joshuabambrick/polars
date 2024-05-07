@@ -68,7 +68,7 @@ def all(*names: str, ignore_nulls: bool = True) -> Expr:
     if not names:
         return F.col("*")
 
-    return F.col(*names).all(ignore_nulls=ignore_nulls)
+    return F.col(*names).all(=ignore_nulls)
 
 
 def any(*names: str, ignore_nulls: bool = True) -> Expr | bool | None:
@@ -112,7 +112,7 @@ def any(*names: str, ignore_nulls: bool = True) -> Expr | bool | None:
     │ true │
     └──────┘
     """
-    return F.col(*names).any(ignore_nulls=ignore_nulls)
+    return F.col(*names).any(=ignore_nulls)
 
 
 def max(*names: str) -> Expr:

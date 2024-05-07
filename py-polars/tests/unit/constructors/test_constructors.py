@@ -410,7 +410,7 @@ def test_init_structured_objects_nested() -> None:
             (override_struct_schema, None),
         ):
             df = (
-                pl.DataFrame(data, schema=schema, schema_overrides=schema_overrides)
+                pl.DataFrame(data, =schema, =schema_overrides)
                 .unnest("y")
                 .unnest("c")
             )
@@ -562,7 +562,7 @@ def test_init_ndarray() -> None:
 
     # round trip export/init
     for shape in ((4, 4), (4, 8), (8, 4)):
-        np_ones = np.ones(shape=shape, dtype=np.float64)
+        np_ones = np.ones(=shape, dtype=np.float64)
         names = [f"c{i}" for i in range(shape[1])]
 
         df = pl.DataFrame(np_ones, schema=names)
@@ -809,8 +809,8 @@ def test_init_series() -> None:
 )
 def test_init_py_dtype(dtype: Any, expected_dtype: PolarsDataType) -> None:
     for s in (
-        pl.Series("s", [None], dtype=dtype),
-        pl.Series("s", [], dtype=dtype),
+        pl.Series("s", [None], =dtype),
+        pl.Series("s", [], =dtype),
     ):
         assert s.dtype == expected_dtype
 
@@ -1035,7 +1035,7 @@ def test_init_records_schema_order() -> None:
 
         # have schema override inferred types, omit some columns, add a new one
         schema = {"a": pl.Int8, "c": pl.Int16, "e": pl.Int32}
-        df = constructor(data, schema=schema)  # type: ignore[operator]
+        df = constructor(data, =schema)  # type: ignore[operator]
 
         assert df.schema == schema
         for col in df.columns:
@@ -1203,7 +1203,7 @@ def test_from_dicts_schema() -> None:
     ):
         df = pl.from_dicts(
             data,
-            schema=schema,  # type: ignore[arg-type]
+            =schema,  # type: ignore[arg-type]
             schema_overrides=overrides,
         )
         assert df.dtypes == [pl.Int64, pl.Int64, pl.Int32]
@@ -1328,13 +1328,13 @@ def test_from_records_nullable_structs() -> None:
         assert result.to_dict(as_series=False) == expected
 
     # check initialisation without any records
-    df = pl.DataFrame(schema=schema)
+    df = pl.DataFrame(=schema)
     dict_schema = dict(schema)
     assert df.to_dict(as_series=False) == {"id": [], "items": []}
     assert df.schema == dict_schema
 
     dtype: pl.PolarsDataType = dict_schema["items"]
-    series = pl.Series("items", dtype=dtype)
+    series = pl.Series("items", =dtype)
     assert series.to_frame().to_dict(as_series=False) == {"items": []}
     assert series.dtype == dict_schema["items"]
     assert series.to_list() == []
@@ -1397,7 +1397,7 @@ def test_nested_schema_construction() -> None:
                 [{"nodes": []}, {"nodes": [{"name": "", "sub_nodes": []}]}],
             ]
         },
-        schema=schema,
+        =schema,
     )
 
     assert df.schema == schema
@@ -1439,7 +1439,7 @@ def test_nested_schema_construction2() -> None:
             {"node_groups": [{"nodes": [{"name": "a", "time": 0}]}]},
             {"node_groups": [{"nodes": []}]},
         ],
-        schema=schema,
+        =schema,
     )
     assert df.schema == schema
     assert df.to_dict(as_series=False) == {
@@ -1506,11 +1506,7 @@ def test_list_null_constructor() -> None:
         [[], []],
         [[33, 112]],
     ]
-    s = pl.Series(
-        name="colx",
-        values=values,
-        dtype=dtype,
-    )
+    s = pl.Series(name="colx", =values, =dtype)
     assert s.dtype == dtype
     assert s.to_list() == values
 
@@ -1522,11 +1518,7 @@ def test_list_null_constructor() -> None:
         [],
         [[33, 112]],
     ]
-    s = pl.Series(
-        name="colx",
-        values=values,
-        dtype=dtype,
-    )
+    s = pl.Series(name="colx", =values, =dtype)
     assert s.dtype == dtype
     assert s.to_list() == values
 
@@ -1556,7 +1548,7 @@ def test_df_schema_sequences() -> None:
         ["key", pl.Int64],
         ["value", pl.Float32],
     ]
-    df = pl.DataFrame(schema=schema)  # type: ignore[arg-type]
+    df = pl.DataFrame(=schema)  # type: ignore[arg-type]
     assert df.schema == {"address": pl.String, "key": pl.Int64, "value": pl.Float32}
 
 
@@ -1567,7 +1559,7 @@ def test_df_schema_sequences_incorrect_length() -> None:
         ["value", pl.Float32],
     ]
     with pytest.raises(ValueError):
-        pl.DataFrame(schema=schema)  # type: ignore[arg-type]
+        pl.DataFrame(=schema)  # type: ignore[arg-type]
 
 
 @pytest.mark.parametrize(
@@ -1595,14 +1587,14 @@ def test_array_construction() -> None:
     payload = [[1, 2, 3], None, [4, 2, 3]]
 
     dtype = pl.Array(pl.Int64, 3)
-    s = pl.Series(payload, dtype=dtype)
+    s = pl.Series(payload, =dtype)
     assert s.dtype == dtype
     assert s.to_list() == payload
 
     # inner type
     dtype = pl.Array(pl.UInt8, 2)
     payload = [[1, 2], None, [3, 4]]
-    s = pl.Series(payload, dtype=dtype)
+    s = pl.Series(payload, =dtype)
     assert s.dtype == dtype
     assert s.to_list() == payload
 
@@ -1625,6 +1617,6 @@ def test_array_construction() -> None:
         {"row_id": "b", "data": [2, 3, 4]},
     ]
     schema = {"row_id": pl.String(), "data": pl.Array(inner=pl.Int64, width=3)}
-    df = pl.from_dicts(rows, schema=schema)
+    df = pl.from_dicts(rows, =schema)
     assert df.schema == schema
     assert df.rows() == [("a", [1, 2, 3]), ("b", [2, 3, 4])]

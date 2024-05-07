@@ -470,7 +470,7 @@ def test_read_csv_encoding(tmp_path: Path) -> None:
                 pl.read_csv(
                     file,  # type: ignore[arg-type]
                     encoding="big5",
-                    use_pyarrow=use_pyarrow,
+                    =use_pyarrow,
                 ).get_column("Region"),
                 pl.Series("Region", ["台北", "台中", "新竹", "高雄", "美國"]),
             )
@@ -545,7 +545,7 @@ def test_compressed_csv(io_files_path: Path) -> None:
 
     # now with schema defined
     schema = {"a": pl.Int64, "b": pl.Utf8, "c": pl.Float64}
-    out = pl.read_csv(str(csv_file), schema=schema, truncate_ragged_lines=True)
+    out = pl.read_csv(str(csv_file), =schema, truncate_ragged_lines=True)
     assert_frame_equal(out, expected)
 
     # now with column projection
@@ -590,13 +590,13 @@ def test_partial_decompression(foods_file_path: Path) -> None:
 
     csv_bytes = f_out.getvalue()
     for n_rows in [1, 5, 26]:
-        out = pl.read_csv(csv_bytes, n_rows=n_rows)
+        out = pl.read_csv(csv_bytes, =n_rows)
         assert out.shape == (n_rows, 4)
 
     # zstd compression
     csv_bytes = zstandard.compress(foods_file_path.read_bytes())
     for n_rows in [1, 5, 26]:
-        out = pl.read_csv(csv_bytes, n_rows=n_rows)
+        out = pl.read_csv(csv_bytes, =n_rows)
         assert out.shape == (n_rows, 4)
 
 
@@ -669,7 +669,7 @@ def test_csv_multi_char_comment() -> None:
         (0, io.BytesIO(b"#!skip\nCol1\tCol2\n#!skip\n")),
         (0, io.BytesIO(b"#!skip\nCol1\tCol2")),
     ):
-        df = pl.read_csv(b, separator="\t", comment_prefix="#!", skip_rows=skip_rows)
+        df = pl.read_csv(b, separator="\t", comment_prefix="#!", =skip_rows)
         assert_frame_equal(df, pl.DataFrame(schema=["Col1", "Col2"]).cast(pl.Utf8))
 
 
@@ -723,7 +723,7 @@ def test_csv_quote_char() -> None:
     )
     for use_pyarrow in (False, True):
         out = pl.read_csv(
-            rolling_stones.encode(), quote_char=None, use_pyarrow=use_pyarrow
+            rolling_stones.encode(), quote_char=None, =use_pyarrow
         )
         assert out.shape == (9, 3)
         assert_frame_equal(out, expected)
@@ -755,7 +755,7 @@ def test_ignore_try_parse_dates() -> None:
     dtypes: dict[str, type[pl.DataType]] = {
         k: pl.String for k in headers
     }  # Forces String type for every column
-    df = pl.read_csv(csv, columns=headers, dtypes=dtypes)
+    df = pl.read_csv(csv, columns=headers, =dtypes)
     assert df.dtypes == [pl.String, pl.String, pl.String]
 
 
@@ -786,7 +786,7 @@ def test_csv_date_handling() -> None:
     out = pl.read_csv(csv.encode(), try_parse_dates=True)
     assert_frame_equal(out, expected)
     dtypes = {"date": pl.Date}
-    out = pl.read_csv(csv.encode(), dtypes=dtypes)
+    out = pl.read_csv(csv.encode(), =dtypes)
     assert_frame_equal(out, expected)
 
 
@@ -874,7 +874,7 @@ def test_csv_globbing(io_files_path: Path) -> None:
         "sugars_g": pl.Int32,
     }
 
-    df = pl.read_csv(path, dtypes=dtypes)
+    df = pl.read_csv(path, =dtypes)
     assert df.dtypes == list(dtypes.values())
 
 
@@ -1057,7 +1057,7 @@ a
 """
     result = pl.read_csv(
         io.StringIO(data),
-        try_parse_dates=try_parse_dates,
+        =try_parse_dates,
         dtypes={"a": pl.Datetime(time_unit)},
     )
     expected = pl.DataFrame(
@@ -1068,7 +1068,7 @@ a
                     "2020-01-02T00:00:00.987654321",
                     "2020-01-03T00:00:00.132547698",
                 ]
-            ).str.to_datetime(time_unit=time_unit)
+            ).str.to_datetime(=time_unit)
         }
     )
     assert_frame_equal(result, expected)
@@ -1251,7 +1251,7 @@ def test_invalid_datetime_format() -> None:
 )
 @pytest.mark.parametrize("tzinfo", [timezone.utc, timezone(timedelta(hours=0))])
 def test_datetime_format_tz_aware(fmt: str, expected: str, tzinfo: timezone) -> None:
-    df = pl.DataFrame({"dt": [datetime(2022, 1, 2, tzinfo=tzinfo)]})
+    df = pl.DataFrame({"dt": [datetime(2022, 1, 2, =tzinfo)]})
     csv = df.write_csv(datetime_format=fmt)
     assert csv == expected
 
@@ -1338,7 +1338,7 @@ def test_time_format(fmt: str, expected: str) -> None:
 
 @pytest.mark.parametrize("dtype", [pl.Float32, pl.Float64])
 def test_float_precision(dtype: pl.Float32 | pl.Float64) -> None:
-    df = pl.Series("col", [1.0, 2.2, 3.33], dtype=dtype).to_frame()
+    df = pl.Series("col", [1.0, 2.2, 3.33], =dtype).to_frame()
 
     assert df.write_csv(float_precision=None) == "col\n1.0\n2.2\n3.33\n"
     assert df.write_csv(float_precision=0) == "col\n1\n2\n3\n"
@@ -1482,9 +1482,9 @@ def test_batched_csv_reader_empty(io_files_path: Path) -> None:
 
 def test_batched_csv_reader_all_batches(foods_file_path: Path) -> None:
     for new_columns in [None, ["Category", "Calories", "Fats_g", "Sugars_g"]]:
-        out = pl.read_csv(foods_file_path, new_columns=new_columns)
+        out = pl.read_csv(foods_file_path, =new_columns)
         reader = pl.read_csv_batched(
-            foods_file_path, new_columns=new_columns, batch_size=4
+            foods_file_path, =new_columns, batch_size=4
         )
         batches = reader.next_batches(5)
         batched_dfs = []
@@ -1687,7 +1687,7 @@ A,B
         "B": pl.Utf8(),
     }
 
-    df = pl.read_csv(io.StringIO(csv), comment_prefix="#", schema=schema)
+    df = pl.read_csv(io.StringIO(csv), comment_prefix="#", =schema)
     assert len(df) == 2
     assert df.schema == schema
 
@@ -1985,7 +1985,7 @@ def test_read_csv_single_column(columns: list[str] | str) -> None:
         """
     )
     f = io.StringIO(csv)
-    df = pl.read_csv(f, columns=columns)
+    df = pl.read_csv(f, =columns)
     expected = pl.DataFrame({"b": [2, 5]})
     assert_frame_equal(df, expected)
 
@@ -2073,7 +2073,7 @@ def test_skip_rows_after_header_pyarrow(use_pyarrow: bool) -> None:
         """
     )
     f = io.StringIO(csv)
-    df = pl.read_csv(f, skip_rows_after_header=1, use_pyarrow=use_pyarrow)
+    df = pl.read_csv(f, skip_rows_after_header=1, =use_pyarrow)
     expected = pl.DataFrame({"foo": [3, 5], "bar": [4, 6]})
     assert_frame_equal(df, expected)
 

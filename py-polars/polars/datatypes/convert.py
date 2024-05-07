@@ -200,13 +200,13 @@ def unpack_dtypes(
         if isinstance(tp, (List, Array)):
             if include_compound:
                 unpacked.add(tp)
-            unpacked.update(unpack_dtypes(tp.inner, include_compound=include_compound))
+            unpacked.update(unpack_dtypes(tp.inner, =include_compound))
         elif isinstance(tp, Struct):
             if include_compound:
                 unpacked.add(tp)
-            unpacked.update(unpack_dtypes(tp.fields, include_compound=include_compound))  # type: ignore[arg-type]
+            unpacked.update(unpack_dtypes(tp.fields, =include_compound))  # type: ignore[arg-type]
         elif isinstance(tp, Field):
-            unpacked.update(unpack_dtypes(tp.dtype, include_compound=include_compound))
+            unpacked.update(unpack_dtypes(tp.dtype, =include_compound))
         elif tp is not None and is_polars_dtype(tp):
             unpacked.add(tp)
     return unpacked

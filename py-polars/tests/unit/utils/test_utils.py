@@ -92,7 +92,7 @@ def test_time_to_int(t: time, expected: int) -> None:
     "tzinfo", [None, ZoneInfo("UTC"), ZoneInfo("Asia/Shanghai"), ZoneInfo("US/Central")]
 )
 def test_time_to_int_with_time_zone(tzinfo: Any) -> None:
-    t = time(12, 0, tzinfo=tzinfo)
+    t = time(12, 0, =tzinfo)
     assert time_to_int(t) == 43_200_000_000_000
 
 
@@ -214,7 +214,7 @@ def test_parse_percentiles(
     expected: Sequence[float],
     inject_median: bool,
 ) -> None:
-    assert parse_percentiles(percentiles, inject_median=inject_median) == expected
+    assert parse_percentiles(percentiles, =inject_median) == expected
 
 
 @pytest.mark.parametrize(("percentiles"), [(1.1), ([-0.1])])
@@ -241,9 +241,9 @@ def test_is_bool_sequence_check(
     include_series: bool,
     expected: bool,
 ) -> None:
-    assert is_bool_sequence(sequence, include_series=include_series) == expected
+    assert is_bool_sequence(sequence, =include_series) == expected
     if expected:
-        assert is_sequence(sequence, include_series=include_series)
+        assert is_sequence(sequence, =include_series)
 
 
 @pytest.mark.parametrize(
@@ -264,9 +264,9 @@ def test_is_int_sequence_check(
     include_series: bool,
     expected: bool,
 ) -> None:
-    assert is_int_sequence(sequence, include_series=include_series) == expected
+    assert is_int_sequence(sequence, =include_series) == expected
     if expected:
-        assert is_sequence(sequence, include_series=include_series)
+        assert is_sequence(sequence, =include_series)
 
 
 @pytest.mark.parametrize(
@@ -287,6 +287,6 @@ def test_is_str_sequence_check(
     include_series: bool,
     expected: bool,
 ) -> None:
-    assert is_str_sequence(sequence, include_series=include_series) == expected
+    assert is_str_sequence(sequence, =include_series) == expected
     if expected:
-        assert is_sequence(sequence, include_series=include_series)
+        assert is_sequence(sequence, =include_series)

@@ -86,15 +86,15 @@ def register_plugin_function(
     return wrap_expr(
         plr.register_plugin_function(
             plugin_path=str(plugin_path),
-            function_name=function_name,
+            =function_name,
             args=pyexprs,
             kwargs=serialized_kwargs,
-            is_elementwise=is_elementwise,
-            input_wildcard_expansion=input_wildcard_expansion,
-            returns_scalar=returns_scalar,
-            cast_to_supertype=cast_to_supertype,
-            pass_name_to_apply=pass_name_to_apply,
-            changes_length=changes_length,
+            =is_elementwise,
+            =input_wildcard_expansion,
+            =returns_scalar,
+            =cast_to_supertype,
+            =pass_name_to_apply,
+            =changes_length,
         )
     )
 

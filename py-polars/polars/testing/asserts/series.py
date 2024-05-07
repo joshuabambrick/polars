@@ -105,10 +105,10 @@ def assert_series_equal(
     _assert_series_values_equal(
         left,
         right,
-        check_exact=check_exact,
-        rtol=rtol,
-        atol=atol,
-        categorical_as_str=categorical_as_str,
+        =check_exact,
+        =rtol,
+        =atol,
+        =categorical_as_str,
     )
 
 
@@ -149,10 +149,10 @@ def _assert_series_values_equal(
             _assert_series_nested_values_equal(
                 left=left.filter(unequal),
                 right=right.filter(unequal),
-                check_exact=check_exact,
-                rtol=rtol,
-                atol=atol,
-                categorical_as_str=categorical_as_str,
+                =check_exact,
+                =rtol,
+                =atol,
+                =categorical_as_str,
             )
         except AssertionError as exc:
             raise_assertion_error(
@@ -177,13 +177,7 @@ def _assert_series_values_equal(
 
     _assert_series_null_values_match(left, right)
     _assert_series_nan_values_match(left, right)
-    _assert_series_values_within_tolerance(
-        left,
-        right,
-        unequal,
-        rtol=rtol,
-        atol=atol,
-    )
+    _assert_series_values_within_tolerance(left, right, unequal, =rtol, =atol)
 
 
 def _assert_series_nested_values_equal(
@@ -206,10 +200,10 @@ def _assert_series_nested_values_equal(
             _assert_series_values_equal(
                 s1,
                 s2,
-                check_exact=check_exact,
-                rtol=rtol,
-                atol=atol,
-                categorical_as_str=categorical_as_str,
+                =check_exact,
+                =rtol,
+                =atol,
+                =categorical_as_str,
             )
 
     # unnest structs as series and compare
@@ -219,10 +213,10 @@ def _assert_series_nested_values_equal(
             _assert_series_values_equal(
                 s1,
                 s2,
-                check_exact=check_exact,
-                rtol=rtol,
-                atol=atol,
-                categorical_as_str=categorical_as_str,
+                =check_exact,
+                =rtol,
+                =atol,
+                =categorical_as_str,
             )
 
 
@@ -353,14 +347,14 @@ def assert_series_not_equal(
 
     try:
         assert_series_equal(
-            left=left,
-            right=right,
-            check_dtype=check_dtype,
-            check_names=check_names,
-            check_exact=check_exact,
-            rtol=rtol,
-            atol=atol,
-            categorical_as_str=categorical_as_str,
+            =left,
+            =right,
+            =check_dtype,
+            =check_names,
+            =check_exact,
+            =rtol,
+            =atol,
+            =categorical_as_str,
         )
     except AssertionError:
         return

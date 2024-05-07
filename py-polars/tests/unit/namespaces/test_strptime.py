@@ -70,7 +70,7 @@ def test_to_datetime_precision() -> None:
         ),
     )
     for time_unit, suffix, expected_values in test_data:
-        ds = s.str.to_datetime(f"%Y-%m-%d %H:%M:%S{suffix}", time_unit=time_unit)
+        ds = s.str.to_datetime(f"%Y-%m-%d %H:%M:%S{suffix}", =time_unit)
         assert getattr(ds.dtype, "time_unit", None) == time_unit
         assert ds.dt.nanosecond().to_list() == expected_values
 
@@ -84,7 +84,7 @@ def test_to_datetime_precision_with_time_unit(
     time_unit: TimeUnit, expected: str, format: str
 ) -> None:
     s = pl.Series(["2020-01-01 00:00:00.123456789"])
-    result = s.str.to_datetime(format, time_unit=time_unit).dt.to_string("%f")[0]
+    result = s.str.to_datetime(format, =time_unit).dt.to_string("%f")[0]
     assert result == expected
 
 
@@ -198,8 +198,8 @@ def test_to_datetime_non_exact_strptime(
         expected = pl.Series(
             "a",
             [
-                datetime(2022, 1, 16, tzinfo=tzinfo),
-                datetime(2022, 1, 17, tzinfo=tzinfo),
+                datetime(2022, 1, 16, =tzinfo),
+                datetime(2022, 1, 17, =tzinfo),
                 None,
                 None,
             ],
@@ -212,10 +212,10 @@ def test_to_datetime_non_exact_strptime(
         expected = pl.Series(
             "a",
             [
-                datetime(2022, 1, 16, tzinfo=tzinfo),
-                datetime(2022, 1, 17, tzinfo=tzinfo),
-                datetime(2022, 1, 18, tzinfo=tzinfo),
-                datetime(2022, 1, 19, tzinfo=tzinfo),
+                datetime(2022, 1, 16, =tzinfo),
+                datetime(2022, 1, 17, =tzinfo),
+                datetime(2022, 1, 18, =tzinfo),
+                datetime(2022, 1, 19, =tzinfo),
             ],
         )
     assert_series_equal(result, expected)
@@ -284,7 +284,7 @@ def test_to_datetime_patterns_single(time_string: str, expected: str) -> None:
 @pytest.mark.parametrize("time_unit", ["ms", "us", "ns"])
 def test_infer_tz_aware_time_unit(time_unit: TimeUnit) -> None:
     result = pl.Series(["2020-01-02T04:00:00+02:00"]).str.to_datetime(
-        time_unit=time_unit
+        =time_unit
     )
     assert result.dtype == pl.Datetime(time_unit, "UTC")
     assert result.item() == datetime(2020, 1, 2, 2, 0, tzinfo=timezone.utc)
@@ -293,7 +293,7 @@ def test_infer_tz_aware_time_unit(time_unit: TimeUnit) -> None:
 @pytest.mark.parametrize("time_unit", ["ms", "us", "ns"])
 def test_infer_tz_aware_with_utc(time_unit: TimeUnit) -> None:
     result = pl.Series(["2020-01-02T04:00:00+02:00"]).str.to_datetime(
-        time_unit=time_unit
+        =time_unit
     )
     assert result.dtype == pl.Datetime(time_unit, "UTC")
     assert result.item() == datetime(2020, 1, 2, 2, 0, tzinfo=timezone.utc)
@@ -670,14 +670,14 @@ def test_to_time_format_warning() -> None:
 def test_to_datetime_use_earliest(exact: bool) -> None:
     result = (
         pl.Series(["2020-10-25 01:00"])
-        .str.to_datetime(time_zone="Europe/London", ambiguous="earliest", exact=exact)
+        .str.to_datetime(time_zone="Europe/London", ambiguous="earliest", =exact)
         .item()
     )
     expected = datetime(2020, 10, 25, 1, fold=0, tzinfo=ZoneInfo("Europe/London"))
     assert result == expected
     result = (
         pl.Series(["2020-10-25 01:00"])
-        .str.to_datetime(time_zone="Europe/London", ambiguous="latest", exact=exact)
+        .str.to_datetime(time_zone="Europe/London", ambiguous="latest", =exact)
         .item()
     )
     expected = datetime(2020, 10, 25, 1, fold=1, tzinfo=ZoneInfo("Europe/London"))
@@ -685,7 +685,7 @@ def test_to_datetime_use_earliest(exact: bool) -> None:
     with pytest.raises(pl.ComputeError):
         pl.Series(["2020-10-25 01:00"]).str.to_datetime(
             time_zone="Europe/London",
-            exact=exact,
+            =exact,
         ).item()
 
 
@@ -708,7 +708,7 @@ def test_strptime_use_earliest(exact: bool) -> None:
     result = (
         pl.Series(["2020-10-25 01:00"])
         .str.strptime(
-            pl.Datetime("us", "Europe/London"), ambiguous="earliest", exact=exact
+            pl.Datetime("us", "Europe/London"), ambiguous="earliest", =exact
         )
         .item()
     )
@@ -717,7 +717,7 @@ def test_strptime_use_earliest(exact: bool) -> None:
     result = (
         pl.Series(["2020-10-25 01:00"])
         .str.strptime(
-            pl.Datetime("us", "Europe/London"), ambiguous="latest", exact=exact
+            pl.Datetime("us", "Europe/London"), ambiguous="latest", =exact
         )
         .item()
     )
@@ -726,7 +726,7 @@ def test_strptime_use_earliest(exact: bool) -> None:
     with pytest.raises(pl.ComputeError):
         pl.Series(["2020-10-25 01:00"]).str.strptime(
             pl.Datetime("us", "Europe/London"),
-            exact=exact,
+            =exact,
         ).item()
 
 
@@ -734,8 +734,8 @@ def test_strptime_use_earliest(exact: bool) -> None:
 def test_to_datetime_out_of_range_13401(time_unit: TimeUnit) -> None:
     s = pl.Series(["2020-January-01 12:34:66"])
     with pytest.raises(pl.ComputeError, match="conversion .* failed"):
-        s.str.to_datetime("%Y-%B-%d %H:%M:%S", time_unit=time_unit)
+        s.str.to_datetime("%Y-%B-%d %H:%M:%S", =time_unit)
     assert (
-        s.str.to_datetime("%Y-%B-%d %H:%M:%S", strict=False, time_unit=time_unit).item()
+        s.str.to_datetime("%Y-%B-%d %H:%M:%S", strict=False, =time_unit).item()
         is None
     )

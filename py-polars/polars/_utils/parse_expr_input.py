@@ -53,7 +53,7 @@ def _parse_positional_inputs(
     structify: bool = False,
 ) -> list[PyExpr]:
     inputs_iter = _parse_inputs_as_iterable(inputs)
-    return [parse_as_expression(e, structify=structify) for e in inputs_iter]
+    return [parse_as_expression(e, =structify) for e in inputs_iter]
 
 
 def _parse_inputs_as_iterable(
@@ -79,7 +79,7 @@ def _parse_named_inputs(
     named_inputs: dict[str, IntoExpr], *, structify: bool = False
 ) -> Iterable[PyExpr]:
     for name, input in named_inputs.items():
-        yield parse_as_expression(input, structify=structify).alias(name)
+        yield parse_as_expression(input, =structify).alias(name)
 
 
 def parse_as_expression(
@@ -119,10 +119,10 @@ def parse_as_expression(
         expr = F.col(input)
         structify = False
     elif isinstance(input, list) and not list_as_lit:
-        expr = F.lit(pl.Series(input), dtype=dtype)
+        expr = F.lit(pl.Series(input), =dtype)
         structify = False
     else:
-        expr = F.lit(input, dtype=dtype)
+        expr = F.lit(input, =dtype)
         structify = False
 
     if structify:

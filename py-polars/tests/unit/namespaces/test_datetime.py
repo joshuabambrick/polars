@@ -241,7 +241,7 @@ def test_month_start_datetime(
 ) -> None:
     ser = pl.Series([dt]).dt.replace_time_zone(time_zone).dt.cast_time_unit(time_unit)
     result = ser.dt.month_start().item()
-    assert result == expected.replace(tzinfo=tzinfo)
+    assert result == expected.replace(=tzinfo)
 
 
 @pytest.mark.parametrize(
@@ -286,7 +286,7 @@ def test_month_end_datetime(
 ) -> None:
     ser = pl.Series([dt]).dt.replace_time_zone(time_zone).dt.cast_time_unit(time_unit)
     result = ser.dt.month_end().item()
-    assert result == expected.replace(tzinfo=tzinfo)
+    assert result == expected.replace(=tzinfo)
 
 
 @pytest.mark.parametrize(
@@ -415,7 +415,7 @@ def test_strptime_epoch(
 ) -> None:
     s = series_of_str_dates.str.strptime(pl.Datetime, format="%Y-%m-%d %H:%M:%S.%9f")
 
-    assert_series_equal(s.dt.epoch(time_unit=time_unit), expected)
+    assert_series_equal(s.dt.epoch(=time_unit), expected)
 
 
 def test_strptime_fractional_seconds(series_of_str_dates: pl.Series) -> None:
@@ -492,7 +492,7 @@ def test_truncate(
         start,
         stop,
         timedelta(minutes=30),
-        time_unit=time_unit,
+        =time_unit,
         eager=True,
     ).alias(f"dates[{time_unit}]")
 
@@ -557,7 +557,7 @@ def test_round(
         start,
         stop,
         timedelta(minutes=30),
-        time_unit=time_unit,
+        =time_unit,
         eager=True,
     ).alias(f"dates[{time_unit}]")
 
@@ -711,8 +711,8 @@ def test_date_time_combine(tzinfo: ZoneInfo | None, time_zone: str | None) -> No
     # Assert that the new columns have the expected values and datatypes
     expected_dict = {
         "d1": [  # Time component should be overwritten by `tm` values
-            datetime(2022, 12, 31, 1, 2, 3, 456000, tzinfo=tzinfo),
-            datetime(2023, 7, 5, 7, 8, 9, 101000, tzinfo=tzinfo),
+            datetime(2022, 12, 31, 1, 2, 3, 456000, =tzinfo),
+            datetime(2023, 7, 5, 7, 8, 9, 101000, =tzinfo),
         ],
         "d2": [  # Both date and time components combined "as-is" into new datetime
             datetime(2022, 10, 10, 1, 2, 3, 456000),
@@ -748,7 +748,7 @@ def test_combine_lazy_schema_datetime(
     df = df.with_columns(pl.col("ts").dt.replace_time_zone(time_zone))
     result = (
         df.lazy()
-        .select(pl.col("ts").dt.combine(time(1, 2, 3), time_unit=time_unit))
+        .select(pl.col("ts").dt.combine(time(1, 2, 3), =time_unit))
         .dtypes
     )
     expected = [pl.Datetime(time_unit, time_zone)]
@@ -760,7 +760,7 @@ def test_combine_lazy_schema_date(time_unit: TimeUnit) -> None:
     df = pl.DataFrame({"ts": pl.Series([date(2020, 1, 1)])})
     result = (
         df.lazy()
-        .select(pl.col("ts").dt.combine(time(1, 2, 3), time_unit=time_unit))
+        .select(pl.col("ts").dt.combine(time(1, 2, 3), =time_unit))
         .dtypes
     )
     expected = [pl.Datetime(time_unit, None)]

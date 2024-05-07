@@ -191,7 +191,7 @@ def test_streaming_group_by_sorted_fast_path() -> None:
                     ]
                 )
                 .sort("a")
-                .collect(streaming=streaming)
+                .collect(=streaming)
             )
             results.append(out)
 
@@ -410,7 +410,7 @@ def test_group_by_min_max_string_type() -> None:
             table.lazy()
             .group_by("a")
             .agg([pl.min("b").alias("min"), pl.max("b").alias("max")])
-            .collect(streaming=streaming)
+            .collect(=streaming)
             .sort("a")
             .to_dict(as_series=False)
             == expected
@@ -443,7 +443,7 @@ def test_group_by_multiple_keys_one_literal(streaming: bool) -> None:
         .group_by("a", pl.lit(1))
         .agg(pl.col("b").max())
         .sort(["a", "b"])
-        .collect(streaming=streaming)
+        .collect(=streaming)
         .to_dict(as_series=False)
         == expected
     )
@@ -508,7 +508,7 @@ def test_streaming_group_by_boolean_mean_15610(n_rows: int, streaming: bool) -> 
         .group_by("a")
         .agg(c=pl.mean("b"))
         .sort("a")
-        .collect(streaming=streaming)
+        .collect(=streaming)
     )
 
     assert_frame_equal(out, expect)

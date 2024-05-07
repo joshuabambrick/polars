@@ -18,7 +18,7 @@ ctx = pl.SQLContext(register_globals=True)
 ctx = pl.SQLContext(frames={"table_one": df, "table_two": lf})
 
 # Register frames using kwargs; dataframe df as "df" and lazyframe lf as "lf"
-ctx = pl.SQLContext(df=df, lf=lf)
+ctx = pl.SQLContext(=df, =lf)
 # --8<-- [end:register_context]
 
 # --8<-- [start:register_pandas]

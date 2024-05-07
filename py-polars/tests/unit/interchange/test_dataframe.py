@@ -218,7 +218,7 @@ def test_get_chunks_zero_copy_fail() -> None:
 def test_get_chunks_from_col_chunks_single_chunk(allow_copy: bool) -> None:
     df = pl.DataFrame({"a": [1, 2, 3], "b": [4, 5, 6]})
 
-    dfi = PolarsDataFrame(df, allow_copy=allow_copy)
+    dfi = PolarsDataFrame(df, =allow_copy)
     out = dfi._get_chunks_from_col_chunks()
 
     chunk1 = next(out)
@@ -234,7 +234,7 @@ def test_get_chunks_from_col_chunks_even_chunks(allow_copy: bool) -> None:
     df2 = pl.DataFrame({"a": [3], "b": [6]})
     df = pl.concat([df1, df2], rechunk=False)
 
-    dfi = PolarsDataFrame(df, allow_copy=allow_copy)
+    dfi = PolarsDataFrame(df, =allow_copy)
     out = dfi._get_chunks_from_col_chunks()
 
     chunk1 = next(out)

@@ -39,7 +39,7 @@ class _GeventDataFrameResult(Generic[T]):
         block: bool = True,  # noqa: FBT001
         timeout: float | int | None = None,
     ) -> T:
-        return self.result.get(block=block, timeout=timeout)
+        return self.result.get(=block, =timeout)
 
     @property
     def result(self) -> Any:

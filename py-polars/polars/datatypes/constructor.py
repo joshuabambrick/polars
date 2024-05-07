@@ -53,7 +53,7 @@ def polars_type_to_constructor(
     """Get the right PySeries constructor for the given Polars dtype."""
     # Special case for Array as it needs to pass the dtype argument on construction
     if isinstance(dtype, dt.Array):
-        return functools.partial(PySeries.new_array, dtype=dtype)
+        return functools.partial(PySeries.new_array, =dtype)
 
     try:
         base_type = dtype.base_type()

@@ -28,7 +28,7 @@ def test_map_groups_lazy() -> None:
     lf = pl.LazyFrame({"a": [1, 1, 3], "b": [1.0, 2.0, 3.0]})
 
     schema = {"a": pl.Float64, "b": pl.Float64}
-    result = lf.group_by("a").map_groups(lambda df: df * 2.0, schema=schema)
+    result = lf.group_by("a").map_groups(lambda df: df * 2.0, =schema)
 
     expected = pl.LazyFrame({"a": [6.0, 2.0, 2.0], "b": [6.0, 2.0, 4.0]})
     assert_frame_equal(result, expected, check_row_order=False)

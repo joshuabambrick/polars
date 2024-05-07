@@ -185,10 +185,10 @@ class PolarsDataset(TensorDataset):  # type: ignore[misc]
         """
         ds = self.__copy__()
         if features:
-            ds.features = self.features.to(torch.float16, memory_format=memory_format)
+            ds.features = self.features.to(torch.float16, =memory_format)
         if self.labels is not None:
             if labels:
-                ds.labels = self.labels.to(torch.float16, memory_format=memory_format)
+                ds.labels = self.labels.to(torch.float16, =memory_format)
             ds.tensors = (ds.features, ds.labels)  # type: ignore[assignment]
         else:
             ds.tensors = (ds.features,)
