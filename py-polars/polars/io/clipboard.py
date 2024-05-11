@@ -33,4 +33,4 @@ def read_clipboard(separator: str = "\t", **kwargs: Any) -> DataFrame:
     """
     csv_string: str = _read_clipboard_string()
     io_string = StringIO(csv_string)
-    return read_csv(source=io_string, separator=separator, **kwargs)
+    return read_csv(source=io_string, =separator, **kwargs)

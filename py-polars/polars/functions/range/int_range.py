@@ -99,7 +99,7 @@ def arange(
             2
     ]
     """
-    return int_range(start, end, step, dtype=dtype, eager=eager)
+    return int_range(start, end, step, =dtype, =eager)
 
 
 @overload

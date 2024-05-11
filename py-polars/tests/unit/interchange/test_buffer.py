@@ -16,7 +16,7 @@ from polars.interchange.protocol import CopyNotAllowedError, DlpackDeviceType
     ],
 )
 def test_init(data: pl.Series, allow_copy: bool) -> None:
-    buffer = PolarsBuffer(data, allow_copy=allow_copy)
+    buffer = PolarsBuffer(data, =allow_copy)
     assert buffer._data.n_chunks() == 1
 
 

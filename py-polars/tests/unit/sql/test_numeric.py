@@ -66,7 +66,7 @@ def test_numeric_decimal_type(
 ) -> None:
     with pl.Config(activate_decimals=True):
         df = pl.DataFrame({"n": [value]})
-        with pl.SQLContext(df=df) as ctx:
+        with pl.SQLContext(=df) as ctx:
             result = ctx.execute(
                 f"""
                 SELECT n::{sqltype}{prec_scale} AS "dec" FROM df
@@ -93,7 +93,7 @@ def test_round_ndigits(decimals: int, expected: list[float]) -> None:
     df = pl.DataFrame(
         {"n": [-8192.499, -3.9550, -1.54321, 2.45678, 3.59901, 8192.5001]},
     )
-    with pl.SQLContext(df=df, eager_execution=True) as ctx:
+    with pl.SQLContext(=df, eager_execution=True) as ctx:
         if decimals == 0:
             out = ctx.execute("SELECT ROUND(n) AS n FROM df")
             assert_series_equal(out["n"], pl.Series("n", values=expected))
@@ -104,7 +104,7 @@ def test_round_ndigits(decimals: int, expected: list[float]) -> None:
 
 def test_round_ndigits_errors() -> None:
     df = pl.DataFrame({"n": [99.999]})
-    with pl.SQLContext(df=df, eager_execution=True) as ctx:
+    with pl.SQLContext(=df, eager_execution=True) as ctx:
         with pytest.raises(
             InvalidOperationError, match="invalid 'decimals' for Round: ??"
         ):
@@ -124,7 +124,7 @@ def test_stddev_variance() -> None:
             "v4": [-100.0, 0.0, -50.0],
         }
     )
-    with pl.SQLContext(df=df) as ctx:
+    with pl.SQLContext(=df) as ctx:
         # note: we support all common aliases for std/var
         out = ctx.execute(
             """

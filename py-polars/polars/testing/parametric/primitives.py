@@ -258,7 +258,7 @@ def columns(
         raise InvalidArgument(msg)
 
     # init list of named/typed columns
-    return [column(name=nm, dtype=tp, unique=unique) for nm, tp in zip(names, dtypes)]
+    return [column(name=nm, dtype=tp, =unique) for nm, tp in zip(names, dtypes)]
 
 
 @defines_strategy()
@@ -668,7 +668,7 @@ def dataframes(
                         dtype=c.dtype,
                         size=series_size,
                         null_probability=(c.null_probability or 0.0),
-                        allow_infinities=allow_infinities,
+                        =allow_infinities,
                         strategy=c.strategy,
                         unique=c.unique,
                         chunked=(chunked is None and draw(booleans())),
@@ -685,7 +685,7 @@ def dataframes(
 
             schema = [(c.name, c.dtype) for c in coldefs]
             try:
-                df = DataFrame(data=data, schema=schema, orient=orient)  # type: ignore[arg-type]
+                df = DataFrame(=data, =schema, =orient)  # type: ignore[arg-type]
 
                 # optionally generate chunked frames
                 if series_size > 1 and chunked is True:

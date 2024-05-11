@@ -46,17 +46,17 @@ def test_rolling_kernels_and_rolling(
             # null here
             # where the sum aggregation of an empty set is 0
             pl.col("values")
-            .rolling_sum_by("dt", period, closed=closed)
+            .rolling_sum_by("dt", period, =closed)
             .fill_null(0)
             .alias("sum"),
-            pl.col("values").rolling_var_by("dt", period, closed=closed).alias("var"),
-            pl.col("values").rolling_mean_by("dt", period, closed=closed).alias("mean"),
-            pl.col("values").rolling_std_by("dt", period, closed=closed).alias("std"),
+            pl.col("values").rolling_var_by("dt", period, =closed).alias("var"),
+            pl.col("values").rolling_mean_by("dt", period, =closed).alias("mean"),
+            pl.col("values").rolling_std_by("dt", period, =closed).alias("std"),
         ]
     )
     out2 = (
         example_df.set_sorted("dt")
-        .rolling("dt", period=period, closed=closed)
+        .rolling("dt", =period, =closed)
         .agg(
             [
                 pl.col("values").sum().alias("sum"),
@@ -145,7 +145,7 @@ def test_rolling_negative_offset(
             "value": [1, 2, 3, 4],
         }
     )
-    result = df.rolling("ts", period="2d", offset=offset, closed=closed).agg(
+    result = df.rolling("ts", period="2d", =offset, =closed).agg(
         pl.col("value")
     )
     expected = pl.DataFrame(
@@ -602,7 +602,7 @@ def test_rolling_empty_window_9406(time_unit: TimeUnit) -> None:
     datecol = pl.Series(
         "d",
         [datetime(2019, 1, x) for x in [16, 17, 18, 22, 23]],
-        dtype=pl.Datetime(time_unit=time_unit, time_zone=None),
+        dtype=pl.Datetime(=time_unit, time_zone=None),
     ).set_sorted()
     rawdata = pl.Series("x", [1.1, 1.2, 1.3, 1.15, 1.25], dtype=pl.Float64)
     rmin = pl.Series("x", [None, 1.1, 1.1, None, 1.15], dtype=pl.Float64)
@@ -936,7 +936,7 @@ def test_rolling_min_periods(
     df = pl.DataFrame({"date": dates, "value": [1, 2, 3]}).sort("date")
     result = df.select(
         pl.col("value").rolling_sum_by(
-            "date", window_size="2d", min_periods=2, closed=closed
+            "date", window_size="2d", min_periods=2, =closed
         )
     )["value"]
     assert_series_equal(result, pl.Series("value", expected, pl.Int64))

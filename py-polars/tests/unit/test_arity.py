@@ -60,7 +60,7 @@ def test_broadcast_string_ops_12632(
     literal: bool,
 ) -> None:
     assert (
-        df.select(needs_broadcast.str.contains(pl.col("name"), literal=literal))
+        df.select(needs_broadcast.str.contains(pl.col("name"), =literal))
         .to_series()
         .to_list()
         == expect_contains

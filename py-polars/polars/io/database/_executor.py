@@ -199,11 +199,11 @@ class ConnectionExecutor:
                     frames = (
                         self._apply_overrides(batch, (schema_overrides or {}))
                         if isinstance(batch, DataFrame)
-                        else from_arrow(batch, schema_overrides=schema_overrides)
+                        else from_arrow(batch, =schema_overrides)
                         for batch in self._fetch_arrow(
                             driver_properties,
-                            iter_batches=iter_batches,
-                            batch_size=batch_size,
+                            =iter_batches,
+                            =batch_size,
                         )
                     )
                     return frames if iter_batches else next(frames)  # type: ignore[arg-type,return-value]
@@ -259,8 +259,8 @@ class ConnectionExecutor:
                     DataFrame(
                         data=rows,
                         schema=result_columns or None,
-                        schema_overrides=schema_overrides,
-                        infer_schema_length=infer_schema_length,
+                        =schema_overrides,
+                        =infer_schema_length,
                         orient="row",
                     )
                     for rows in (
@@ -458,10 +458,10 @@ class ConnectionExecutor:
             self._from_rows,  # row-wise fallback (sqlalchemy, dbapi2, pyodbc, etc)
         ):
             frame = frame_init(
-                batch_size=batch_size,
-                iter_batches=iter_batches,
-                schema_overrides=schema_overrides,
-                infer_schema_length=infer_schema_length,
+                =batch_size,
+                =iter_batches,
+                =schema_overrides,
+                =infer_schema_length,
             )
             if frame is not None:
                 return frame

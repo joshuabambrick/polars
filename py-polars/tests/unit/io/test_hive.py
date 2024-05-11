@@ -54,7 +54,7 @@ def test_hive_partitioned_predicate_pushdown(
             (pl.col("fats_g") == 0.5) & (pl.col("category") == "vegetables"),
         ]:
             assert_frame_equal(
-                q.filter(pred).sort(sort_by).collect(streaming=streaming),
+                q.filter(pred).sort(sort_by).collect(=streaming),
                 df.filter(pred).sort(sort_by),
             )
             err = capfd.readouterr().err
@@ -121,11 +121,11 @@ def test_hive_partitioned_slice_pushdown(io_files_path: Path, tmp_path: Path) ->
     for streaming in [True, False]:
         assert (
             q.head(1)
-            .collect(streaming=streaming)
+            .collect(=streaming)
             .select(pl.all_horizontal(pl.all().count() == 1))
             .item()
         )
-        assert q.head(0).collect(streaming=streaming).columns == [
+        assert q.head(0).collect(=streaming).columns == [
             "calories",
             "sugars_g",
             "category",
@@ -157,7 +157,7 @@ def test_hive_partitioned_projection_pushdown(
     q = pl.scan_parquet(root / "**/*.parquet", hive_partitioning=True)
     columns = ["sugars_g", "category"]
     for streaming in [True, False]:
-        assert q.select(columns).collect(streaming=streaming).columns == columns
+        assert q.select(columns).collect(=streaming).columns == columns
 
     # test that hive partition columns are projected with the correct height when
     # the projection contains only hive partition columns (11796)
@@ -165,7 +165,7 @@ def test_hive_partitioned_projection_pushdown(
         q = pl.scan_parquet(
             root / "**/*.parquet",
             hive_partitioning=True,
-            parallel=parallel,  # type: ignore[arg-type]
+            =parallel,  # type: ignore[arg-type]
         )
 
         expected = q.collect().select("category")

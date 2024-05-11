@@ -40,7 +40,7 @@ class ODBCCursorProxy:
         from pyarrow import Table
 
         return Table.from_batches(
-            self.fetch_record_batches(batch_size=batch_size, fetch_all=True)
+            self.fetch_record_batches(=batch_size, fetch_all=True)
         )
 
     def fetch_record_batches(
@@ -53,7 +53,7 @@ class ODBCCursorProxy:
         n_batches = 0
         batch_reader = read_arrow_batches_from_odbc(
             query=self.query,
-            batch_size=batch_size,
+            =batch_size,
             connection_string=self.connection_string,
             **self.execute_options,
         )

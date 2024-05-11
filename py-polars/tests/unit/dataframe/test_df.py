@@ -352,7 +352,7 @@ def test_sort_maintain_order() -> None:
 def test_sort_maintain_order_descending_repeated_nulls(nulls_last: bool) -> None:
     got = (
         pl.LazyFrame({"A": [None, -1, 1, 1, None], "B": [1, 2, 3, 4, 5]})
-        .sort("A", descending=True, maintain_order=True, nulls_last=nulls_last)
+        .sort("A", descending=True, maintain_order=True, =nulls_last)
         .collect()
     )
     if nulls_last:
@@ -1737,8 +1737,8 @@ def test_group_by_order_dispatch(name: str | None) -> None:
     df = pl.DataFrame({"x": list("bab"), "y": range(3)})
     lf = df.lazy()
 
-    result = df.group_by("x", maintain_order=True).len(name=name)
-    lazy_result = lf.group_by("x").len(name=name).sort(by="x", descending=True)
+    result = df.group_by("x", maintain_order=True).len(=name)
+    lazy_result = lf.group_by("x").len(=name).sort(by="x", descending=True)
 
     name = "len" if name is None else name
     expected = pl.DataFrame(
@@ -2290,7 +2290,7 @@ def test_join_suffixes() -> None:
     join_strategies: list[JoinStrategy] = ["left", "inner", "outer", "cross"]
     for how in join_strategies:
         # no need for an assert, we error if wrong
-        df_a.join(df_b, on="A", suffix="_y", how=how)["B_y"]
+        df_a.join(df_b, on="A", suffix="_y", =how)["B_y"]
 
     df_a.join_asof(df_b, on=pl.col("A").set_sorted(), suffix="_y")["B_y"]
 
@@ -2524,7 +2524,7 @@ def test_unique_on_sorted(subset: Any) -> None:
     df = pl.DataFrame(data={"a": [1, 1, 3], "b": [1, 2, 3]})
 
     result = df.with_columns([pl.col("a").set_sorted()]).unique(
-        subset=subset,
+        =subset,
         keep="last",
     )
 
@@ -2732,8 +2732,8 @@ def test_init_datetimes_with_timezone() -> None:
             expected = pl.DataFrame(
                 {"d1": ["2022-10-12 12:30"], "d2": ["2022-10-12 12:30"]}
             ).with_columns(
-                pl.col("d1").str.to_datetime(time_unit=time_unit, time_zone=tz_us),
-                pl.col("d2").str.to_datetime(time_unit=time_unit, time_zone=tz_europe),
+                pl.col("d1").str.to_datetime(=time_unit, time_zone=tz_us),
+                pl.col("d2").str.to_datetime(=time_unit, time_zone=tz_europe),
             )
             assert_frame_equal(result, expected)
 
@@ -2783,7 +2783,7 @@ def test_init_vs_strptime_consistency(
         context_manager = contextlib.nullcontext()
     with context_manager:
         result_init = pl.Series(
-            [datetime(2020, 1, 1, tzinfo=tzinfo)],
+            [datetime(2020, 1, 1, =tzinfo)],
             dtype=pl.Datetime("us", dtype_time_zone),
         )
     result_strptime = pl.Series([f"2020-01-01 00:00{offset}"]).str.strptime(
@@ -2880,7 +2880,7 @@ def test_unique(
 ) -> None:
     df = pl.DataFrame({"a": [1, 2, 2, 2], "b": [3, 4, 4, 4], "c": [5, 6, 7, 7]})
 
-    result = df.unique(maintain_order=True, subset=subset, keep=keep)
+    result = df.unique(maintain_order=True, =subset, =keep)
     expected = df.filter(expected_mask)
     assert_frame_equal(result, expected)
 

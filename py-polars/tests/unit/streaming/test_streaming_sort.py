@@ -86,10 +86,10 @@ def test_ooc_sort(tmp_path: Path, monkeypatch: Any) -> None:
 
     for descending in [True, False]:
         out = (
-            df.lazy().sort("idx", descending=descending).collect(streaming=True)
+            df.lazy().sort("idx", =descending).collect(streaming=True)
         ).to_series()
 
-        assert_series_equal(out, s.sort(descending=descending))
+        assert_series_equal(out, s.sort(=descending))
 
 
 @pytest.mark.debug()
@@ -239,13 +239,11 @@ def test_streaming_sort_fixed_reverse() -> None:
         }
     )
     descending = [True, False]
-    q = df.lazy().sort(by=["a", "b"], descending=descending)
+    q = df.lazy().sort(by=["a", "b"], =descending)
 
+    assert_df_sorted_by(df, q.collect(streaming=True), ["a", "b"], =descending)
     assert_df_sorted_by(
-        df, q.collect(streaming=True), ["a", "b"], descending=descending
-    )
-    assert_df_sorted_by(
-        df, q.collect(streaming=False), ["a", "b"], descending=descending
+        df, q.collect(streaming=False), ["a", "b"], =descending
     )
 
 
@@ -280,14 +278,14 @@ def test_sort_descending_nulls_last(descending: bool, nulls_last: bool) -> None:
 
     assert_frame_equal(
         df.lazy()
-        .sort("x", descending=descending, nulls_last=nulls_last)
+        .sort("x", =descending, =nulls_last)
         .collect(streaming=True),
         pl.DataFrame({"x": ref_x, "y": ref_y}),
     )
 
     assert_frame_equal(
         df.lazy()
-        .sort(["x", "y"], descending=descending, nulls_last=nulls_last)
+        .sort(["x", "y"], =descending, =nulls_last)
         .collect(streaming=True),
         pl.DataFrame({"x": ref_x, "y": ref_y}),
     )

@@ -94,21 +94,15 @@ def read_ipc(
         msg = "`n_rows` cannot be used with `use_pyarrow=True` and `memory_map=False`"
         raise ValueError(msg)
 
-    with prepare_file_arg(
-        source, use_pyarrow=use_pyarrow, storage_options=storage_options
-    ) as data:
+    with prepare_file_arg(source, =use_pyarrow, =storage_options) as data:
         if use_pyarrow:
             pyarrow_feather = import_optional(
                 "pyarrow.feather",
                 err_prefix="",
                 err_suffix="is required when using 'read_ipc(..., use_pyarrow=True)'",
             )
-            tbl = pyarrow_feather.read_table(
-                data,
-                memory_map=memory_map,
-                columns=columns,
-            )
-            df = pl.DataFrame._from_arrow(tbl, rechunk=rechunk)
+            tbl = pyarrow_feather.read_table(data, =memory_map, =columns)
+            df = pl.DataFrame._from_arrow(tbl, =rechunk)
             if row_index_name is not None:
                 df = df.with_row_index(row_index_name, row_index_offset)
             if n_rows is not None:
@@ -117,12 +111,12 @@ def read_ipc(
 
         return _read_ipc_impl(
             data,
-            columns=columns,
-            n_rows=n_rows,
-            row_index_name=row_index_name,
-            row_index_offset=row_index_offset,
-            rechunk=rechunk,
-            memory_map=memory_map,
+            =columns,
+            =n_rows,
+            =row_index_name,
+            =row_index_offset,
+            =rechunk,
+            =memory_map,
         )
 
 
@@ -144,11 +138,11 @@ def _read_ipc_impl(
     if isinstance(source, str) and is_glob_pattern(source) and is_local_file(source):
         scan = scan_ipc(
             source,
-            n_rows=n_rows,
-            rechunk=rechunk,
-            row_index_name=row_index_name,
-            row_index_offset=row_index_offset,
-            memory_map=memory_map,
+            =n_rows,
+            =rechunk,
+            =row_index_name,
+            =row_index_offset,
+            =memory_map,
         )
         if columns is None:
             df = scan.collect()
@@ -169,7 +163,7 @@ def _read_ipc_impl(
         projection,
         n_rows,
         parse_row_index_args(row_index_name, row_index_offset),
-        memory_map=memory_map,
+        =memory_map,
     )
     return wrap_df(pydf)
 
@@ -223,9 +217,7 @@ def read_ipc_stream(
     -------
     DataFrame
     """
-    with prepare_file_arg(
-        source, use_pyarrow=use_pyarrow, storage_options=storage_options
-    ) as data:
+    with prepare_file_arg(source, =use_pyarrow, =storage_options) as data:
         if use_pyarrow:
             pyarrow_ipc = import_optional(
                 "pyarrow.ipc",
@@ -234,7 +226,7 @@ def read_ipc_stream(
             )
             with pyarrow_ipc.RecordBatchStreamReader(data) as reader:
                 tbl = reader.read_all()
-                df = pl.DataFrame._from_arrow(tbl, rechunk=rechunk)
+                df = pl.DataFrame._from_arrow(tbl, =rechunk)
                 if row_index_name is not None:
                     df = df.with_row_index(row_index_name, row_index_offset)
                 if n_rows is not None:
@@ -243,11 +235,11 @@ def read_ipc_stream(
 
         return _read_ipc_stream_impl(
             data,
-            columns=columns,
-            n_rows=n_rows,
-            row_index_name=row_index_name,
-            row_index_offset=row_index_offset,
-            rechunk=rechunk,
+            =columns,
+            =n_rows,
+            =row_index_name,
+            =row_index_offset,
+            =rechunk,
         )
 
 
@@ -371,8 +363,8 @@ def scan_ipc(
         cache,
         rechunk,
         parse_row_index_args(row_index_name, row_index_offset),
-        memory_map=memory_map,
+        =memory_map,
         cloud_options=storage_options,
-        retries=retries,
+        =retries,
     )
     return wrap_ldf(pylf)

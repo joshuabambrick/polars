@@ -27,7 +27,7 @@ def test_run_on_pandas() -> None:
         def run(inputs: list[Callable]):
             # materialize inputs
             inputs = [call() for call in inputs]
-            return inputs[0].merge(inputs[1], left_on=left_on, right_on=right_on)
+            return inputs[0].merge(inputs[1], =left_on, =right_on)
 
         return partial(run, inputs)
 

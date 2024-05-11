@@ -88,7 +88,7 @@ def sequence_to_pyseries(
     python_dtype: type | None = None
 
     if isinstance(values, range):
-        return range_to_series(name, values, dtype=dtype)._s
+        return range_to_series(name, values, =dtype)._s
 
     # empty sequence
     if len(values) == 0 and dtype is None:
@@ -138,7 +138,7 @@ def sequence_to_pyseries(
     ):
         constructor = polars_type_to_constructor(dtype)
         pyseries = _construct_series_with_fallbacks(
-            constructor, name, values, dtype, strict=strict
+            constructor, name, values, dtype, =strict
         )
         if dtype in (
             Date,
@@ -151,7 +151,7 @@ def sequence_to_pyseries(
             Decimal,
         ):
             if pyseries.dtype() != dtype:
-                pyseries = pyseries.cast(dtype, strict=strict)
+                pyseries = pyseries.cast(dtype, =strict)
         return pyseries
 
     elif dtype == Struct:
@@ -242,14 +242,14 @@ def sequence_to_pyseries(
             return numpy_to_pyseries(
                 name,
                 np.vstack(values),
-                strict=strict,
-                nan_to_null=nan_to_null,
+                =strict,
+                =nan_to_null,
             )
         else:
             return PySeries.new_series_list(
                 name,
                 [
-                    numpy_to_pyseries("", v, strict=strict, nan_to_null=nan_to_null)
+                    numpy_to_pyseries("", v, =strict, =nan_to_null)
                     for v in values
                 ],
                 strict,
@@ -257,7 +257,7 @@ def sequence_to_pyseries(
 
     elif python_dtype in (list, tuple):
         if dtype is None:
-            return PySeries.new_from_any_values(name, values, strict=strict)
+            return PySeries.new_from_any_values(name, values, =strict)
         elif dtype == Object:
             return PySeries.new_object(name, values, strict)
         else:
@@ -269,15 +269,15 @@ def sequence_to_pyseries(
                         "",
                         value,
                         inner_dtype,
-                        strict=strict,
-                        nan_to_null=nan_to_null,
+                        =strict,
+                        =nan_to_null,
                     )
                     for value in values
                 ]
                 pyseries = PySeries.new_series_list(name, pyseries_list, strict)
             else:
                 pyseries = PySeries.new_from_any_values_and_dtype(
-                    name, values, dtype, strict=strict
+                    name, values, dtype, =strict
                 )
             if dtype != pyseries.dtype():
                 pyseries = pyseries.cast(dtype, strict=False)
@@ -299,15 +299,15 @@ def sequence_to_pyseries(
                     np.bool_(True), np.generic
                 ):
                     dtype = numpy_char_code_to_dtype(np.dtype(python_dtype).char)
-                    return srs.cast(dtype, strict=strict)
+                    return srs.cast(dtype, =strict)
                 else:
                     return srs
 
             except RuntimeError:
-                return PySeries.new_from_any_values(name, values, strict=strict)
+                return PySeries.new_from_any_values(name, values, =strict)
 
         return _construct_series_with_fallbacks(
-            constructor, name, values, dtype, strict=strict
+            constructor, name, values, dtype, =strict
         )
 
 
@@ -368,12 +368,7 @@ def iterable_to_pyseries(
         values = iter(values)
 
     def to_series_chunk(values: list[Any], dtype: PolarsDataType | None) -> Series:
-        return pl.Series(
-            name=name,
-            values=values,
-            dtype=dtype,
-            strict=strict,
-        )
+        return pl.Series(=name, =values, =dtype, =strict)
 
     n_chunks = 0
     series: Series = None  # type: ignore[assignment]
@@ -408,9 +403,7 @@ def pandas_to_pyseries(
     if not name and values.name is not None:
         name = str(values.name)
     if is_simple_numpy_backed_pandas_series(values):
-        return pl.Series(
-            name, values.to_numpy(), dtype=dtype, nan_to_null=nan_to_null
-        )._s
+        return pl.Series(name, values.to_numpy(), =dtype, =nan_to_null)._s
     if not _PYARROW_AVAILABLE:
         msg = (
             "pyarrow is required for converting a pandas series to Polars, "
@@ -419,7 +412,7 @@ def pandas_to_pyseries(
         )
         raise ImportError(msg)
     return arrow_to_pyseries(
-        name, plc.pandas_series_to_arrow(values, nan_to_null=nan_to_null)
+        name, plc.pandas_series_to_arrow(values, =nan_to_null)
     )
 
 
@@ -483,12 +476,7 @@ def numpy_to_pyseries(
         # Optimize by ingesting 1D and reshaping in Rust
         original_shape = values.shape
         values = values.reshape(-1)
-        py_s = numpy_to_pyseries(
-            name,
-            values,
-            strict=strict,
-            nan_to_null=nan_to_null,
-        )
+        py_s = numpy_to_pyseries(name, values, =strict, =nan_to_null)
         return (
             PyDataFrame([py_s])
             .lazy()
@@ -510,7 +498,7 @@ def series_to_pyseries(
     """Construct a new PySeries from a Polars Series."""
     s = values.clone()
     if dtype is not None and dtype != s.dtype:
-        s = s.cast(dtype, strict=strict)
+        s = s.cast(dtype, =strict)
     if name is not None:
         s = s.alias(name)
     return s._s
@@ -536,6 +524,6 @@ def dataframe_to_pyseries(
         raise TypeError(msg)
 
     if dtype is not None and dtype != s.dtype:
-        s = s.cast(dtype, strict=strict)
+        s = s.cast(dtype, =strict)
 
     return s._s

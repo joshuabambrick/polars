@@ -4,7 +4,7 @@ import os
 
 token = os.getenv("GITHUB_TOKEN")
 auth = Auth.Token(token) if token else None
-g = Github(auth=auth)
+g = Github(=auth)
 
 ICON_TEMPLATE = '<a href="{html_url}"><img alt="{login}" class="contributor_icon" src="{avatar_url}&s=40" loading="lazy" /></a>'
 

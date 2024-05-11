@@ -137,7 +137,7 @@ def test_leading_plus_zero_int(dtype: pl.DataType) -> None:
         ]
     )
     assert_series_equal(
-        s_int.cast(dtype), pl.Series([-2, -1, 0, 0, 0, 1, 1, 2, 3], dtype=dtype)
+        s_int.cast(dtype), pl.Series([-2, -1, 0, 0, 0, 1, 1, 2, 3], =dtype)
     )
 
 
@@ -146,7 +146,7 @@ def test_leading_plus_zero_uint(dtype: pl.DataType) -> None:
     s_int = pl.Series(
         ["0", "+0", "1", "+1", "0000000000000000000002", "+000000000000000000003"]
     )
-    assert_series_equal(s_int.cast(dtype), pl.Series([0, 0, 1, 1, 2, 3], dtype=dtype))
+    assert_series_equal(s_int.cast(dtype), pl.Series([0, 0, 1, 1, 2, 3], =dtype))
 
 
 @pytest.mark.parametrize(("dtype"), [pl.Float32, pl.Float64])
@@ -169,7 +169,7 @@ def test_leading_plus_zero_float(dtype: pl.DataType) -> None:
     assert_series_equal(
         s_float.cast(dtype),
         pl.Series(
-            [-2.0, -1.0, -0.5, 0.0, 0.0, 0.0, 0.5, 1.0, 1.0, 2.0, 3.0], dtype=dtype
+            [-2.0, -1.0, -0.5, 0.0, 0.0, 0.0, 0.5, 1.0, 1.0, 2.0, 3.0], =dtype
         ),
     )
 
@@ -180,7 +180,7 @@ def _cast_series(
     dtype_out: pl.PolarsDataType,
     strict: bool,
 ) -> int | datetime | date | time | timedelta | None:
-    return pl.Series("a", [val], dtype=dtype_in).cast(dtype_out, strict=strict).item()  # type: ignore[no-any-return]
+    return pl.Series("a", [val], dtype=dtype_in).cast(dtype_out, =strict).item()  # type: ignore[no-any-return]
 
 
 def _cast_expr(
@@ -192,7 +192,7 @@ def _cast_expr(
     return (  # type: ignore[no-any-return]
         pl.Series("a", [val], dtype=dtype_in)
         .to_frame()
-        .select(pl.col("a").cast(dtype_out, strict=strict))
+        .select(pl.col("a").cast(dtype_out, =strict))
         .item()
     )
 
@@ -203,7 +203,7 @@ def _cast_lit(
     dtype_out: pl.PolarsDataType,
     strict: bool,
 ) -> int | datetime | date | time | timedelta | None:
-    return pl.select(pl.lit(val, dtype=dtype_in).cast(dtype_out, strict=strict)).item()  # type: ignore[no-any-return]
+    return pl.select(pl.lit(val, dtype=dtype_in).cast(dtype_out, =strict)).item()  # type: ignore[no-any-return]
 
 
 @pytest.mark.parametrize(
@@ -279,7 +279,7 @@ def _cast_series_t(
     dtype_out: pl.PolarsDataType,
     strict: bool,
 ) -> pl.Series:
-    return pl.Series("a", [val], dtype=dtype_in).cast(dtype_out, strict=strict)
+    return pl.Series("a", [val], dtype=dtype_in).cast(dtype_out, =strict)
 
 
 def _cast_expr_t(
@@ -291,7 +291,7 @@ def _cast_expr_t(
     return (
         pl.Series("a", [val], dtype=dtype_in)
         .to_frame()
-        .select(pl.col("a").cast(dtype_out, strict=strict))
+        .select(pl.col("a").cast(dtype_out, =strict))
         .to_series()
     )
 
@@ -303,7 +303,7 @@ def _cast_lit_t(
     strict: bool,
 ) -> pl.Series:
     return pl.select(
-        pl.lit(val, dtype=dtype_in).cast(dtype_out, strict=strict)
+        pl.lit(val, dtype=dtype_in).cast(dtype_out, =strict)
     ).to_series()
 
 

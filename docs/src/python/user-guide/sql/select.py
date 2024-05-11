@@ -72,7 +72,7 @@ income = pl.DataFrame(
         "income": [55000, 62000, 48000, 52000, 42000, 38000, 41000],
     }
 )
-ctx.register_many(income=income)
+ctx.register_many(=income)
 result = ctx.execute(
     """
         SELECT country, city, income, population

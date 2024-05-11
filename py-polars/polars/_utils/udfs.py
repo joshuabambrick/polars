@@ -353,7 +353,7 @@ class BytecodeParser:
         self._rewritten_instructions = RewrittenInstructions(
             instructions=original_instructions,
             caller_variables=self._caller_variables,
-            function=function,
+            =function,
         )
 
     def _omit_implicit_bool(self, expr: str) -> str:
@@ -483,7 +483,7 @@ class BytecodeParser:
                         map_target=self._map_target,
                         function=self._function,
                     ).to_expression(
-                        col=col,
+                        =col,
                         param_name=self._param_name,
                         depth=int(bool(logical_instructions)),
                     )
@@ -864,7 +864,7 @@ class RewrittenInstructions:
 
             px = inst1._replace(
                 opname="POLARS_EXPRESSION",
-                argval=argval,
+                =argval,
                 argrepr=argval,
                 offset=inst2.offset,
             )
@@ -905,7 +905,7 @@ class RewrittenInstructions:
                 module_aliases = function_kind["module_name"]
                 if matching_instructions := self._matches(
                     idx,
-                    opnames=opnames,
+                    =opnames,
                     argvals=[
                         *function_kind["function_name"],
                     ]

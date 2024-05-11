@@ -134,10 +134,7 @@ def _lazy_import(module_name: str) -> tuple[ModuleType, bool]:
     # create lazy/proxy module that imports the real one on first use
     # (or raises an explanatory ModuleNotFoundError if not available)
     return (
-        _LazyModule(
-            module_name=module_name,
-            module_available=module_available,
-        ),
+        _LazyModule(=module_name, =module_available),
         module_available,
     )
 

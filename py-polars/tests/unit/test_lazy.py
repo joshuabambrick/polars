@@ -81,7 +81,7 @@ def test_apply() -> None:
             ldf = pl.LazyFrame({"a": [1, 2, 3] * 20, "b": [1.0, 2.0, 3.0] * 20})
             new = ldf.with_columns(
                 pl.col("a")
-                .map_elements(lambda s: s * 2, strategy=strategy, return_dtype=pl.Int64)  # type: ignore[arg-type]
+                .map_elements(lambda s: s * 2, =strategy, return_dtype=pl.Int64)  # type: ignore[arg-type]
                 .alias("foo")
             )
             expected = ldf.clone().with_columns((pl.col("a") * 2).alias("foo"))
@@ -912,7 +912,7 @@ def test_join_suffix() -> None:
 def test_collect_all(df: pl.DataFrame, no_optimization: bool) -> None:
     lf1 = df.lazy().select(pl.col("int").sum())
     lf2 = df.lazy().select((pl.col("floats") * 2).sum())
-    out = pl.collect_all([lf1, lf2], no_optimization=no_optimization)
+    out = pl.collect_all([lf1, lf2], =no_optimization)
     assert cast(int, out[0].item()) == 6
     assert cast(float, out[1].item()) == 12.0
 
@@ -1380,7 +1380,7 @@ def test_compare_aggregation_between_lazy_and_eager_6904(
 ) -> None:
     df = pl.DataFrame(
         {
-            "x": pl.Series(values=[1, 2, 3] * 2, dtype=dtype),
+            "x": pl.Series(values=[1, 2, 3] * 2, =dtype),
             "y": pl.Series(values=["a"] * 3 + ["b"] * 3),
         }
     )

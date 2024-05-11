@@ -40,12 +40,10 @@ def test_against_np_busday_offset(
         pl.DataFrame({"start": [start]})
         .select(
             res=pl.col("start").dt.add_business_days(
-                n, week_mask=week_mask, holidays=holidays, roll=roll
+                n, =week_mask, =holidays, =roll
             )
         )["res"]
         .item()
     )
-    expected = np.busday_offset(
-        start, n, weekmask=week_mask, holidays=holidays, roll=roll
-    )
+    expected = np.busday_offset(start, n, weekmask=week_mask, =holidays, =roll)
     assert result == expected

@@ -276,13 +276,13 @@ def read_excel(
     return _read_spreadsheet(
         sheet_id,
         sheet_name,
-        source=source,
-        engine=engine,
-        engine_options=engine_options,
-        read_options=read_options,
-        schema_overrides=schema_overrides,
-        infer_schema_length=infer_schema_length,
-        raise_if_empty=raise_if_empty,
+        =source,
+        =engine,
+        =engine_options,
+        =read_options,
+        =schema_overrides,
+        =infer_schema_length,
+        =raise_if_empty,
     )
 
 
@@ -420,13 +420,13 @@ def read_ods(
     return _read_spreadsheet(
         sheet_id,
         sheet_name,
-        source=source,
+        =source,
         engine="calamine",
         engine_options={},
         read_options=None,
-        schema_overrides=schema_overrides,
-        infer_schema_length=infer_schema_length,
-        raise_if_empty=raise_if_empty,
+        =schema_overrides,
+        =infer_schema_length,
+        =raise_if_empty,
     )
 
 
@@ -529,11 +529,11 @@ def _read_spreadsheet(
         sheet_names, return_multi = _get_sheet_names(sheet_id, sheet_name, worksheets)
         parsed_sheets = {
             name: reader_fn(
-                parser=parser,
+                =parser,
                 sheet_name=name,
-                schema_overrides=schema_overrides,
-                read_options=read_options,
-                raise_if_empty=raise_if_empty,
+                =schema_overrides,
+                =read_options,
+                =raise_if_empty,
             )
             for name in sheet_names
         }
@@ -704,12 +704,8 @@ def _csv_buffer_to_frame(
 
     # otherwise rewind the buffer and parse as csv
     csv.seek(0)
-    df = read_csv(
-        csv,
-        separator=separator,
-        **read_options,
-    )
-    return _drop_null_data(df, raise_if_empty=raise_if_empty)
+    df = read_csv(csv, =separator, **read_options)
+    return _drop_null_data(df, =raise_if_empty)
 
 
 def _drop_null_data(df: pl.DataFrame, *, raise_if_empty: bool) -> pl.DataFrame:
@@ -784,16 +780,16 @@ def _read_spreadsheet_openpyxl(
                 # the non-strings will become null, so we handle the cast here
                 values = [str(v) if (v is not None) else v for v in values]
 
-            s = pl.Series(name, values, dtype=dtype)
+            s = pl.Series(name, values, =dtype)
             series_data.append(s)
 
     df = pl.DataFrame(
         {s.name: s for s in series_data},
-        schema_overrides=schema_overrides,
-        infer_schema_length=infer_schema_length,
+        =schema_overrides,
+        =infer_schema_length,
         strict=False,
     )
-    return _drop_null_data(df, raise_if_empty=raise_if_empty)
+    return _drop_null_data(df, =raise_if_empty)
 
 
 def _read_spreadsheet_calamine(
@@ -840,7 +836,7 @@ def _read_spreadsheet_calamine(
     if schema_overrides:
         df = df.cast(dtypes=schema_overrides)
 
-    df = _drop_null_data(df, raise_if_empty=raise_if_empty)
+    df = _drop_null_data(df, =raise_if_empty)
 
     # further refine dtypes
     type_checks = []
@@ -909,7 +905,7 @@ def _read_spreadsheet_pyxlsb(
                 elif dtype in (Datetime, Date):
                     dtype = None
 
-                s = pl.Series(name, values, dtype=dtype)
+                s = pl.Series(name, values, =dtype)
                 series_data.append(s)
     finally:
         ws.close()
@@ -921,11 +917,11 @@ def _read_spreadsheet_pyxlsb(
 
     df = pl.DataFrame(
         {s.name: s for s in series_data},
-        schema_overrides=schema_overrides,
-        infer_schema_length=infer_schema_length,
+        =schema_overrides,
+        =infer_schema_length,
         strict=False,
     )
-    return _drop_null_data(df, raise_if_empty=raise_if_empty)
+    return _drop_null_data(df, =raise_if_empty)
 
 
 def _read_spreadsheet_xlsx2csv(
@@ -945,7 +941,7 @@ def _read_spreadsheet_xlsx2csv(
     return _csv_buffer_to_frame(
         csv_buffer,
         separator=",",
-        read_options=read_options,
-        schema_overrides=schema_overrides,
-        raise_if_empty=raise_if_empty,
+        =read_options,
+        =schema_overrides,
+        =raise_if_empty,
     )

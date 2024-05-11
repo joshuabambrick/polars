@@ -53,19 +53,19 @@ def _read_sql_connectorx(
     try:
         tbl = cx.read_sql(
             conn=connection_uri,
-            query=query,
+            =query,
             return_type="arrow2",
-            partition_on=partition_on,
-            partition_range=partition_range,
-            partition_num=partition_num,
-            protocol=protocol,
+            =partition_on,
+            =partition_range,
+            =partition_num,
+            =protocol,
         )
     except BaseException as err:
         # basic sanitisation of /user:pass/ credentials exposed in connectorx errs
         errmsg = re.sub("://[^:]+:[^:]+@", "://***:***@", str(err))
         raise type(err)(errmsg) from err
 
-    return from_arrow(tbl, schema_overrides=schema_overrides)  # type: ignore[return-value]
+    return from_arrow(tbl, =schema_overrides)  # type: ignore[return-value]
 
 
 def _read_sql_adbc(
@@ -77,7 +77,7 @@ def _read_sql_adbc(
     with _open_adbc_connection(connection_uri) as conn, conn.cursor() as cursor:
         cursor.execute(query, **(execute_options or {}))
         tbl = cursor.fetch_arrow_table()
-    return from_arrow(tbl, schema_overrides=schema_overrides)  # type: ignore[return-value]
+    return from_arrow(tbl, =schema_overrides)  # type: ignore[return-value]
 
 
 def _open_adbc_connection(connection_uri: str) -> Any:

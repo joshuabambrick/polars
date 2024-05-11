@@ -57,7 +57,7 @@ def test_rolling(
         )
     )
     df = dataframe.sort("ts")
-    result = df.rolling("ts", period=period, offset=offset, closed=closed).agg(
+    result = df.rolling("ts", =period, =offset, =closed).agg(
         pl.col("value")
     )
 
@@ -69,7 +69,7 @@ def test_rolling(
                 pl.lit(ts, dtype=pl.Datetime(time_unit))
                 .dt.offset_by(offset)
                 .dt.offset_by(period),
-                closed=closed,
+                =closed,
             )
         )
         value = window["value"].to_list()
@@ -136,7 +136,7 @@ def test_rolling_aggs(
     df = dataframe.sort("ts")
     func = f"rolling_{aggregation}_by"
     result = df.with_columns(
-        getattr(pl.col("value"), func)("ts", window_size=window_size, closed=closed)
+        getattr(pl.col("value"), func)("ts", =window_size, =closed)
     )
 
     expected_dict: dict[str, list[object]] = {"ts": [], "value": []}
@@ -147,7 +147,7 @@ def test_rolling_aggs(
                     f"-{window_size}"
                 ),
                 pl.lit(ts, dtype=pl.Datetime(time_unit)),
-                closed=closed,
+                =closed,
             )
         )
         expected_dict["ts"].append(ts)

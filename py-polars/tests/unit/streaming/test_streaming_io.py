@@ -250,7 +250,7 @@ def test_parquet_eq_statistics(monkeypatch: Any, capfd: Any, tmp_path: Path) -> 
             pl.col("idx") == 210,
         ]:
             result = (
-                pl.scan_parquet(file_path).filter(pred).collect(streaming=streaming)
+                pl.scan_parquet(file_path).filter(pred).collect(=streaming)
             )
             assert_frame_equal(result, df.filter(pred))
 

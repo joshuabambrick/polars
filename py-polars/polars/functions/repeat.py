@@ -139,7 +139,7 @@ def repeat(
     """
     if isinstance(n, int):
         n = F.lit(n)
-    value = parse_as_expression(value, str_as_lit=True, list_as_lit=True, dtype=dtype)
+    value = parse_as_expression(value, str_as_lit=True, list_as_lit=True, =dtype)
     expr = wrap_expr(plr.repeat(value, n._pyexpr, dtype))
     if eager:
         return F.select(expr).to_series()
@@ -219,7 +219,7 @@ def ones(
         msg = f"invalid dtype for `ones`; found {dtype}"
         raise TypeError(msg)
 
-    return repeat(one, n=n, dtype=dtype, eager=eager).alias("ones")
+    return repeat(one, =n, =dtype, =eager).alias("ones")
 
 
 @overload
@@ -295,4 +295,4 @@ def zeros(
         msg = f"invalid dtype for `zeros`; found {dtype}"
         raise TypeError(msg)
 
-    return repeat(zero, n=n, dtype=dtype, eager=eager).alias("zeros")
+    return repeat(zero, =n, =dtype, =eager).alias("zeros")

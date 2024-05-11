@@ -657,7 +657,7 @@ def test_empty_struct() -> None:
 )
 def test_empty_series_nested_dtype(dtype: PolarsDataType) -> None:
     # various flavours of empty nested dtype
-    s = pl.Series("nested", dtype=dtype)
+    s = pl.Series("nested", =dtype)
     assert s.dtype.base_type() == dtype.base_type()
     assert s.to_list() == []
 

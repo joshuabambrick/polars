@@ -315,18 +315,16 @@ class Series:
             self._s = sequence_to_pyseries(
                 name,
                 values,
-                dtype=dtype,
-                strict=strict,
-                nan_to_null=nan_to_null,
+                =dtype,
+                =strict,
+                =nan_to_null,
             )
 
         elif values is None:
-            self._s = sequence_to_pyseries(name, [], dtype=dtype)
+            self._s = sequence_to_pyseries(name, [], =dtype)
 
         elif _check_for_numpy(values) and isinstance(values, np.ndarray):
-            self._s = numpy_to_pyseries(
-                name, values, strict=strict, nan_to_null=nan_to_null
-            )
+            self._s = numpy_to_pyseries(name, values, =strict, =nan_to_null)
             if values.dtype.type in [np.datetime64, np.timedelta64]:
                 # cast to appropriate dtype, handling NaT values
                 input_dtype = _resolve_temporal_dtype(None, values.dtype)
@@ -353,19 +351,19 @@ class Series:
         elif _check_for_pandas(values) and isinstance(
             values, (pd.Series, pd.Index, pd.DatetimeIndex)
         ):
-            self._s = pandas_to_pyseries(name, values, dtype=dtype)
+            self._s = pandas_to_pyseries(name, values, =dtype)
 
         elif _is_generator(values):
-            self._s = iterable_to_pyseries(name, values, dtype=dtype, strict=strict)
+            self._s = iterable_to_pyseries(name, values, =dtype, =strict)
 
         elif isinstance(values, Series):
             self._s = series_to_pyseries(
-                original_name, values, dtype=dtype, strict=strict
+                original_name, values, =dtype, =strict
             )
 
         elif isinstance(values, pl.DataFrame):
             self._s = dataframe_to_pyseries(
-                original_name, values, dtype=dtype, strict=strict
+                original_name, values, =dtype, =strict
             )
 
         else:
@@ -1452,7 +1450,7 @@ class Series:
                 )
                 raise NotImplementedError(msg)
 
-            series = f(lambda out: ufunc(*args, out=out, dtype=dtype_char, **kwargs))
+            series = f(lambda out: ufunc(*args, =out, dtype=dtype_char, **kwargs))
             return (
                 self._from_pyseries(series)
                 .to_frame()
@@ -1626,7 +1624,7 @@ class Series:
 
         >>> pl.Series([None, False]).any(ignore_nulls=False)  # Returns None
         """
-        return self._s.any(ignore_nulls=ignore_nulls)
+        return self._s.any(=ignore_nulls)
 
     @overload
     def all(self, *, ignore_nulls: Literal[True] = ...) -> bool: ...
@@ -1669,7 +1667,7 @@ class Series:
 
         >>> pl.Series([None, True]).all(ignore_nulls=False)  # Returns None
         """
-        return self._s.all(ignore_nulls=ignore_nulls)
+        return self._s.all(=ignore_nulls)
 
     def log(self, base: float = math.e) -> Series:
         """
@@ -1900,10 +1898,7 @@ class Series:
         │ max        ┆ cc    │
         └────────────┴───────┘
         """
-        stats = self.to_frame().describe(
-            percentiles=percentiles,
-            interpolation=interpolation,
-        )
+        stats = self.to_frame().describe(=percentiles, =interpolation)
         stats.columns = ["statistic", "value"]
         return stats.filter(F.col("value").is_not_null())
 
@@ -2315,8 +2310,8 @@ class Series:
                     F.col(self.name)
                     .cut(
                         breaks,
-                        labels=labels,
-                        left_closed=left_closed,
+                        =labels,
+                        =left_closed,
                         include_breaks=True,  # always include breaks
                     )
                     .alias(temp_name)
@@ -2330,9 +2325,9 @@ class Series:
             .select_seq(
                 F.col(self.name).cut(
                     breaks,
-                    labels=labels,
-                    left_closed=left_closed,
-                    include_breaks=include_breaks,
+                    =labels,
+                    =left_closed,
+                    =include_breaks,
                 )
             )
             .to_series()
@@ -2530,9 +2525,9 @@ class Series:
                     F.col(self.name)
                     .qcut(
                         quantiles,
-                        labels=labels,
-                        left_closed=left_closed,
-                        allow_duplicates=allow_duplicates,
+                        =labels,
+                        =left_closed,
+                        =allow_duplicates,
                         include_breaks=True,  # always include breaks
                     )
                     .alias(temp_name)
@@ -2546,10 +2541,10 @@ class Series:
             .select(
                 F.col(self.name).qcut(
                     quantiles,
-                    labels=labels,
-                    left_closed=left_closed,
-                    allow_duplicates=allow_duplicates,
-                    include_breaks=include_breaks,
+                    =labels,
+                    =left_closed,
+                    =allow_duplicates,
+                    =include_breaks,
                 )
             )
             .to_series()
@@ -2685,10 +2680,10 @@ class Series:
             self.to_frame()
             .select_seq(
                 F.col(self.name).hist(
-                    bins=bins,
-                    bin_count=bin_count,
-                    include_category=include_category,
-                    include_breakpoint=include_breakpoint,
+                    =bins,
+                    =bin_count,
+                    =include_category,
+                    =include_breakpoint,
                 )
             )
             .to_series()
@@ -2749,7 +2744,7 @@ class Series:
         └───────┴───────┘
         """
         return pl.DataFrame._from_pydf(
-            self._s.value_counts(sort=sort, parallel=parallel)
+            self._s.value_counts(=sort, =parallel)
         )
 
     def unique_counts(self) -> Series:
@@ -2793,7 +2788,7 @@ class Series:
         """
         return (
             self.to_frame()
-            .select_seq(F.col(self.name).entropy(base, normalize=normalize))
+            .select_seq(F.col(self.name).entropy(base, =normalize))
             .to_series()
             .item()
         )
@@ -3078,7 +3073,7 @@ class Series:
                 3
         ]
         """
-        return self._from_pyseries(self._s.slice(offset=offset, length=length))
+        return self._from_pyseries(self._s.slice(=offset, =length))
 
     def append(self, other: Series) -> Self:
         """
@@ -4395,9 +4390,9 @@ class Series:
 
         if dtype == Array:
             np_array = self.explode().to_numpy(
-                allow_copy=allow_copy,
-                writable=writable,
-                use_pyarrow=use_pyarrow,
+                =allow_copy,
+                =writable,
+                =use_pyarrow,
             )
             np_array.shape = (self.len(), self.dtype.width)  # type: ignore[attr-defined]
             return np_array
@@ -4408,7 +4403,7 @@ class Series:
             and dtype not in (Object, Datetime, Duration, Date)
         ):
             return self.to_arrow().to_numpy(
-                zero_copy_only=not allow_copy, writable=writable
+                zero_copy_only=not allow_copy, =writable
             )
 
         if self.null_count() == 0:
@@ -4578,7 +4573,7 @@ class Series:
             )
         else:
             date_as_object = kwargs.pop("date_as_object", False)
-            pd_series = pa_arr.to_pandas(date_as_object=date_as_object, **kwargs)
+            pd_series = pa_arr.to_pandas(=date_as_object, **kwargs)
 
         pd_series.name = self.name
         return pd_series
@@ -4759,7 +4754,7 @@ class Series:
         if not isinstance(values, Series):
             if not isinstance(values, Iterable) or isinstance(values, str):
                 values = [values]
-            values = Series(values=values)
+            values = Series(=values)
 
         self._s.scatter(indices._s, values._s)
         return self
@@ -4807,7 +4802,7 @@ class Series:
             if len(self) > 0
             else self.clone()
         )
-        return s.extend_constant(None, n=n) if n > 0 else s
+        return s.extend_constant(None, =n) if n > 0 else s
 
     def clone(self) -> Self:
         """
@@ -5550,7 +5545,7 @@ class Series:
             self.to_frame()
             .select(
                 F.col(self.name).rolling_min(
-                    window_size, weights, min_periods, center=center
+                    window_size, weights, min_periods, =center
                 )
             )
             .to_series()
@@ -5613,7 +5608,7 @@ class Series:
             self.to_frame()
             .select(
                 F.col(self.name).rolling_max(
-                    window_size, weights, min_periods, center=center
+                    window_size, weights, min_periods, =center
                 )
             )
             .to_series()
@@ -5676,7 +5671,7 @@ class Series:
             self.to_frame()
             .select(
                 F.col(self.name).rolling_mean(
-                    window_size, weights, min_periods, center=center
+                    window_size, weights, min_periods, =center
                 )
             )
             .to_series()
@@ -5739,7 +5734,7 @@ class Series:
             self.to_frame()
             .select(
                 F.col(self.name).rolling_sum(
-                    window_size, weights, min_periods, center=center
+                    window_size, weights, min_periods, =center
                 )
             )
             .to_series()
@@ -5806,7 +5801,7 @@ class Series:
             self.to_frame()
             .select(
                 F.col(self.name).rolling_std(
-                    window_size, weights, min_periods, center=center, ddof=ddof
+                    window_size, weights, min_periods, =center, =ddof
                 )
             )
             .to_series()
@@ -5873,7 +5868,7 @@ class Series:
             self.to_frame()
             .select(
                 F.col(self.name).rolling_var(
-                    window_size, weights, min_periods, center=center, ddof=ddof
+                    window_size, weights, min_periods, =center, =ddof
                 )
             )
             .to_series()
@@ -5993,7 +5988,7 @@ class Series:
             self.to_frame()
             .select(
                 F.col(self.name).rolling_median(
-                    window_size, weights, min_periods, center=center
+                    window_size, weights, min_periods, =center
                 )
             )
             .to_series()
@@ -6078,7 +6073,7 @@ class Series:
                     window_size,
                     weights,
                     min_periods,
-                    center=center,
+                    =center,
                 )
             )
             .to_series()
@@ -7302,7 +7297,7 @@ class Series:
             This is faster because python can be skipped and because we call
             more specialized functions.
         """
-        return self.map_elements(function, return_dtype, skip_nulls=skip_nulls)
+        return self.map_elements(function, return_dtype, =skip_nulls)
 
     @deprecate_renamed_function("rolling_map", version="0.19.0")
     def rolling_apply(
@@ -7642,7 +7637,7 @@ class Series:
         reverse
             reverse the operation.
         """
-        return self.cum_sum(reverse=reverse)
+        return self.cum_sum(=reverse)
 
     @deprecate_renamed_function("cum_max", version="0.19.14")
     def cummax(self, *, reverse: bool = False) -> Series:
@@ -7657,7 +7652,7 @@ class Series:
         reverse
             reverse the operation.
         """
-        return self.cum_max(reverse=reverse)
+        return self.cum_max(=reverse)
 
     @deprecate_renamed_function("cum_min", version="0.19.14")
     def cummin(self, *, reverse: bool = False) -> Series:
@@ -7672,7 +7667,7 @@ class Series:
         reverse
             reverse the operation.
         """
-        return self.cum_min(reverse=reverse)
+        return self.cum_min(=reverse)
 
     @deprecate_renamed_function("cum_prod", version="0.19.14")
     def cumprod(self, *, reverse: bool = False) -> Series:
@@ -7687,7 +7682,7 @@ class Series:
         reverse
             reverse the operation.
         """
-        return self.cum_prod(reverse=reverse)
+        return self.cum_prod(=reverse)
 
     @deprecate_function(
         "Use `Series.to_numpy(allow_copy=False) instead.", version="0.19.14"
@@ -7751,7 +7746,7 @@ class Series:
         return_dtype
             Set return dtype to override automatic return dtype determination.
         """
-        return self.replace(mapping, default=default, return_dtype=return_dtype)
+        return self.replace(mapping, =default, =return_dtype)
 
     @deprecate_renamed_function("equals", version="0.19.16")
     def series_equal(
@@ -7773,7 +7768,7 @@ class Series:
             Don't allow different numerical dtypes, e.g. comparing `pl.UInt32` with a
             `pl.Int64` will return `False`.
         """
-        return self.equals(other, null_equal=null_equal, strict=strict)
+        return self.equals(other, =null_equal, =strict)
 
     # Keep the `list` and `str` properties below at the end of the definition of Series,
     # as to not confuse mypy with the type annotation `str` and `list`

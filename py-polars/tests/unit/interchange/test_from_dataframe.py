@@ -294,7 +294,7 @@ def test_column_to_series_use_sentinel_datetime() -> None:
     dtype = pl.Datetime("ns")
     mask_value = datetime(1900, 1, 1)
 
-    s = pl.Series([datetime(1970, 1, 1), mask_value, datetime(2000, 1, 1)], dtype=dtype)
+    s = pl.Series([datetime(1970, 1, 1), mask_value, datetime(2000, 1, 1)], =dtype)
 
     col = PatchableColumn(s)
     col.describe_null = (ColumnNullType.USE_SENTINEL, mask_value)
@@ -302,7 +302,7 @@ def test_column_to_series_use_sentinel_datetime() -> None:
 
     result = _column_to_series(col, dtype, allow_copy=True)
     expected = pl.Series(
-        [datetime(1970, 1, 1), None, datetime(2000, 1, 1)], dtype=dtype
+        [datetime(1970, 1, 1), None, datetime(2000, 1, 1)], =dtype
     )
     assert_series_equal(result, expected)
 
@@ -311,7 +311,7 @@ def test_column_to_series_use_sentinel_invalid_value() -> None:
     dtype = pl.Datetime("ns")
     mask_value = "invalid"
 
-    s = pl.Series([datetime(1970, 1, 1), None, datetime(2000, 1, 1)], dtype=dtype)
+    s = pl.Series([datetime(1970, 1, 1), None, datetime(2000, 1, 1)], =dtype)
 
     col = PatchableColumn(s)
     col.describe_null = (ColumnNullType.USE_SENTINEL, mask_value)
@@ -389,7 +389,7 @@ def test_construct_offsets_buffer_offset() -> None:
     dtype = (DtypeKind.INT, 64, "l", NE)
     offset = 2
 
-    result = _construct_offsets_buffer(buffer, dtype, offset=offset, allow_copy=True)
+    result = _construct_offsets_buffer(buffer, dtype, =offset, allow_copy=True)
     assert_series_equal(result, data[offset:])
 
 
@@ -526,7 +526,7 @@ def test_construct_validity_buffer_from_bitmask(
     allow_copy: bool, bitmask: PolarsBuffer
 ) -> None:
     result = _construct_validity_buffer_from_bitmask(
-        bitmask, null_value=0, offset=0, length=4, allow_copy=allow_copy
+        bitmask, null_value=0, offset=0, length=4, =allow_copy
     )
     expected = pl.Series([False, True, True, False])
     assert_series_equal(result, expected)

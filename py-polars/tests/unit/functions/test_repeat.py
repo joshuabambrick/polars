@@ -40,10 +40,10 @@ def test_repeat(
 ) -> None:
     expected = pl.Series("repeat", [value] * n).cast(expected_dtype)
 
-    result_eager = pl.repeat(value, n=n, dtype=dtype, eager=True)
+    result_eager = pl.repeat(value, =n, =dtype, eager=True)
     assert_series_equal(result_eager, expected)
 
-    result_lazy = pl.select(pl.repeat(value, n=n, dtype=dtype, eager=False)).to_series()
+    result_lazy = pl.select(pl.repeat(value, =n, =dtype, eager=False)).to_series()
     assert_series_equal(result_lazy, expected)
 
 
@@ -107,12 +107,12 @@ def test_ones(
     value: Any,
     dtype: pl.PolarsDataType,
 ) -> None:
-    expected = pl.Series("ones", [value] * n, dtype=dtype)
+    expected = pl.Series("ones", [value] * n, =dtype)
 
-    result_eager = pl.ones(n=n, dtype=dtype, eager=True)
+    result_eager = pl.ones(=n, =dtype, eager=True)
     assert_series_equal(result_eager, expected)
 
-    result_lazy = pl.select(pl.ones(n=n, dtype=dtype, eager=False)).to_series()
+    result_lazy = pl.select(pl.ones(=n, =dtype, eager=False)).to_series()
     assert_series_equal(result_lazy, expected)
 
 
@@ -136,12 +136,12 @@ def test_zeros(
     value: Any,
     dtype: pl.PolarsDataType,
 ) -> None:
-    expected = pl.Series("zeros", [value] * n, dtype=dtype)
+    expected = pl.Series("zeros", [value] * n, =dtype)
 
-    result_eager = pl.zeros(n=n, dtype=dtype, eager=True)
+    result_eager = pl.zeros(=n, =dtype, eager=True)
     assert_series_equal(result_eager, expected)
 
-    result_lazy = pl.select(pl.zeros(n=n, dtype=dtype, eager=False)).to_series()
+    result_lazy = pl.select(pl.zeros(=n, =dtype, eager=False)).to_series()
     assert_series_equal(result_lazy, expected)
 
 

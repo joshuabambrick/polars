@@ -362,12 +362,12 @@ def create_array_strategy(
         inner_dtype = choice(strats)
 
     strat = create_list_strategy(
-        inner_dtype=inner_dtype,
-        select_from=select_from,
+        =inner_dtype,
+        =select_from,
         size=width,
-        unique=unique,
+        =unique,
     )
-    strat._dtype = Array(inner_dtype, width=width)  # type: ignore[attr-defined]
+    strat._dtype = Array(inner_dtype, =width)  # type: ignore[attr-defined]
     return strat
 
 
@@ -454,14 +454,14 @@ def create_list_strategy(
             st = create_array_strategy(
                 inner_dtype=inner_dtype.inner,  # type: ignore[union-attr]
                 select_from=select_from,
-                width=width,
+                =width,
             )
         else:
             st = create_list_strategy(
                 inner_dtype=inner_dtype.inner,  # type: ignore[union-attr]
                 select_from=select_from,
-                min_size=min_size,
-                max_size=max_size,
+                =min_size,
+                =max_size,
             )
 
         if inner_dtype.inner is None and hasattr(st, "_dtype"):  # type: ignore[union-attr]
@@ -475,8 +475,8 @@ def create_list_strategy(
 
     ls = lists(
         elements=st,
-        min_size=min_size,
-        max_size=max_size,
+        =min_size,
+        =max_size,
         unique_by=(_flexhash if unique else None),
     )
     ls._dtype = List(inner_dtype)  # type: ignore[attr-defined, arg-type]

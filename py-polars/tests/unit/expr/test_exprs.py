@@ -236,7 +236,7 @@ def test_list_eval_expression() -> None:
     for parallel in [True, False]:
         assert df.with_columns(
             pl.concat_list(["a", "b"])
-            .list.eval(pl.first().rank(), parallel=parallel)
+            .list.eval(pl.first().rank(), =parallel)
             .alias("rank")
         ).to_dict(as_series=False) == {
             "a": [1, 8, 3],
@@ -245,7 +245,7 @@ def test_list_eval_expression() -> None:
         }
 
         assert df["a"].reshape((1, -1)).list.eval(
-            pl.first(), parallel=parallel
+            pl.first(), =parallel
         ).to_list() == [[1, 8, 3]]
 
 
@@ -429,7 +429,7 @@ def test_logical_boolean() -> None:
 
 def test_lit_dtypes() -> None:
     def lit_series(value: Any, dtype: pl.PolarsDataType | None) -> pl.Series:
-        return pl.select(pl.lit(value, dtype=dtype)).to_series()
+        return pl.select(pl.lit(value, =dtype)).to_series()
 
     d = datetime(2049, 10, 5, 1, 2, 3, 987654)
     d_ms = datetime(2049, 10, 5, 1, 2, 3, 987000)

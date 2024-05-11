@@ -197,7 +197,7 @@ def test_json_sliced_list_serialization() -> None:
 
 def test_json_deserialize_empty_list_10458() -> None:
     schema = {"LIST_OF_STRINGS": pl.List(pl.String)}
-    serialized_schema = pl.DataFrame(schema=schema).write_json()
+    serialized_schema = pl.DataFrame(=schema).write_json()
     df = pl.read_json(io.StringIO(serialized_schema))
     assert df.schema == schema
 
@@ -252,7 +252,7 @@ def test_ndjson_ignore_errors() -> None:
         )
     }
     # schema argument only parses Fields
-    assert pl.read_ndjson(buf, schema=schema, ignore_errors=True).to_dict(
+    assert pl.read_ndjson(buf, =schema, ignore_errors=True).to_dict(
         as_series=False
     ) == {
         "Fields": [
@@ -413,9 +413,9 @@ def test_ndjson_null_inference_13183() -> None:
 @pytest.mark.parametrize("pretty", [True, False])
 def test_json_enum(pretty: bool) -> None:
     dtype = pl.Enum(["foo", "bar", "ham"])
-    df = pl.DataFrame([pl.Series("e", ["foo", "bar", "ham"], dtype=dtype)])
+    df = pl.DataFrame([pl.Series("e", ["foo", "bar", "ham"], =dtype)])
     buf = io.StringIO()
-    df.write_json(buf, pretty=pretty)
+    df.write_json(buf, =pretty)
     buf.seek(0)
     df_in = pl.read_json(buf)
     assert df_in.schema["e"] == dtype

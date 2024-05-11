@@ -259,8 +259,8 @@ def test_arr_median(data_dispersion: pl.DataFrame) -> None:
 
 def test_array_repeat() -> None:
     dtype = pl.Array(pl.UInt8, width=1)
-    s = pl.repeat([42], n=3, dtype=dtype, eager=True)
-    expected = pl.Series("repeat", [[42], [42], [42]], dtype=dtype)
+    s = pl.repeat([42], n=3, =dtype, eager=True)
+    expected = pl.Series("repeat", [[42], [42], [42]], =dtype)
     assert s.dtype == dtype
     assert_series_equal(s, expected)
 

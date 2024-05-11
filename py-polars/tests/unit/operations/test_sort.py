@@ -219,11 +219,11 @@ def test_sort_aggregation_fast_paths() -> None:
             out = df.select(
                 [
                     pl.all()
-                    .sort(descending=descending, nulls_last=null_last)
+                    .sort(=descending, nulls_last=null_last)
                     .max()
                     .name.suffix("_max"),
                     pl.all()
-                    .sort(descending=descending, nulls_last=null_last)
+                    .sort(=descending, nulls_last=null_last)
                     .min()
                     .name.suffix("_min"),
                 ]
@@ -849,7 +849,7 @@ def test_sort_row_fmt(str_ints_df: pl.DataFrame) -> None:
 
     for descending in [True, False]:
         assert_frame_equal(
-            df.sort(["strs", "vals"], nulls_last=True, descending=descending),
+            df.sort(["strs", "vals"], nulls_last=True, =descending),
             pl.from_pandas(
                 df_pd.sort_values(["strs", "vals"], ascending=not descending)
             ),
@@ -1302,12 +1302,12 @@ def test_sort_descending_nulls_last(descending: bool, nulls_last: bool) -> None:
     ref_y.sort(key=lambda k: null_sentinel if k == 0 else k, reverse=descending)
 
     assert_frame_equal(
-        df.sort("x", descending=descending, nulls_last=nulls_last),
+        df.sort("x", =descending, =nulls_last),
         pl.DataFrame({"x": ref_x, "y": ref_y}),
     )
 
     assert_frame_equal(
-        df.sort(["x", "y"], descending=descending, nulls_last=nulls_last),
+        df.sort(["x", "y"], =descending, =nulls_last),
         pl.DataFrame({"x": ref_x, "y": ref_y}),
     )
 

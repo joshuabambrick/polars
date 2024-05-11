@@ -260,8 +260,8 @@ def test_filter_horizontal_selector_15428() -> None:
 @pytest.mark.parametrize("selectivity", [0.0, 0.01, 0.1, 0.5, 0.9, 0.99, 1.0 + 1e-6])
 def test_filter(dtype: PolarsDataType, size: int, selectivity: float) -> None:
     rng = np.random.Generator(np.random.PCG64(size * 100 + int(100 * selectivity)))
-    np_payload = rng.uniform(size=size) * 100.0
-    np_mask = rng.uniform(size=size) < selectivity
+    np_payload = rng.uniform(=size) * 100.0
+    np_mask = rng.uniform(=size) < selectivity
     payload = pl.Series(np_payload).cast(dtype)
     mask = pl.Series(np_mask, dtype=pl.Boolean)
 

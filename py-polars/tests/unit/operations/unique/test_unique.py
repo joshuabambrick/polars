@@ -37,7 +37,7 @@ def test_unique_predicate_pd() -> None:
     for maintain_order in (True, False):
         for keep in ("first", "last", "any", "none"):
             q = (
-                lf.unique("x", maintain_order=maintain_order, keep=keep)  # type: ignore[arg-type]
+                lf.unique("x", =maintain_order, =keep)  # type: ignore[arg-type]
                 .filter(pl.col("x") == "abc")
                 .filter(pl.col("z"))
             )

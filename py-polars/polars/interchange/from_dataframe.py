@@ -44,7 +44,7 @@ def from_dataframe(df: SupportsInterchange, *, allow_copy: bool = True) -> DataF
         raise TypeError(msg)
 
     return _from_dataframe(
-        df.__dataframe__(allow_copy=allow_copy),  # type: ignore[arg-type]
+        df.__dataframe__(=allow_copy),  # type: ignore[arg-type]
         allow_copy=allow_copy,
     )
 
@@ -52,12 +52,12 @@ def from_dataframe(df: SupportsInterchange, *, allow_copy: bool = True) -> DataF
 def _from_dataframe(df: InterchangeDataFrame, *, allow_copy: bool) -> DataFrame:
     chunks = []
     for chunk in df.get_chunks():
-        polars_chunk = _protocol_df_chunk_to_polars(chunk, allow_copy=allow_copy)
+        polars_chunk = _protocol_df_chunk_to_polars(chunk, =allow_copy)
         chunks.append(polars_chunk)
 
     # Handle implementations that incorrectly yield no chunks for an empty dataframe
     if not chunks:
-        polars_chunk = _protocol_df_chunk_to_polars(df, allow_copy=allow_copy)
+        polars_chunk = _protocol_df_chunk_to_polars(df, =allow_copy)
         chunks.append(polars_chunk)
 
     return F.concat(chunks, rechunk=False)
@@ -70,11 +70,11 @@ def _protocol_df_chunk_to_polars(
     for column, name in zip(df.get_columns(), df.column_names()):
         dtype = dtype_to_polars_dtype(column.dtype)
         if dtype == String:
-            s = _string_column_to_series(column, allow_copy=allow_copy)
+            s = _string_column_to_series(column, =allow_copy)
         elif dtype == Enum:
-            s = _categorical_column_to_series(column, allow_copy=allow_copy)
+            s = _categorical_column_to_series(column, =allow_copy)
         else:
-            s = _column_to_series(column, dtype, allow_copy=allow_copy)
+            s = _column_to_series(column, dtype, =allow_copy)
         columns.append(s.alias(name))
 
     return pl.DataFrame(columns)
@@ -87,10 +87,10 @@ def _column_to_series(
     offset = column.offset
 
     data_buffer = _construct_data_buffer(
-        *buffers["data"], column.size(), offset, allow_copy=allow_copy
+        *buffers["data"], column.size(), offset, =allow_copy
     )
     validity_buffer = _construct_validity_buffer(
-        buffers["validity"], column, dtype, data_buffer, offset, allow_copy=allow_copy
+        buffers["validity"], column, dtype, data_buffer, offset, =allow_copy
     )
     return pl.Series._from_buffers(dtype, data=data_buffer, validity=validity_buffer)
 
@@ -110,12 +110,12 @@ def _string_column_to_series(column: Column, *, allow_copy: bool) -> Series:
         msg = "cannot create String column without an offsets buffer"
         raise RuntimeError(msg)
     offsets_buffer = _construct_offsets_buffer(
-        *offsets_buffer_info, offset, allow_copy=allow_copy
+        *offsets_buffer_info, offset, =allow_copy
     )
 
     buffer, dtype = buffers["data"]
     data_buffer = _construct_data_buffer(
-        buffer, dtype, buffer.bufsize, offset=0, allow_copy=allow_copy
+        buffer, dtype, buffer.bufsize, offset=0, =allow_copy
     )
 
     # First construct a Series without a validity buffer
@@ -125,7 +125,7 @@ def _string_column_to_series(column: Column, *, allow_copy: bool) -> Series:
 
     # Add the validity buffer if present
     validity_buffer = _construct_validity_buffer(
-        buffers["validity"], column, String, data, offset, allow_copy=allow_copy
+        buffers["validity"], column, String, data, offset, =allow_copy
     )
     if validity_buffer is not None:
         data = pl.Series._from_buffers(
@@ -148,17 +148,17 @@ def _categorical_column_to_series(column: Column, *, allow_copy: bool) -> Series
         msg = "non-string categories are not supported"
         raise NotImplementedError(msg)
     else:
-        categories = _string_column_to_series(categories_col, allow_copy=allow_copy)
+        categories = _string_column_to_series(categories_col, =allow_copy)
         dtype = Enum(categories)
 
     buffers = column.get_buffers()
     offset = column.offset
 
     data_buffer = _construct_data_buffer(
-        *buffers["data"], column.size(), offset, allow_copy=allow_copy
+        *buffers["data"], column.size(), offset, =allow_copy
     )
     validity_buffer = _construct_validity_buffer(
-        buffers["validity"], column, dtype, data_buffer, offset, allow_copy=allow_copy
+        buffers["validity"], column, dtype, data_buffer, offset, =allow_copy
     )
 
     # First construct a physical Series without categories
@@ -251,7 +251,7 @@ def _construct_validity_buffer(
             return None
         buffer = validity_buffer_info[0]
         return _construct_validity_buffer_from_bitmask(
-            buffer, null_value, column.size(), offset, allow_copy=allow_copy
+            buffer, null_value, column.size(), offset, =allow_copy
         )
 
     elif null_type == ColumnNullType.USE_BYTEMASK:
@@ -259,7 +259,7 @@ def _construct_validity_buffer(
             return None
         buffer = validity_buffer_info[0]
         return _construct_validity_buffer_from_bytemask(
-            buffer, null_value, allow_copy=allow_copy
+            buffer, null_value, =allow_copy
         )
 
     elif null_type == ColumnNullType.USE_NAN:

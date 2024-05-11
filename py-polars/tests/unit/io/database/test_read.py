@@ -49,9 +49,9 @@ class MockConnection:
     ) -> None:
         self.__class__.__module__ = driver
         self._cursor = MockCursor(
-            repeat_batch_calls=repeat_batch_calls,
+            =repeat_batch_calls,
             batched=(batch_size is not None),
-            test_data=test_data,
+            =test_data,
         )
 
     def close(self) -> None:
@@ -297,28 +297,28 @@ def test_read_database(
             df = pl.read_database(
                 connection=conn,
                 query="SELECT * FROM test_data",
-                schema_overrides=schema_overrides,
-                batch_size=batch_size,
+                =schema_overrides,
+                =batch_size,
             )
             df_empty = pl.read_database(
                 connection=conn,
                 query="SELECT * FROM test_data WHERE name LIKE '%polars%'",
-                schema_overrides=schema_overrides,
-                batch_size=batch_size,
+                =schema_overrides,
+                =batch_size,
             )
     else:
         # other user-supplied connections
         df = pl.read_database(
             connection=connect_using(tmp_sqlite_db),
             query="SELECT * FROM test_data WHERE name NOT LIKE '%polars%'",
-            schema_overrides=schema_overrides,
-            batch_size=batch_size,
+            =schema_overrides,
+            =batch_size,
         )
         df_empty = pl.read_database(
             connection=connect_using(tmp_sqlite_db),
             query="SELECT * FROM test_data WHERE name LIKE '%polars%'",
-            schema_overrides=schema_overrides,
-            batch_size=batch_size,
+            =schema_overrides,
+            =batch_size,
         )
 
     # validate the expected query return (data and schema)
@@ -423,7 +423,7 @@ def test_read_database_parameterised_uri(
             expected_frame,
             pl.read_database_uri(
                 query.format(n=param),
-                uri=uri,
+                =uri,
                 engine="adbc",
                 execute_options={"parameters": param_value},
             ),
@@ -436,7 +436,7 @@ def test_read_database_parameterised_uri(
     ):
         pl.read_database_uri(
             query.format(n=":n"),
-            uri=uri,
+            =uri,
             engine="connectorx",
             execute_options={"parameters": (":n", {"n": 0})},
         )
@@ -476,8 +476,8 @@ def test_read_database_mocked(
     res = pl.read_database(  # type: ignore[call-overload]
         query="SELECT * FROM test_data",
         connection=mc,
-        iter_batches=iter_batches,
-        batch_size=batch_size,
+        =iter_batches,
+        =batch_size,
     )
     if iter_batches:
         assert isinstance(res, GeneratorType)
@@ -660,7 +660,7 @@ def test_read_database_cx_credentials(uri: str) -> None:
     # our responsibility (ideally would be handled by connectorx), but we
     # can reasonably mitigate the issue.
     with pytest.raises(BaseException, match=r"fakedb://\*\*\*:\*\*\*@\w+"):
-        pl.read_database_uri("SELECT * FROM data", uri=uri)
+        pl.read_database_uri("SELECT * FROM data", =uri)
 
 
 @pytest.mark.write_disk()

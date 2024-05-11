@@ -35,7 +35,7 @@ def test_duration_time_units(time_unit: TimeUnit, expected: timedelta) -> None:
             milliseconds=4,
             microseconds=5,
             nanoseconds=6,
-            time_unit=time_unit,
+            =time_unit,
         )
     )
     assert result.schema["duration"] == pl.Duration(time_unit)
@@ -155,10 +155,10 @@ def test_add_duration_3786() -> None:
 )
 def test_duration_subseconds_us(time_unit: TimeUnit, ms: int, us: int, ns: int) -> None:
     result = pl.duration(
-        milliseconds=6, microseconds=4_005, nanoseconds=1_002_003, time_unit=time_unit
+        milliseconds=6, microseconds=4_005, nanoseconds=1_002_003, =time_unit
     )
     expected = pl.duration(
-        milliseconds=ms, microseconds=us, nanoseconds=ns, time_unit=time_unit
+        milliseconds=ms, microseconds=us, nanoseconds=ns, =time_unit
     )
     assert_frame_equal(pl.select(result), pl.select(expected))
 

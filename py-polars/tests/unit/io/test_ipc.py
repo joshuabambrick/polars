@@ -39,13 +39,13 @@ def test_from_to_buffer(
     df: pl.DataFrame, compression: IpcCompression, stream: bool
 ) -> None:
     # use an ad-hoc buffer (file=None)
-    buf1 = write_ipc(df, stream, None, compression=compression)
+    buf1 = write_ipc(df, stream, None, =compression)
     read_df = read_ipc(stream, buf1, use_pyarrow=False)
     assert_frame_equal(df, read_df, categorical_as_str=True)
 
     # explicitly supply an existing buffer
     buf2 = io.BytesIO()
-    write_ipc(df, stream, buf2, compression=compression)
+    write_ipc(df, stream, buf2, =compression)
     buf2.seek(0)
     read_df = read_ipc(stream, buf2, use_pyarrow=False)
     assert_frame_equal(df, read_df, categorical_as_str=True)
@@ -66,7 +66,7 @@ def test_from_to_file(
     file_path = tmp_path / "small.ipc"
     if path_as_string:
         file_path = str(file_path)  # type: ignore[assignment]
-    write_ipc(df, stream, file_path, compression=compression)
+    write_ipc(df, stream, file_path, =compression)
     df_read = read_ipc(stream, file_path, use_pyarrow=False)
 
     assert_frame_equal(df, df_read, categorical_as_str=True)
@@ -142,7 +142,7 @@ def test_ipc_schema(compression: IpcCompression) -> None:
     df = pl.DataFrame({"a": [1, 2], "b": ["a", None], "c": [True, False]})
 
     f = io.BytesIO()
-    df.write_ipc(f, compression=compression)
+    df.write_ipc(f, =compression)
     f.seek(0)
 
     expected = {"a": pl.Int64(), "b": pl.String(), "c": pl.Boolean()}
@@ -163,7 +163,7 @@ def test_ipc_schema_from_file(
     file_path = tmp_path / "small.ipc"
     if path_as_string:
         file_path = str(file_path)  # type: ignore[assignment]
-    df_no_lists.write_ipc(file_path, compression=compression)
+    df_no_lists.write_ipc(file_path, =compression)
     schema = pl.read_ipc_schema(file_path)
 
     expected = {
@@ -201,7 +201,7 @@ def test_ipc_column_order(stream: bool) -> None:
 
     columns = ["colc", "colb", "cola"]
     # read file into polars; the specified column order is no longer respected
-    assert read_ipc(stream, f, columns=columns).columns == columns
+    assert read_ipc(stream, f, =columns).columns == columns
 
 
 @pytest.mark.write_disk()
@@ -238,7 +238,7 @@ def test_binview_ipc_mmap(tmp_path: Path) -> None:
 
 def test_list_nested_enum() -> None:
     dtype = pl.List(pl.Enum(["a", "b", "c"]))
-    df = pl.DataFrame(pl.Series("list_cat", [["a", "b", "c", None]], dtype=dtype))
+    df = pl.DataFrame(pl.Series("list_cat", [["a", "b", "c", None]], =dtype))
     buffer = io.BytesIO()
     df.write_ipc(buffer)
     df = pl.read_ipc(buffer)
@@ -249,7 +249,7 @@ def test_struct_nested_enum() -> None:
     dtype = pl.Struct({"enum": pl.Enum(["a", "b", "c"])})
     df = pl.DataFrame(
         pl.Series(
-            "struct_cat", [{"enum": "a"}, {"enum": "b"}, {"enum": None}], dtype=dtype
+            "struct_cat", [{"enum": "a"}, {"enum": "b"}, {"enum": None}], =dtype
         )
     )
     buffer = io.BytesIO()

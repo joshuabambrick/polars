@@ -29,7 +29,7 @@ TEMPORAL_DTYPES: set[pl.PolarsDataType] = (
 )
 def test_series_from_buffers_numeric_with_validity(s: pl.Series) -> None:
     validity = s.is_not_null()
-    result = pl.Series._from_buffers(s.dtype, data=s, validity=validity)
+    result = pl.Series._from_buffers(s.dtype, data=s, =validity)
     assert_series_equal(s, result)
 
 
@@ -50,29 +50,29 @@ def test_series_from_buffers_temporal_with_validity(s: pl.Series) -> None:
     validity = s.is_not_null()
     physical = pl.Int32 if s.dtype == pl.Date else pl.Int64
     data = s.cast(physical)
-    result = pl.Series._from_buffers(s.dtype, data=data, validity=validity)
+    result = pl.Series._from_buffers(s.dtype, =data, =validity)
     assert_series_equal(s, result)
 
 
 def test_series_from_buffers_int() -> None:
     dtype = pl.UInt16
-    data = pl.Series([97, 98, 99, 195], dtype=dtype)
+    data = pl.Series([97, 98, 99, 195], =dtype)
     validity = pl.Series([True, True, False, True])
 
-    result = pl.Series._from_buffers(dtype, data=data, validity=validity)
+    result = pl.Series._from_buffers(dtype, =data, =validity)
 
-    expected = pl.Series([97, 98, None, 195], dtype=dtype)
+    expected = pl.Series([97, 98, None, 195], =dtype)
     assert_series_equal(result, expected)
 
 
 def test_series_from_buffers_float() -> None:
     dtype = pl.Float64
-    data = pl.Series([0.0, 1.0, -1.0, float("nan"), float("inf")], dtype=dtype)
+    data = pl.Series([0.0, 1.0, -1.0, float("nan"), float("inf")], =dtype)
     validity = pl.Series([True, True, False, True, True])
 
-    result = pl.Series._from_buffers(dtype, data=data, validity=validity)
+    result = pl.Series._from_buffers(dtype, =data, =validity)
 
-    expected = pl.Series([0.0, 1.0, None, float("nan"), float("inf")], dtype=dtype)
+    expected = pl.Series([0.0, 1.0, None, float("nan"), float("inf")], =dtype)
     assert_series_equal(result, expected)
 
 
@@ -81,7 +81,7 @@ def test_series_from_buffers_boolean() -> None:
     data = pl.Series([True, False, True])
     validity = pl.Series([True, True, False])
 
-    result = pl.Series._from_buffers(dtype, data=data, validity=validity)
+    result = pl.Series._from_buffers(dtype, =data, =validity)
 
     expected = pl.Series([True, False, None])
     assert_series_equal(result, expected)
@@ -95,11 +95,11 @@ def test_series_from_buffers_datetime() -> None:
             datetime(2022, 2, 11, 12),
             datetime(2022, 2, 12, 18),
         ],
-        dtype=dtype,
+        =dtype,
     ).cast(pl.Int64)
     validity = pl.Series([True, False, True])
 
-    result = pl.Series._from_buffers(dtype, data=data, validity=validity)
+    result = pl.Series._from_buffers(dtype, =data, =validity)
 
     expected = pl.Series(
         [
@@ -107,7 +107,7 @@ def test_series_from_buffers_datetime() -> None:
             None,
             datetime(2022, 2, 12, 18),
         ],
-        dtype=dtype,
+        =dtype,
     )
     assert_series_equal(result, expected)
 
@@ -118,9 +118,9 @@ def test_series_from_buffers_string() -> None:
     validity = pl.Series([True, True, False, True])
     offsets = pl.Series([0, 1, 3, 3, 9], dtype=pl.Int64)
 
-    result = pl.Series._from_buffers(dtype, data=[data, offsets], validity=validity)
+    result = pl.Series._from_buffers(dtype, data=[data, offsets], =validity)
 
-    expected = pl.Series(["a", "bc", None, "éâç"], dtype=dtype)
+    expected = pl.Series(["a", "bc", None, "éâç"], =dtype)
     assert_series_equal(result, expected)
 
 
@@ -129,22 +129,22 @@ def test_series_from_buffers_enum() -> None:
     data = pl.Series([0, 1, 0, 2], dtype=pl.UInt32)
     validity = pl.Series([True, True, False, True])
 
-    result = pl.Series._from_buffers(dtype, data=data, validity=validity)
+    result = pl.Series._from_buffers(dtype, =data, =validity)
 
-    expected = pl.Series(["a", "b", None, "c"], dtype=dtype)
+    expected = pl.Series(["a", "b", None, "c"], =dtype)
     assert_series_equal(result, expected)
 
 
 def test_series_from_buffers_sliced() -> None:
     dtype = pl.Int64
-    data = pl.Series([1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=dtype)
+    data = pl.Series([1, 2, 3, 4, 5, 6, 7, 8, 9], =dtype)
     data = data[5:]
     validity = pl.Series([True, True, True, True, False, True, False, False, True])
     validity = validity[5:]
 
-    result = pl.Series._from_buffers(dtype, data=data, validity=validity)
+    result = pl.Series._from_buffers(dtype, =data, =validity)
 
-    expected = pl.Series([6, None, None, 9], dtype=dtype)
+    expected = pl.Series([6, None, None, 9], =dtype)
     assert_series_equal(result, expected)
 
 

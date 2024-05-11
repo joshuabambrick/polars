@@ -63,10 +63,7 @@ def s3(s3_base: str, io_files_path: Path) -> str:
 )
 def test_read_s3(s3: str, function: Callable[..., Any], extension: str) -> None:
     storage_options = {"endpoint_url": s3}
-    df = function(
-        f"s3://bucket/foods1.{extension}",
-        storage_options=storage_options,
-    )
+    df = function(f"s3://bucket/foods1.{extension}", =storage_options)
     assert df.columns == ["category", "calories", "fats_g", "sugars_g"]
     assert df.shape == (27, 4)
 

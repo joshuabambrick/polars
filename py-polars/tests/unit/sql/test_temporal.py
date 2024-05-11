@@ -21,7 +21,7 @@ def test_date() -> None:
             "version": ["0.0.1", "0.7.3", "0.7.4"],
         }
     )
-    with pl.SQLContext(df=df, eager_execution=True) as ctx:
+    with pl.SQLContext(=df, eager_execution=True) as ctx:
         result = ctx.execute("SELECT date < DATE('2021-03-20') from df")
 
     expected = pl.DataFrame({"date": [True, False, False]})

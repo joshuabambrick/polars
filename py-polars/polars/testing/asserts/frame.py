@@ -93,9 +93,9 @@ def assert_frame_equal(
     _assert_frame_schema_equal(
         left,
         right,
-        check_column_order=check_column_order,
-        check_dtype=check_dtype,
-        objects=objects,
+        =check_column_order,
+        =check_dtype,
+        =objects,
     )
 
     if lazy:
@@ -116,10 +116,10 @@ def assert_frame_equal(
             _assert_series_values_equal(
                 s_left,
                 s_right,
-                check_exact=check_exact,
-                rtol=rtol,
-                atol=atol,
-                categorical_as_str=categorical_as_str,
+                =check_exact,
+                =rtol,
+                =atol,
+                =categorical_as_str,
             )
         except AssertionError as exc:
             raise_assertion_error(
@@ -263,15 +263,15 @@ def assert_frame_not_equal(
 
     try:
         assert_frame_equal(
-            left=left,
-            right=right,
-            check_column_order=check_column_order,
-            check_row_order=check_row_order,
-            check_dtype=check_dtype,
-            check_exact=check_exact,
-            rtol=rtol,
-            atol=atol,
-            categorical_as_str=categorical_as_str,
+            =left,
+            =right,
+            =check_column_order,
+            =check_row_order,
+            =check_dtype,
+            =check_exact,
+            =rtol,
+            =atol,
+            =categorical_as_str,
         )
     except AssertionError:
         return

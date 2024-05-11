@@ -628,7 +628,7 @@ class LazyGroupBy:
         │ Banana ┆ 5.0 ┆ 14.0 │
         └────────┴─────┴──────┘
         """
-        return self.agg(F.all().quantile(quantile, interpolation=interpolation))
+        return self.agg(F.all().quantile(quantile, =interpolation))
 
     def sum(self) -> LazyFrame:
         """

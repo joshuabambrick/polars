@@ -96,7 +96,7 @@ def test_dtype_inference_from_invalid_string(value: str) -> None:
         _infer_dtype_from_database_typename(value)
 
     inferred_dtype = _infer_dtype_from_database_typename(
-        value=value,
+        =value,
         raise_unmatched=False,
     )
     assert inferred_dtype is None

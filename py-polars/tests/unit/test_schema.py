@@ -73,9 +73,9 @@ def test_fill_null_minimal_upcast_4056() -> None:
 
 def test_fill_enum_upcast() -> None:
     dtype = pl.Enum(["a", "b"])
-    s = pl.Series(["a", "b", None], dtype=dtype)
+    s = pl.Series(["a", "b", None], =dtype)
     s_filled = s.fill_null("b")
-    expected = pl.Series(["a", "b", "b"], dtype=dtype)
+    expected = pl.Series(["a", "b", "b"], =dtype)
     assert s_filled.dtype == dtype
     assert_series_equal(s_filled, expected)
 

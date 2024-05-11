@@ -90,7 +90,7 @@ def test_sorted_merge_joins(reverse: bool) -> None:
             df_b_ = df_b.with_columns(pl.col("a").cast(cast_to))
 
             # hash join
-            out_hash_join = df_a_.join(df_b_, on="a", how=how)
+            out_hash_join = df_a_.join(df_b_, on="a", =how)
 
             # sorted merge join
             out_sorted_merge_join = df_a_.with_columns(
@@ -98,7 +98,7 @@ def test_sorted_merge_joins(reverse: bool) -> None:
             ).join(
                 df_b_.with_columns(pl.col("a").set_sorted(descending=reverse)),
                 on="a",
-                how=how,
+                =how,
             )
 
             assert_frame_equal(out_hash_join, out_sorted_merge_join)
@@ -134,7 +134,7 @@ def test_deprecated() -> None:
     other = pl.DataFrame({"a": [1, 2], "c": [3, 4]})
     result = pl.DataFrame({"a": [1, 2], "b": [3, 4], "c": [3, 4]})
 
-    np.testing.assert_equal(df.join(other=other, on="a").to_numpy(), result.to_numpy())
+    np.testing.assert_equal(df.join(=other, on="a").to_numpy(), result.to_numpy())
     np.testing.assert_equal(
         df.lazy().join(other=other.lazy(), on="a").collect().to_numpy(),
         result.to_numpy(),
@@ -223,12 +223,12 @@ def test_joins_dispatch() -> None:
 
     join_strategies: list[JoinStrategy] = ["left", "inner", "outer"]
     for how in join_strategies:
-        dfa.join(dfa, on=["a", "b", "date", "datetime"], how=how)
-        dfa.join(dfa, on=["date", "datetime"], how=how)
-        dfa.join(dfa, on=["date", "datetime", "a"], how=how)
-        dfa.join(dfa, on=["date", "a"], how=how)
-        dfa.join(dfa, on=["a", "datetime"], how=how)
-        dfa.join(dfa, on=["date"], how=how)
+        dfa.join(dfa, on=["a", "b", "date", "datetime"], =how)
+        dfa.join(dfa, on=["date", "datetime"], =how)
+        dfa.join(dfa, on=["date", "datetime", "a"], =how)
+        dfa.join(dfa, on=["date", "a"], =how)
+        dfa.join(dfa, on=["a", "datetime"], =how)
+        dfa.join(dfa, on=["date"], =how)
 
 
 def test_join_on_cast() -> None:
@@ -323,8 +323,8 @@ def test_sorted_flag_after_joins() -> None:
         a = (
             dfa.merge(
                 dfb,
-                on=on,
-                how=how,  # type: ignore[arg-type]
+                =on,
+                =how,  # type: ignore[arg-type]
                 suffixes=("", "_right"),
             )
             .sort_values(["a", "b"])
@@ -381,11 +381,11 @@ def test_jit_sort_joins() -> None:
 
     join_strategies: list[Literal["left", "inner"]] = ["left", "inner"]
     for how in join_strategies:
-        pd_result = dfa.merge(dfb, on="a", how=how)
+        pd_result = dfa.merge(dfb, on="a", =how)
         pd_result.columns = pd.Index(["a", "b", "b_right"])
 
         # left key sorted right is not
-        pl_result = dfa_pl.join(dfb_pl, on="a", how=how).sort(
+        pl_result = dfa_pl.join(dfb_pl, on="a", =how).sort(
             ["a", "b"], maintain_order=True
         )
 
@@ -398,9 +398,9 @@ def test_jit_sort_joins() -> None:
         assert pl_result["a"].flags["SORTED_ASC"]
 
         # left key sorted right is not
-        pd_result = dfb.merge(dfa, on="a", how=how)
+        pd_result = dfb.merge(dfa, on="a", =how)
         pd_result.columns = pd.Index(["a", "b", "b_right"])
-        pl_result = dfb_pl.join(dfa_pl, on="a", how=how).sort(
+        pl_result = dfb_pl.join(dfa_pl, on="a", =how).sort(
             ["a", "b"], maintain_order=True
         )
 
@@ -662,8 +662,8 @@ def test_join_sorted_fast_paths_null() -> None:
 def test_outer_join_list_() -> None:
     schema = {"id": pl.Int64, "vals": pl.List(pl.Float64)}
 
-    df1 = pl.DataFrame({"id": [1], "vals": [[]]}, schema=schema)  # type: ignore[arg-type]
-    df2 = pl.DataFrame({"id": [2, 3], "vals": [[], [4]]}, schema=schema)  # type: ignore[arg-type]
+    df1 = pl.DataFrame({"id": [1], "vals": [[]]}, =schema)  # type: ignore[arg-type]
+    df2 = pl.DataFrame({"id": [2, 3], "vals": [[], [4]]}, =schema)  # type: ignore[arg-type]
     assert df1.join(df2, on="id", how="outer").to_dict(as_series=False) == {
         "id": [None, None, 1],
         "vals": [None, None, []],
@@ -679,42 +679,42 @@ def test_join_validation() -> None:
     ) -> None:
         # one_to_many
         _one_to_many_success_inner = unique.join(
-            duplicate, on=on, how=how, validate="1:m"
+            duplicate, =on, =how, validate="1:m"
         )
 
         with pytest.raises(pl.ComputeError):
             _one_to_many_fail_inner = duplicate.join(
-                unique, on=on, how=how, validate="1:m"
+                unique, =on, =how, validate="1:m"
             )
 
         # one to one
         with pytest.raises(pl.ComputeError):
             _one_to_one_fail_1_inner = unique.join(
-                duplicate, on=on, how=how, validate="1:1"
+                duplicate, =on, =how, validate="1:1"
             )
 
         with pytest.raises(pl.ComputeError):
             _one_to_one_fail_2_inner = duplicate.join(
-                unique, on=on, how=how, validate="1:1"
+                unique, =on, =how, validate="1:1"
             )
 
         # many to one
         with pytest.raises(pl.ComputeError):
             _many_to_one_fail_inner = unique.join(
-                duplicate, on=on, how=how, validate="m:1"
+                duplicate, =on, =how, validate="m:1"
             )
 
         _many_to_one_success_inner = duplicate.join(
-            unique, on=on, how=how, validate="m:1"
+            unique, =on, =how, validate="m:1"
         )
 
         # many to many
         _many_to_many_success_1_inner = duplicate.join(
-            unique, on=on, how=how, validate="m:m"
+            unique, =on, =how, validate="m:m"
         )
 
         _many_to_many_success_2_inner = unique.join(
-            duplicate, on=on, how=how, validate="m:m"
+            duplicate, =on, =how, validate="m:m"
         )
 
     # test data
@@ -976,17 +976,17 @@ def test_join_coalesce(how: str) -> None:
     )
 
     how = "inner"
-    q = a.join(b, on="a", coalesce=False, how=how)
+    q = a.join(b, on="a", coalesce=False, =how)
     out = q.collect()
     assert q.schema == out.schema
     assert out.columns == ["a", "b", "a_right", "b_right", "c"]
 
-    q = a.join(b, on=["a", "b"], coalesce=False, how=how)
+    q = a.join(b, on=["a", "b"], coalesce=False, =how)
     out = q.collect()
     assert q.schema == out.schema
     assert out.columns == ["a", "b", "a_right", "b_right", "c"]
 
-    q = a.join(b, on=["a", "b"], coalesce=True, how=how)
+    q = a.join(b, on=["a", "b"], coalesce=True, =how)
     out = q.collect()
     assert q.schema == out.schema
     assert out.columns == ["a", "b", "c"]

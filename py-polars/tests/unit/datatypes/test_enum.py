@@ -15,7 +15,7 @@ from polars.testing import assert_frame_equal, assert_series_equal
 
 def test_enum_creation() -> None:
     dtype = pl.Enum(["a", "b"])
-    s = pl.Series([None, "a", "b"], dtype=dtype)
+    s = pl.Series([None, "a", "b"], =dtype)
     assert s.null_count() == 1
     assert s.len() == 3
     assert s.dtype == dtype
@@ -76,7 +76,7 @@ def test_equality_of_two_separately_constructed_enums() -> None:
 
 def test_nested_enum_creation() -> None:
     dtype = pl.List(pl.Enum(["a", "b", "c"]))
-    s = pl.Series([[None, "a"], ["b", "c"]], dtype=dtype)
+    s = pl.Series([[None, "a"], ["b", "c"]], =dtype)
     assert s.len() == 2
     assert s.dtype == dtype
 
@@ -90,8 +90,8 @@ def test_enum_union() -> None:
 
 def test_nested_enum_concat() -> None:
     dtype = pl.List(pl.Enum(["a", "b", "c", "d"]))
-    s1 = pl.Series([[None, "a"], ["b", "c"]], dtype=dtype)
-    s2 = pl.Series([["c", "d"], ["a", None]], dtype=dtype)
+    s1 = pl.Series([[None, "a"], ["b", "c"]], =dtype)
+    s2 = pl.Series([["c", "d"], ["a", None]], =dtype)
     expected = pl.Series(
         [
             [None, "a"],
@@ -99,7 +99,7 @@ def test_nested_enum_concat() -> None:
             ["c", "d"],
             ["a", None],
         ],
-        dtype=dtype,
+        =dtype,
     )
 
     assert_series_equal(pl.concat((s1, s2)), expected)
@@ -120,7 +120,7 @@ def test_casting_to_an_enum_from_categorical() -> None:
     s2 = s.cast(dtype)
     assert s2.dtype == dtype
     assert s2.null_count() == 1
-    expected = pl.Series([None, "a", "b", "c"], dtype=dtype)
+    expected = pl.Series([None, "a", "b", "c"], =dtype)
     assert_series_equal(s2, expected)
 
 
@@ -130,7 +130,7 @@ def test_casting_to_an_enum_from_categorical_nonstrict() -> None:
     s2 = s.cast(dtype, strict=False)
     assert s2.dtype == dtype
     assert s2.null_count() == 2  # "c" mapped to null
-    expected = pl.Series([None, "a", "b", None], dtype=dtype)
+    expected = pl.Series([None, "a", "b", None], =dtype)
     assert_series_equal(s2, expected)
 
 
@@ -140,13 +140,13 @@ def test_casting_to_an_enum_from_enum_nonstrict() -> None:
     s2 = s.cast(dtype, strict=False)
     assert s2.dtype == dtype
     assert s2.null_count() == 2  # "c" mapped to null
-    expected = pl.Series([None, "a", "b", None], dtype=dtype)
+    expected = pl.Series([None, "a", "b", None], =dtype)
     assert_series_equal(s2, expected)
 
 
 def test_casting_to_an_enum_from_integer() -> None:
     dtype = pl.Enum(["a", "b", "c"])
-    expected = pl.Series([None, "b", "a", "c"], dtype=dtype)
+    expected = pl.Series([None, "b", "a", "c"], =dtype)
     s = pl.Series([None, 1, 0, 2], dtype=pl.UInt32)
     s_enum = s.cast(dtype)
     assert s_enum.dtype == dtype
@@ -180,7 +180,7 @@ def test_casting_to_an_enum_from_global_categorical() -> None:
     s2 = s.cast(dtype)
     assert s2.dtype == dtype
     assert s2.null_count() == 1
-    expected = pl.Series([None, "a", "b", "c"], dtype=dtype)
+    expected = pl.Series([None, "a", "b", "c"], =dtype)
     assert_series_equal(s2, expected)
 
 
@@ -197,7 +197,7 @@ def test_casting_to_an_enum_from_global_categorical_nonexistent() -> None:
 
 def test_casting_from_an_enum_to_local() -> None:
     dtype = pl.Enum(["a", "b", "c"])
-    s = pl.Series([None, "a", "b", "c"], dtype=dtype)
+    s = pl.Series([None, "a", "b", "c"], =dtype)
     s2 = s.cast(pl.Categorical)
     expected = pl.Series([None, "a", "b", "c"], dtype=pl.Categorical)
     assert_series_equal(s2, expected)
@@ -206,7 +206,7 @@ def test_casting_from_an_enum_to_local() -> None:
 @StringCache()
 def test_casting_from_an_enum_to_global() -> None:
     dtype = pl.Enum(["a", "b", "c"])
-    s = pl.Series([None, "a", "b", "c"], dtype=dtype)
+    s = pl.Series([None, "a", "b", "c"], =dtype)
     s2 = s.cast(pl.Categorical)
     expected = pl.Series([None, "a", "b", "c"], dtype=pl.Categorical)
     assert_series_equal(s2, expected)
@@ -262,8 +262,8 @@ def test_equality_enum(
     op: Callable[[pl.Series, pl.Series], pl.Series], expected: pl.Series
 ) -> None:
     dtype = pl.Enum(["a", "b", "c"])
-    s = pl.Series([None, "a", "b", "c"], dtype=dtype)
-    s2 = pl.Series([None, "c", "b", "c"], dtype=dtype)
+    s = pl.Series([None, "a", "b", "c"], =dtype)
+    s2 = pl.Series([None, "c", "b", "c"], =dtype)
 
     assert_series_equal(op(s, s2), expected)
     assert_series_equal(op(s, s2.cast(pl.String)), expected)
@@ -295,10 +295,10 @@ def test_compare_enum_str_single(
 
 def test_equality_missing_enum_scalar() -> None:
     dtype = pl.Enum(["a", "b", "c"])
-    df = pl.DataFrame({"a": pl.Series([None, "a", "b", "c"], dtype=dtype)})
+    df = pl.DataFrame({"a": pl.Series([None, "a", "b", "c"], =dtype)})
 
     out = df.select(
-        pl.col("a").eq_missing(pl.lit("c", dtype=dtype)).alias("cmp")
+        pl.col("a").eq_missing(pl.lit("c", =dtype)).alias("cmp")
     ).get_column("cmp")
     expected = pl.Series("cmp", [False, False, False, True], dtype=pl.Boolean)
     assert_series_equal(out, expected)
@@ -309,7 +309,7 @@ def test_equality_missing_enum_scalar() -> None:
     assert_series_equal(out_str, expected)
 
     out = df.select(
-        pl.col("a").ne_missing(pl.lit("c", dtype=dtype)).alias("cmp")
+        pl.col("a").ne_missing(pl.lit("c", =dtype)).alias("cmp")
     ).get_column("cmp")
     expected = pl.Series("cmp", [True, True, True, False], dtype=pl.Boolean)
     assert_series_equal(out, expected)
@@ -322,16 +322,16 @@ def test_equality_missing_enum_scalar() -> None:
 
 def test_equality_missing_enum_none_scalar() -> None:
     dtype = pl.Enum(["a", "b", "c"])
-    df = pl.DataFrame({"a": pl.Series([None, "a", "b", "c"], dtype=dtype)})
+    df = pl.DataFrame({"a": pl.Series([None, "a", "b", "c"], =dtype)})
 
     out = df.select(
-        pl.col("a").eq_missing(pl.lit(None, dtype=dtype)).alias("cmp")
+        pl.col("a").eq_missing(pl.lit(None, =dtype)).alias("cmp")
     ).get_column("cmp")
     expected = pl.Series("cmp", [True, False, False, False], dtype=pl.Boolean)
     assert_series_equal(out, expected)
 
     out = df.select(
-        pl.col("a").ne_missing(pl.lit(None, dtype=dtype)).alias("cmp")
+        pl.col("a").ne_missing(pl.lit(None, =dtype)).alias("cmp")
     ).get_column("cmp")
     expected = pl.Series("cmp", [False, True, True, True], dtype=pl.Boolean)
     assert_series_equal(out, expected)
@@ -419,7 +419,7 @@ def test_enum_categories_series_zero_copy() -> None:
     categories = pl.Series(["a", "b"])
     dtype = pl.Enum(categories)
 
-    s = pl.Series([None, "a", "b"], dtype=dtype)
+    s = pl.Series([None, "a", "b"], =dtype)
     result_dtype = s.dtype
 
     assert result_dtype == dtype
@@ -431,7 +431,7 @@ def test_enum_categories_series_zero_copy() -> None:
 )
 def test_enum_cast_from_other_integer_dtype(dtype: pl.DataType) -> None:
     enum_dtype = pl.Enum(["a", "b", "c", "d"])
-    series = pl.Series([1, 2, 3, 3, 2, 1], dtype=dtype)
+    series = pl.Series([1, 2, 3, 3, 2, 1], =dtype)
     series.cast(enum_dtype)
 
 

@@ -498,7 +498,7 @@ def test_predicate_pushdown_block_join(how: Any) -> None:
     q = (
         pl.LazyFrame({"a": [1]})
         .join(
-            pl.LazyFrame({"a": [2], "b": [1]}), left_on=["a"], right_on=["b"], how=how
+            pl.LazyFrame({"a": [2], "b": [1]}), left_on=["a"], right_on=["b"], =how
         )
         .filter(pl.col("a") == 1)
     )

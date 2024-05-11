@@ -32,7 +32,7 @@ def test_ewm_by(data: st.DataObject, half_life: int) -> None:
         )
     )
     expected = df.select(
-        pl.col("values").ewm_mean(half_life=half_life, ignore_nulls=False, adjust=False)
+        pl.col("values").ewm_mean(=half_life, ignore_nulls=False, adjust=False)
     )
     assert_frame_equal(result, expected)
     result = (

@@ -286,11 +286,11 @@ def test_str_find(strict: bool) -> None:
 
     for match_lit in (True, False):
         res = df.select(
-            find_a_regex=city.str.find("(?i)a", strict=strict),
+            find_a_regex=city.str.find("(?i)a", =strict),
             find_a_lit=city.str.find("a", literal=match_lit),
             find_00_lit=pop.cast(pl.String).str.find("00", literal=match_lit),
-            find_col_lit=city.str.find(lit, strict=strict, literal=match_lit),
-            find_col_pat=city.str.find(pat, strict=strict),
+            find_col_lit=city.str.find(lit, =strict, literal=match_lit),
+            find_col_pat=city.str.find(pat, =strict),
         )
         assert res.to_dict(as_series=False) == {
             "find_a_regex": [3, 0, 2, 0, 0, 1, 3, 4, None],

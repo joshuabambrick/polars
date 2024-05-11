@@ -17,7 +17,7 @@ def test_join_on_subquery() -> None:
         }
     )
 
-    sql = pl.SQLContext(df1=df1, df2=df2)
+    sql = pl.SQLContext(=df1, =df2)
     res = sql.execute(
         """
         SELECT
@@ -49,7 +49,7 @@ def test_from_subquery() -> None:
         }
     )
 
-    sql = pl.SQLContext(df1=df1, df2=df2)
+    sql = pl.SQLContext(=df1, =df2)
     res = sql.execute(
         """
         SELECT
@@ -90,7 +90,7 @@ def test_in_subquery() -> None:
         }
     )
 
-    sql = pl.SQLContext(df=df, df_other=df_other, df_chars=df_chars)
+    sql = pl.SQLContext(=df, =df_other, =df_chars)
     res_same = sql.execute(
         """
         SELECT

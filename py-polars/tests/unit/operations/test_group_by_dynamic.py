@@ -87,8 +87,8 @@ def test_dynamic_group_by_timezone_awareness(
     assert (
         df.group_by_dynamic(
             "datetime",
-            every=every,
-            offset=offset,
+            =every,
+            =offset,
             closed="right",
             include_boundaries=True,
             label="datapoint",
@@ -99,8 +99,8 @@ def test_dynamic_group_by_timezone_awareness(
 @pytest.mark.parametrize("tzinfo", [None, ZoneInfo("UTC"), ZoneInfo("Asia/Kathmandu")])
 def test_group_by_dynamic_startby_5599(tzinfo: ZoneInfo | None) -> None:
     # start by datapoint
-    start = datetime(2022, 12, 16, tzinfo=tzinfo)
-    stop = datetime(2022, 12, 16, hour=3, tzinfo=tzinfo)
+    start = datetime(2022, 12, 16, =tzinfo)
+    stop = datetime(2022, 12, 16, hour=3, =tzinfo)
     df = pl.DataFrame({"date": pl.datetime_range(start, stop, "30m", eager=True)})
 
     assert df.group_by_dynamic(
@@ -111,35 +111,35 @@ def test_group_by_dynamic_startby_5599(tzinfo: ZoneInfo | None) -> None:
         start_by="datapoint",
     ).agg(pl.len()).to_dict(as_series=False) == {
         "_lower_boundary": [
-            datetime(2022, 12, 16, 0, 0, tzinfo=tzinfo),
-            datetime(2022, 12, 16, 0, 31, tzinfo=tzinfo),
-            datetime(2022, 12, 16, 1, 2, tzinfo=tzinfo),
-            datetime(2022, 12, 16, 1, 33, tzinfo=tzinfo),
-            datetime(2022, 12, 16, 2, 4, tzinfo=tzinfo),
-            datetime(2022, 12, 16, 2, 35, tzinfo=tzinfo),
+            datetime(2022, 12, 16, 0, 0, =tzinfo),
+            datetime(2022, 12, 16, 0, 31, =tzinfo),
+            datetime(2022, 12, 16, 1, 2, =tzinfo),
+            datetime(2022, 12, 16, 1, 33, =tzinfo),
+            datetime(2022, 12, 16, 2, 4, =tzinfo),
+            datetime(2022, 12, 16, 2, 35, =tzinfo),
         ],
         "_upper_boundary": [
-            datetime(2022, 12, 16, 0, 31, tzinfo=tzinfo),
-            datetime(2022, 12, 16, 1, 2, tzinfo=tzinfo),
-            datetime(2022, 12, 16, 1, 33, tzinfo=tzinfo),
-            datetime(2022, 12, 16, 2, 4, tzinfo=tzinfo),
-            datetime(2022, 12, 16, 2, 35, tzinfo=tzinfo),
-            datetime(2022, 12, 16, 3, 6, tzinfo=tzinfo),
+            datetime(2022, 12, 16, 0, 31, =tzinfo),
+            datetime(2022, 12, 16, 1, 2, =tzinfo),
+            datetime(2022, 12, 16, 1, 33, =tzinfo),
+            datetime(2022, 12, 16, 2, 4, =tzinfo),
+            datetime(2022, 12, 16, 2, 35, =tzinfo),
+            datetime(2022, 12, 16, 3, 6, =tzinfo),
         ],
         "date": [
-            datetime(2022, 12, 16, 0, 0, tzinfo=tzinfo),
-            datetime(2022, 12, 16, 1, 0, tzinfo=tzinfo),
-            datetime(2022, 12, 16, 1, 30, tzinfo=tzinfo),
-            datetime(2022, 12, 16, 2, 0, tzinfo=tzinfo),
-            datetime(2022, 12, 16, 2, 30, tzinfo=tzinfo),
-            datetime(2022, 12, 16, 3, 0, tzinfo=tzinfo),
+            datetime(2022, 12, 16, 0, 0, =tzinfo),
+            datetime(2022, 12, 16, 1, 0, =tzinfo),
+            datetime(2022, 12, 16, 1, 30, =tzinfo),
+            datetime(2022, 12, 16, 2, 0, =tzinfo),
+            datetime(2022, 12, 16, 2, 30, =tzinfo),
+            datetime(2022, 12, 16, 3, 0, =tzinfo),
         ],
         "len": [2, 1, 1, 1, 1, 1],
     }
 
     # start by monday
-    start = datetime(2022, 1, 1, tzinfo=tzinfo)
-    stop = datetime(2022, 1, 12, 7, tzinfo=tzinfo)
+    start = datetime(2022, 1, 1, =tzinfo)
+    stop = datetime(2022, 1, 12, 7, =tzinfo)
 
     df = pl.DataFrame(
         {"date": pl.datetime_range(start, stop, "12h", eager=True)}
@@ -155,16 +155,16 @@ def test_group_by_dynamic_startby_5599(tzinfo: ZoneInfo | None) -> None:
     ).agg([pl.len(), pl.col("day").first().alias("data_day")])
     assert result.to_dict(as_series=False) == {
         "_lower_boundary": [
-            datetime(2022, 1, 3, 0, 0, tzinfo=tzinfo),
-            datetime(2022, 1, 10, 0, 0, tzinfo=tzinfo),
+            datetime(2022, 1, 3, 0, 0, =tzinfo),
+            datetime(2022, 1, 10, 0, 0, =tzinfo),
         ],
         "_upper_boundary": [
-            datetime(2022, 1, 6, 0, 0, tzinfo=tzinfo),
-            datetime(2022, 1, 13, 0, 0, tzinfo=tzinfo),
+            datetime(2022, 1, 6, 0, 0, =tzinfo),
+            datetime(2022, 1, 13, 0, 0, =tzinfo),
         ],
         "date": [
-            datetime(2022, 1, 3, 0, 0, tzinfo=tzinfo),
-            datetime(2022, 1, 10, 0, 0, tzinfo=tzinfo),
+            datetime(2022, 1, 3, 0, 0, =tzinfo),
+            datetime(2022, 1, 10, 0, 0, =tzinfo),
         ],
         "len": [6, 5],
         "data_day": [1, 1],
@@ -180,16 +180,16 @@ def test_group_by_dynamic_startby_5599(tzinfo: ZoneInfo | None) -> None:
     ).agg([pl.len(), pl.col("day").first().alias("data_day")])
     assert result.to_dict(as_series=False) == {
         "_lower_boundary": [
-            datetime(2022, 1, 1, 0, 0, tzinfo=tzinfo),
-            datetime(2022, 1, 8, 0, 0, tzinfo=tzinfo),
+            datetime(2022, 1, 1, 0, 0, =tzinfo),
+            datetime(2022, 1, 8, 0, 0, =tzinfo),
         ],
         "_upper_boundary": [
-            datetime(2022, 1, 4, 0, 0, tzinfo=tzinfo),
-            datetime(2022, 1, 11, 0, 0, tzinfo=tzinfo),
+            datetime(2022, 1, 4, 0, 0, =tzinfo),
+            datetime(2022, 1, 11, 0, 0, =tzinfo),
         ],
         "date": [
-            datetime(2022, 1, 1, 0, 0, tzinfo=tzinfo),
-            datetime(2022, 1, 8, 0, 0, tzinfo=tzinfo),
+            datetime(2022, 1, 1, 0, 0, =tzinfo),
+            datetime(2022, 1, 8, 0, 0, =tzinfo),
         ],
         "len": [6, 6],
         "data_day": [6, 6],
@@ -273,7 +273,7 @@ def test_group_by_dynamic_label(label: Label, expected: list[datetime]) -> None:
         }
     ).sort("ts")
     result = (
-        df.group_by_dynamic("ts", every="1d", label=label, group_by="group")
+        df.group_by_dynamic("ts", every="1d", =label, group_by="group")
         .agg(pl.col("n"))["ts"]
         .to_list()
     )
@@ -303,7 +303,7 @@ def test_group_by_dynamic_label_with_by(label: Label, expected: list[datetime]) 
         }
     ).sort("ts")
     result = (
-        df.group_by_dynamic("ts", every="1d", label=label)
+        df.group_by_dynamic("ts", every="1d", =label)
         .agg(pl.col("n"))["ts"]
         .to_list()
     )
@@ -439,8 +439,8 @@ def test_group_by_dynamic_lazy(every: str | timedelta, tzinfo: ZoneInfo | None) 
     ldf = pl.LazyFrame(
         {
             "time": pl.datetime_range(
-                start=datetime(2021, 12, 16, tzinfo=tzinfo),
-                end=datetime(2021, 12, 16, 2, tzinfo=tzinfo),
+                start=datetime(2021, 12, 16, =tzinfo),
+                end=datetime(2021, 12, 16, 2, =tzinfo),
                 interval="30m",
                 eager=True,
             ),
@@ -448,7 +448,7 @@ def test_group_by_dynamic_lazy(every: str | timedelta, tzinfo: ZoneInfo | None) 
         }
     )
     df = (
-        ldf.group_by_dynamic("time", every=every, closed="right")
+        ldf.group_by_dynamic("time", =every, closed="right")
         .agg(
             [
                 pl.col("time").min().alias("time_min"),
@@ -459,19 +459,19 @@ def test_group_by_dynamic_lazy(every: str | timedelta, tzinfo: ZoneInfo | None) 
     )
     assert sorted(df.rows()) == [
         (
-            datetime(2021, 12, 15, 23, 0, tzinfo=tzinfo),
-            datetime(2021, 12, 16, 0, 0, tzinfo=tzinfo),
-            datetime(2021, 12, 16, 0, 0, tzinfo=tzinfo),
+            datetime(2021, 12, 15, 23, 0, =tzinfo),
+            datetime(2021, 12, 16, 0, 0, =tzinfo),
+            datetime(2021, 12, 16, 0, 0, =tzinfo),
         ),
         (
-            datetime(2021, 12, 16, 0, 0, tzinfo=tzinfo),
-            datetime(2021, 12, 16, 0, 30, tzinfo=tzinfo),
-            datetime(2021, 12, 16, 1, 0, tzinfo=tzinfo),
+            datetime(2021, 12, 16, 0, 0, =tzinfo),
+            datetime(2021, 12, 16, 0, 30, =tzinfo),
+            datetime(2021, 12, 16, 1, 0, =tzinfo),
         ),
         (
-            datetime(2021, 12, 16, 1, 0, tzinfo=tzinfo),
-            datetime(2021, 12, 16, 1, 30, tzinfo=tzinfo),
-            datetime(2021, 12, 16, 2, 0, tzinfo=tzinfo),
+            datetime(2021, 12, 16, 1, 0, =tzinfo),
+            datetime(2021, 12, 16, 1, 30, =tzinfo),
+            datetime(2021, 12, 16, 2, 0, =tzinfo),
         ),
     ]
 
@@ -531,9 +531,9 @@ def test_truncate_negative_offset(tzinfo: ZoneInfo | None) -> None:
     )
 
     assert out["event_date"].to_list() == [
-        datetime(2021, 3, 1, tzinfo=tzinfo),
-        datetime(2021, 4, 1, tzinfo=tzinfo),
-        datetime(2021, 5, 1, tzinfo=tzinfo),
+        datetime(2021, 3, 1, =tzinfo),
+        datetime(2021, 4, 1, =tzinfo),
+        datetime(2021, 5, 1, =tzinfo),
     ]
     df = pl.DataFrame(
         {
@@ -558,9 +558,9 @@ def test_truncate_negative_offset(tzinfo: ZoneInfo | None) -> None:
     ).agg([pl.col("adm1_code").unique(), (pl.col("fatalities") > 0).sum()])
 
     assert out["event_date"].to_list() == [
-        datetime(2021, 4, 1, tzinfo=tzinfo),
-        datetime(2021, 5, 1, tzinfo=tzinfo),
-        datetime(2021, 4, 1, tzinfo=tzinfo),
+        datetime(2021, 4, 1, =tzinfo),
+        datetime(2021, 5, 1, =tzinfo),
+        datetime(2021, 4, 1, =tzinfo),
     ]
 
     for dt in [pl.Int32, pl.Int64]:
@@ -788,7 +788,7 @@ def test_group_by_dynamic_startby_monday_crossing_dst(
         start_dt, end_dt, "1d", time_zone="US/Central", eager=True
     )
     df = pl.DataFrame({"time": date_range, "value": range(len(date_range))})
-    result = df.group_by_dynamic("time", every="1w", start_by=start_by).agg(
+    result = df.group_by_dynamic("time", every="1w", =start_by).agg(
         pl.col("value").mean()
     )
     expected = pl.DataFrame(
@@ -863,11 +863,11 @@ def test_group_by_dynamic_iter(every: str | timedelta, tzinfo: ZoneInfo | None) 
     # Without 'by' argument
     result1 = [
         (name, data.shape)
-        for name, data in df.group_by_dynamic("datetime", every=every, closed="left")
+        for name, data in df.group_by_dynamic("datetime", =every, closed="left")
     ]
     expected1 = [
-        (datetime(2020, 1, 1, 10, tzinfo=tzinfo), (2, 3)),
-        (datetime(2020, 1, 1, 11, tzinfo=tzinfo), (1, 3)),
+        (datetime(2020, 1, 1, 10, =tzinfo), (2, 3)),
+        (datetime(2020, 1, 1, 11, =tzinfo), (1, 3)),
     ]
     assert result1 == expected1
 
@@ -875,13 +875,13 @@ def test_group_by_dynamic_iter(every: str | timedelta, tzinfo: ZoneInfo | None) 
     result2 = [
         (name, data.shape)
         for name, data in df.group_by_dynamic(
-            "datetime", every=every, closed="left", group_by="a"
+            "datetime", =every, closed="left", group_by="a"
         )
     ]
     expected2 = [
-        ((1, datetime(2020, 1, 1, 10, tzinfo=tzinfo)), (1, 3)),
-        ((2, datetime(2020, 1, 1, 10, tzinfo=tzinfo)), (1, 3)),
-        ((2, datetime(2020, 1, 1, 11, tzinfo=tzinfo)), (1, 3)),
+        ((1, datetime(2020, 1, 1, 10, =tzinfo)), (1, 3)),
+        ((2, datetime(2020, 1, 1, 10, =tzinfo)), (1, 3)),
+        ((2, datetime(2020, 1, 1, 11, =tzinfo)), (1, 3)),
     ]
     assert result2 == expected2
 
@@ -901,7 +901,7 @@ def test_group_by_dynamic_lazy_schema(include_boundaries: bool) -> None:
     )
 
     result = lf.group_by_dynamic(
-        "dt", every="2d", closed="right", include_boundaries=include_boundaries
+        "dt", every="2d", closed="right", =include_boundaries
     ).agg(pl.col("dt").min().alias("dt_min"))
 
     assert result.schema == result.collect().schema
@@ -1001,7 +1001,7 @@ def test_earliest_point_included_when_offset_is_set_15241(start_by: StartBy) -> 
         index_column="t",
         every="1d",
         offset=timedelta(hours=5),
-        start_by=start_by,
+        =start_by,
     ).agg("v")
     expected = pl.DataFrame(
         {

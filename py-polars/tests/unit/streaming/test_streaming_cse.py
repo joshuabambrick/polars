@@ -85,5 +85,5 @@ def test_cse_expr_group_by() -> None:
         {"a": [1, 2, 3, 4], "sum": [1, 4, 9, 16], "min": [1, 4, 9, 16]}
     )
     for streaming in [True, False]:
-        out = q.collect(comm_subexpr_elim=True, streaming=streaming)
+        out = q.collect(comm_subexpr_elim=True, =streaming)
         assert_frame_equal(out, expected)

@@ -45,14 +45,14 @@ def test_scan_ndjson_with_schema(foods_ndjson_path: Path) -> None:
         "fats_g": pl.Float64,
         "sugars_g": pl.Int64,
     }
-    df = pl.scan_ndjson(foods_ndjson_path, schema=schema).collect()
+    df = pl.scan_ndjson(foods_ndjson_path, =schema).collect()
     assert df["category"].dtype == pl.Categorical
     assert df["calories"].dtype == pl.Int64
     assert df["fats_g"].dtype == pl.Float64
     assert df["sugars_g"].dtype == pl.Int64
 
     schema["sugars_g"] = pl.Float64
-    df = pl.scan_ndjson(foods_ndjson_path, schema=schema).collect()
+    df = pl.scan_ndjson(foods_ndjson_path, =schema).collect()
     assert df["sugars_g"].dtype == pl.Float64
 
 

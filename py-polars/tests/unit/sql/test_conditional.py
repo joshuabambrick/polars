@@ -85,7 +85,7 @@ def test_greatest_least() -> None:
             "f": [date(1970, 1, 1), date(2000, 10, 20), date(2077, 7, 5), None],
         }
     )
-    with pl.SQLContext(df=df) as ctx:
+    with pl.SQLContext(=df) as ctx:
         df_max_horizontal = ctx.execute(
             """
             SELECT

@@ -36,7 +36,7 @@ def test_date_datetime() -> None:
 
 @pytest.mark.parametrize("time_unit", ["ms", "us", "ns"])
 def test_datetime_time_unit(time_unit: TimeUnit) -> None:
-    result = pl.datetime(2022, 1, 2, time_unit=time_unit)
+    result = pl.datetime(2022, 1, 2, =time_unit)
 
     assert pl.select(result.dt.year()).item() == 2022
     assert pl.select(result.dt.month()).item() == 1
@@ -45,7 +45,7 @@ def test_datetime_time_unit(time_unit: TimeUnit) -> None:
 
 @pytest.mark.parametrize("time_zone", [None, "Europe/Amsterdam", "UTC"])
 def test_datetime_time_zone(time_zone: str | None) -> None:
-    result = pl.datetime(2022, 1, 2, 10, time_zone=time_zone)
+    result = pl.datetime(2022, 1, 2, 10, =time_zone)
 
     assert pl.select(result.dt.year()).item() == 2022
     assert pl.select(result.dt.month()).item() == 1
@@ -458,7 +458,7 @@ def test_struct_lit_cast() -> None:
     schema = {"a": pl.Int64, "b": pl.List(pl.Int64)}
 
     out = df.select(
-        pl.struct(pl.col("a"), pl.lit(None).alias("b"), schema=schema)  # type: ignore[arg-type]
+        pl.struct(pl.col("a"), pl.lit(None).alias("b"), =schema)  # type: ignore[arg-type]
     ).get_column("a")
 
     expected = pl.Series(
@@ -473,7 +473,7 @@ def test_struct_lit_cast() -> None:
     assert_series_equal(out, expected)
 
     out = df.select(
-        pl.struct([pl.col("a"), pl.lit(pl.Series([[]])).alias("b")], schema=schema)  # type: ignore[arg-type]
+        pl.struct([pl.col("a"), pl.lit(pl.Series([[]])).alias("b")], =schema)  # type: ignore[arg-type]
     ).get_column("a")
 
     expected = pl.Series(

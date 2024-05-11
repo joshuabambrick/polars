@@ -21,7 +21,7 @@ def test_register_plugin_function_invalid_plugin_path(tmp_path: Path) -> None:
     plugin_path.touch()
 
     expr = register_plugin_function(
-        plugin_path=plugin_path, function_name="hello", args=5
+        =plugin_path, function_name="hello", args=5
     )
 
     with pytest.raises(pl.ComputeError, match="error loading dynamic library"):

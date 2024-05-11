@@ -235,10 +235,10 @@ def test_read_excel_basic_datatypes(
     for sheet_id, sheet_name in ((None, None), (1, None), (None, "Sheet1")):
         df = pl.read_excel(
             xls,
-            sheet_id=sheet_id,
-            sheet_name=sheet_name,
-            engine=engine,
-            schema_overrides=schema_overrides,
+            =sheet_id,
+            =sheet_name,
+            =engine,
+            =schema_overrides,
         )
         assert_frame_equal(df, df)
 
@@ -247,9 +247,9 @@ def test_read_excel_basic_datatypes(
     dt_override = {"datetime": pl.Date} if engine != "xlsx2csv" else {}
     df = pl.read_excel(
         xls,
-        sheet_id=sheet_id,
-        sheet_name=sheet_name,
-        engine=engine,
+        =sheet_id,
+        =sheet_name,
+        =engine,
         schema_overrides={"A": pl.Float32, **dt_override},
     )
     assert_series_equal(
@@ -300,7 +300,7 @@ def test_read_invalid_worksheet(
             match=f"no matching sheet found when `sheet_{param}` is {value!r}",
         ):
             read_spreadsheet(
-                spreadsheet_path, sheet_id=sheet_id, sheet_name=sheet_name, **params
+                spreadsheet_path, =sheet_id, =sheet_name, **params
             )
 
 
@@ -330,7 +330,7 @@ def test_read_mixed_dtype_columns(
     df = read_spreadsheet(
         spreadsheet_path,
         sheet_id=0,
-        schema_overrides=schema_overrides,
+        =schema_overrides,
         **additional_params,
     )["Sheet1"]
 
@@ -356,7 +356,7 @@ def test_read_mixed_dtype_columns(
                 ],
                 "Asset ID": ["84444", "84444", "84444", "84444", "ABC123"],
             },
-            schema_overrides=schema_overrides,
+            =schema_overrides,
         ),
     )
 
@@ -368,7 +368,7 @@ def test_write_excel_bytes(engine: ExcelSpreadsheetEngine) -> None:
     excel_bytes = BytesIO()
     df.write_excel(excel_bytes)
 
-    df_read = pl.read_excel(excel_bytes, engine=engine)
+    df_read = pl.read_excel(excel_bytes, =engine)
     assert_frame_equal(df, df_read)
 
 
@@ -477,7 +477,7 @@ def test_invalid_parameter_combinations(
         pl.read_excel(  # type: ignore[call-overload]
             path_xlsx,
             sheet_id=1,
-            engine=engine,
+            =engine,
             read_options={read_opts_param: 512},
             infer_schema_length=1024,
         )
@@ -506,7 +506,7 @@ def test_read_excel_all_sheets_with_sheet_name(path_xlsx: Path, engine: str) -> 
             path_xlsx,
             sheet_id=1,
             sheet_name="Sheet1",
-            engine=engine,
+            =engine,
         )
 
 
@@ -640,8 +640,8 @@ def test_excel_round_trip(write_params: dict[str, Any]) -> None:
         xldf = pl.read_excel(
             xls,
             sheet_name="data",
-            engine=engine,
-            read_options=read_options,
+            =engine,
+            =read_options,
         )[:3].select(df.columns[:3])
         if engine == "xlsx2csv":
             xldf = xldf.with_columns(pl.col("dtm").str.strptime(pl.Date, fmt_strptime))
@@ -659,7 +659,7 @@ def test_excel_compound_types(
     xls = BytesIO()
     df.write_excel(xls, worksheet="data")
 
-    xldf = pl.read_excel(xls, sheet_name="data", engine=engine)
+    xldf = pl.read_excel(xls, sheet_name="data", =engine)
     assert xldf.rows() == [
         ("[1, 2]", "{'y': 'a', 'z': 9}"),
         ("[3, 4]", "{'y': 'b', 'z': 8}"),
@@ -722,7 +722,7 @@ def test_excel_sparklines(engine: ExcelSpreadsheetEngine) -> None:
 
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", UserWarning)
-        xldf = pl.read_excel(xls, sheet_name="frame_data", engine=engine)
+        xldf = pl.read_excel(xls, sheet_name="frame_data", =engine)
 
     # ┌─────┬──────┬─────┬─────┬─────┬─────┬───────┬─────┬─────┐
     # │ id  ┆ +/-  ┆ q1  ┆ q2  ┆ q3  ┆ q4  ┆ trend ┆ h1  ┆ h2  │
@@ -852,7 +852,7 @@ def test_excel_hidden_columns(
     df = pl.DataFrame({"a": [1, 2], "b": ["x", "y"]})
 
     xls = BytesIO()
-    df.write_excel(xls, hidden_columns=hidden_columns)
+    df.write_excel(xls, =hidden_columns)
 
     read_df = pl.read_excel(xls)
     assert_frame_equal(df, read_df)
@@ -879,7 +879,7 @@ def test_excel_type_inference_with_nulls(engine: ExcelSpreadsheetEngine) -> None
 
     read_df = pl.read_excel(
         xls,
-        engine=engine,
+        =engine,
         schema_overrides={
             "e": pl.Date,
             "f": pl.Datetime("us"),

@@ -557,7 +557,7 @@ def test_list_recursive_categorical_cast() -> None:
 def test_non_nested_cast_to_list(
     data: list[Any], expected_data: list[Any], dtype: PolarsDataType
 ) -> None:
-    s = pl.Series(data, dtype=dtype)
+    s = pl.Series(data, =dtype)
     casted_s = s.cast(pl.List(dtype))
     expected = pl.Series(expected_data, dtype=pl.List(dtype))
     assert_series_equal(casted_s, expected)
@@ -574,7 +574,7 @@ def test_list_new_from_index_logical() -> None:
 
     # empty new_from_index # 8420
     dtype = pl.List(pl.Struct({"c": pl.Boolean}))
-    s = pl.Series("b", values=[[]], dtype=dtype)
+    s = pl.Series("b", values=[[]], =dtype)
     s = s.new_from_index(0, 2)
     assert s.dtype == dtype
     assert s.to_list() == [[], []]

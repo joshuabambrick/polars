@@ -78,7 +78,7 @@ Series: 'foo' [i64]
 def test_fmt_series(
     capfd: pytest.CaptureFixture[str], expected: str, values: list[Any]
 ) -> None:
-    s = pl.Series(name="foo", values=values)
+    s = pl.Series(name="foo", =values)
     with pl.Config(fmt_str_lengths=15):
         print(s)
     out, err = capfd.readouterr()
@@ -91,7 +91,7 @@ def test_fmt_series_string_truncate_default(capfd: pytest.CaptureFixture[str]) -
         string.ascii_lowercase + "1234",
         string.ascii_lowercase + "12345",
     ]
-    s = pl.Series(name="foo", values=values)
+    s = pl.Series(name="foo", =values)
     print(s)
     out, _ = capfd.readouterr()
     expected = """shape: (3,)
@@ -111,7 +111,7 @@ Series: 'foo' [str]
 def test_fmt_series_string_truncate_cat(
     dtype: pl.PolarsDataType, capfd: pytest.CaptureFixture[str]
 ) -> None:
-    s = pl.Series(name="foo", values=["abc", "abcd", "abcde"], dtype=dtype)
+    s = pl.Series(name="foo", values=["abc", "abcd", "abcde"], =dtype)
     with pl.Config(fmt_str_lengths=4):
         print(s)
     out, _ = capfd.readouterr()
@@ -181,7 +181,7 @@ Series: 'foo' [i64]
 def test_fmt_signed_int_thousands_sep(
     values: list[int], dtype: PolarsDataType, expected: str
 ) -> None:
-    s = pl.Series(name="foo", values=values, dtype=dtype)
+    s = pl.Series(name="foo", =values, =dtype)
     with pl.Config(thousands_separator=True):
         assert str(s) == expected
 
@@ -238,7 +238,7 @@ Series: 'foo' [u64]
 def test_fmt_unsigned_int_thousands_sep(
     values: list[int], dtype: PolarsDataType, expected: str
 ) -> None:
-    s = pl.Series(name="foo", values=values, dtype=dtype)
+    s = pl.Series(name="foo", =values, =dtype)
     with pl.Config(thousands_separator=True):
         assert str(s) == expected
 
@@ -409,7 +409,7 @@ def test_format_numeric_locale_options() -> None:
 def test_fmt_decimal_max_scale() -> None:
     values = [D("0.14282911023321884847623576259639164703")]
     dtype = pl.Decimal(precision=38, scale=38)
-    s = pl.Series(values, dtype=dtype)
+    s = pl.Series(values, =dtype)
     result = str(s)
     expected = """shape: (1,)
 Series: '' [decimal[38,38]]

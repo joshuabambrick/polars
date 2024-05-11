@@ -186,8 +186,8 @@ def concat(
             out = wrap_ldf(
                 plr.concat_lf(
                     [df.lazy() for df in elems],
-                    rechunk=rechunk,
-                    parallel=parallel,
+                    =rechunk,
+                    =parallel,
                     to_supertypes=True,
                 )
             ).collect(no_optimization=True)
@@ -198,8 +198,8 @@ def concat(
             out = wrap_ldf(
                 plr.concat_lf_diagonal(
                     [df.lazy() for df in elems],
-                    rechunk=rechunk,
-                    parallel=parallel,
+                    =rechunk,
+                    =parallel,
                     to_supertypes=True,
                 )
             ).collect(no_optimization=True)
@@ -215,8 +215,8 @@ def concat(
             return wrap_ldf(
                 plr.concat_lf(
                     elems,
-                    rechunk=rechunk,
-                    parallel=parallel,
+                    =rechunk,
+                    =parallel,
                     to_supertypes=how.endswith("relaxed"),
                 )
             )
@@ -224,17 +224,14 @@ def concat(
             return wrap_ldf(
                 plr.concat_lf_diagonal(
                     elems,
-                    rechunk=rechunk,
-                    parallel=parallel,
+                    =rechunk,
+                    =parallel,
                     to_supertypes=how.endswith("relaxed"),
                 )
             )
         elif how == "horizontal":
             return wrap_ldf(
-                plr.concat_lf_horizontal(
-                    elems,
-                    parallel=parallel,
-                )
+                plr.concat_lf_horizontal(elems, =parallel)
             )
         else:
             allowed = ", ".join(repr(m) for m in get_args(ConcatMethod))
@@ -277,9 +274,9 @@ def _alignment_join(
         idx_y: tuple[int, LazyFrame],
     ) -> tuple[int, LazyFrame]:
         (_, x), (y_idx, y) = idx_x, idx_y
-        return y_idx, x.join(y, how=how, on=align_on, suffix=f":{y_idx}")
+        return y_idx, x.join(y, =how, on=align_on, suffix=f":{y_idx}")
 
-    joined = reduce(join_func, idx_frames)[1].sort(by=align_on, descending=descending)
+    joined = reduce(join_func, idx_frames)[1].sort(by=align_on, =descending)
     if post_align_collect:
         joined = joined.collect(no_optimization=True).lazy()
     return joined
@@ -441,7 +438,7 @@ def align_frames(
     # we just subselect out the columns representing the component frames)
     idx_frames = tuple((idx, df.lazy()) for idx, df in enumerate(frames))
     alignment_frame = _alignment_join(
-        *idx_frames, align_on=align_on, how=how, descending=descending
+        *idx_frames, =align_on, =how, =descending
     )
 
     # select-out aligned components from the master frame

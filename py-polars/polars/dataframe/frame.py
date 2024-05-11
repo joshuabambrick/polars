@@ -366,67 +366,63 @@ class DataFrame:
         nan_to_null: bool = False,
     ):
         if data is None:
-            self._df = dict_to_pydf(
-                {}, schema=schema, schema_overrides=schema_overrides
-            )
+            self._df = dict_to_pydf({}, =schema, =schema_overrides)
 
         elif isinstance(data, dict):
             self._df = dict_to_pydf(
                 data,
-                schema=schema,
-                schema_overrides=schema_overrides,
-                strict=strict,
-                nan_to_null=nan_to_null,
+                =schema,
+                =schema_overrides,
+                =strict,
+                =nan_to_null,
             )
 
         elif isinstance(data, (list, tuple, Sequence)):
             self._df = sequence_to_pydf(
                 data,
-                schema=schema,
-                schema_overrides=schema_overrides,
-                strict=strict,
-                orient=orient,
-                infer_schema_length=infer_schema_length,
+                =schema,
+                =schema_overrides,
+                =strict,
+                =orient,
+                =infer_schema_length,
             )
 
         elif isinstance(data, pl.Series):
             self._df = series_to_pydf(
-                data, schema=schema, schema_overrides=schema_overrides, strict=strict
+                data, =schema, =schema_overrides, =strict
             )
 
         elif _check_for_numpy(data) and isinstance(data, np.ndarray):
             self._df = numpy_to_pydf(
                 data,
-                schema=schema,
-                schema_overrides=schema_overrides,
-                strict=strict,
-                orient=orient,
-                nan_to_null=nan_to_null,
+                =schema,
+                =schema_overrides,
+                =strict,
+                =orient,
+                =nan_to_null,
             )
 
         elif _check_for_pyarrow(data) and isinstance(data, pa.Table):
-            self._df = arrow_to_pydf(
-                data, schema=schema, schema_overrides=schema_overrides, strict=strict
-            )
+            self._df = arrow_to_pydf(data, =schema, =schema_overrides, =strict)
 
         elif _check_for_pandas(data) and isinstance(data, pd.DataFrame):
             self._df = pandas_to_pydf(
-                data, schema=schema, schema_overrides=schema_overrides, strict=strict
+                data, =schema, =schema_overrides, =strict
             )
 
         elif not isinstance(data, Sized) and isinstance(data, (Generator, Iterable)):
             self._df = iterable_to_pydf(
                 data,
-                schema=schema,
-                schema_overrides=schema_overrides,
-                strict=strict,
-                orient=orient,
-                infer_schema_length=infer_schema_length,
+                =schema,
+                =schema_overrides,
+                =strict,
+                =orient,
+                =infer_schema_length,
             )
 
         elif isinstance(data, pl.DataFrame):
             self._df = dataframe_to_pydf(
-                data, schema=schema, schema_overrides=schema_overrides, strict=strict
+                data, =schema, =schema_overrides, =strict
             )
         else:
             msg = (
@@ -478,12 +474,7 @@ class DataFrame:
             Make sure that all data is in contiguous memory.
         """
         return cls._from_pydf(
-            arrow_to_pydf(
-                data,
-                schema=schema,
-                schema_overrides=schema_overrides,
-                rechunk=rechunk,
-            )
+            arrow_to_pydf(data, =schema, =schema_overrides, =rechunk)
         )
 
     @classmethod
@@ -527,11 +518,11 @@ class DataFrame:
         return cls._from_pydf(
             pandas_to_pydf(
                 data,
-                schema=schema,
-                schema_overrides=schema_overrides,
-                rechunk=rechunk,
-                nan_to_null=nan_to_null,
-                include_index=include_index,
+                =schema,
+                =schema_overrides,
+                =rechunk,
+                =nan_to_null,
+                =include_index,
             )
         )
 
@@ -800,7 +791,7 @@ class DataFrame:
 
         from polars.interchange.dataframe import PolarsDataFrame
 
-        return PolarsDataFrame(self, allow_copy=allow_copy)
+        return PolarsDataFrame(self, =allow_copy)
 
     def _comp(self, other: Any, op: ComparisonOperator) -> DataFrame:
         """Compare a DataFrame with another object."""
@@ -1288,8 +1279,8 @@ class DataFrame:
         return "".join(
             NotebookFormatter(
                 self,
-                max_cols=max_cols,
-                max_rows=max_rows,
+                =max_cols,
+                =max_rows,
                 from_series=_from_series,
             ).render()
         )
@@ -1585,7 +1576,7 @@ class DataFrame:
             arrays = []
             struct_dtype = []
             for s in self.iter_columns():
-                arr = s.to_numpy(use_pyarrow=use_pyarrow)
+                arr = s.to_numpy(=use_pyarrow)
                 if s.dtype == String and s.null_count() == 0:
                     arr = arr.astype(str, copy=False)
                 arrays.append(arr)
@@ -1612,7 +1603,7 @@ class DataFrame:
         if out is None:
             return np.vstack(
                 [
-                    self.to_series(i).to_numpy(use_pyarrow=use_pyarrow)
+                    self.to_series(i).to_numpy(=use_pyarrow)
                     for i in range(self.width)
                 ]
             ).T
@@ -1785,7 +1776,7 @@ class DataFrame:
         elif return_type == "dataset":
             from polars.ml.torch import PolarsDataset
 
-            return PolarsDataset(frame, label=label, features=features)
+            return PolarsDataset(frame, =label, =features)
         else:
             valid_torch_types = ", ".join(get_args(TorchExportType))
             msg = f"invalid `return_type`: {return_type!r}\nExpected one of: {valid_torch_types}"
@@ -1883,11 +1874,11 @@ class DataFrame:
         # correctly
         if Object in self.dtypes:
             return self._to_pandas_with_object_columns(
-                use_pyarrow_extension_array=use_pyarrow_extension_array, **kwargs
+                =use_pyarrow_extension_array, **kwargs
             )
 
         return self._to_pandas_without_object_columns(
-            self, use_pyarrow_extension_array=use_pyarrow_extension_array, **kwargs
+            self, =use_pyarrow_extension_array, **kwargs
         )
 
     def _to_pandas_with_object_columns(
@@ -1910,7 +1901,7 @@ class DataFrame:
             df_without_objects = self[:, not_object_columns]
             pandas_df = self._to_pandas_without_object_columns(
                 df_without_objects,
-                use_pyarrow_extension_array=use_pyarrow_extension_array,
+                =use_pyarrow_extension_array,
                 **kwargs,
             )
         else:
@@ -1948,7 +1939,7 @@ class DataFrame:
             )
 
         date_as_object = kwargs.pop("date_as_object", False)
-        return tbl.to_pandas(date_as_object=date_as_object, **kwargs)
+        return tbl.to_pandas(=date_as_object, **kwargs)
 
     def to_series(self, index: int = 0) -> Series:
         """
@@ -2342,7 +2333,7 @@ class DataFrame:
         polars.read_clipboard: Read a DataFrame from the clipboard.
         write_csv: Write to comma-separated values (CSV) file.
         """
-        result: str = self.write_csv(file=None, separator=separator, **kwargs)
+        result: str = self.write_csv(file=None, =separator, **kwargs)
         _write_clipboard_string(result)
 
     def write_avro(
@@ -2759,14 +2750,14 @@ class DataFrame:
         table_columns, column_formats, df = _xl_setup_table_columns(  # type: ignore[assignment]
             df=df,
             format_cache=fmt_cache,
-            column_formats=column_formats,
-            column_totals=column_totals,
-            dtype_formats=dtype_formats,
-            header_format=header_format,
-            float_precision=float_precision,
-            row_totals=row_totals,
-            sparklines=sparklines,
-            formulas=formulas,
+            =column_formats,
+            =column_totals,
+            =dtype_formats,
+            =header_format,
+            =float_precision,
+            =row_totals,
+            =sparklines,
+            =formulas,
         )
 
         # normalise cell refs (eg: "B3" => (2,1)) and establish table start/finish,
@@ -2814,11 +2805,11 @@ class DataFrame:
             # apply conditional formats
             if conditional_formats:
                 _xl_apply_conditional_formats(
-                    df=df,
-                    ws=ws,
-                    conditional_formats=conditional_formats,
-                    table_start=table_start,
-                    include_header=include_header,
+                    =df,
+                    =ws,
+                    =conditional_formats,
+                    =table_start,
+                    =include_header,
                     format_cache=fmt_cache,
                 )
         # additional column-level properties
@@ -2855,8 +2846,8 @@ class DataFrame:
                 df,
                 table_start,
                 column,
-                include_header=include_header,
-                params=params,
+                =include_header,
+                =params,
             )
 
         # worksheet options
@@ -3251,7 +3242,7 @@ class DataFrame:
                     n_rows = cursor.adbc_ingest(
                         unpacked_table_name,
                         data=self.to_arrow(),
-                        mode=mode,
+                        =mode,
                         catalog_name=catalog,
                         db_schema_name=db_schema,
                     )
@@ -3504,7 +3495,7 @@ class DataFrame:
                 msg = "You need to pass delta_merge_options with at least a given predicate for `MERGE` to work."
                 raise ValueError(msg)
             if isinstance(target, str):
-                dt = DeltaTable(table_uri=target, storage_options=storage_options)
+                dt = DeltaTable(table_uri=target, =storage_options)
             else:
                 dt = target
 
@@ -3520,10 +3511,10 @@ class DataFrame:
             schema = delta_write_options.pop("schema", None)
             write_deltalake(
                 table_or_uri=target,
-                data=data,
-                schema=schema,
-                mode=mode,
-                storage_options=storage_options,
+                =data,
+                =schema,
+                =mode,
+                =storage_options,
                 large_dtypes=True,
                 **delta_write_options,
             )
@@ -4122,9 +4113,7 @@ class DataFrame:
             msg = "cannot describe a DataFrame that has no columns"
             raise TypeError(msg)
 
-        return self.lazy().describe(
-            percentiles=percentiles, interpolation=interpolation
-        )
+        return self.lazy().describe(=percentiles, =interpolation)
 
     def get_column_index(self, name: str) -> int:
         """
@@ -4284,10 +4273,10 @@ class DataFrame:
             .sort(
                 by,
                 *more_by,
-                descending=descending,
-                nulls_last=nulls_last,
-                multithreaded=multithreaded,
-                maintain_order=maintain_order,
+                =descending,
+                =nulls_last,
+                =multithreaded,
+                =maintain_order,
             )
             .collect(_eager=True)
         )
@@ -4484,13 +4473,7 @@ class DataFrame:
         """
         return (
             self.lazy()
-            .top_k(
-                k,
-                by=by,
-                descending=descending,
-                nulls_last=nulls_last,
-                maintain_order=maintain_order,
-            )
+            .top_k(k, =by, =descending, =nulls_last, =maintain_order)
             .collect(
                 projection_pushdown=False,
                 predicate_pushdown=False,
@@ -4575,13 +4558,7 @@ class DataFrame:
         """
         return (
             self.lazy()
-            .bottom_k(
-                k,
-                by=by,
-                descending=descending,
-                nulls_last=nulls_last,
-                maintain_order=maintain_order,
-            )
+            .bottom_k(k, =by, =descending, =nulls_last, =maintain_order)
             .collect(
                 projection_pushdown=False,
                 predicate_pushdown=False,
@@ -5253,7 +5230,7 @@ class DataFrame:
         │ c   ┆ 3   ┆ 1   │
         └─────┴─────┴─────┘
         """
-        return GroupBy(self, *by, **named_by, maintain_order=maintain_order)
+        return GroupBy(self, *by, **named_by, =maintain_order)
 
     @deprecate_renamed_parameter("by", "group_by", version="0.20.14")
     def rolling(
@@ -5392,12 +5369,12 @@ class DataFrame:
         offset = deprecate_saturating(offset)
         return RollingGroupBy(
             self,
-            index_column=index_column,
-            period=period,
-            offset=offset,
-            closed=closed,
-            group_by=group_by,
-            check_sorted=check_sorted,
+            =index_column,
+            =period,
+            =offset,
+            =closed,
+            =group_by,
+            =check_sorted,
         )
 
     @deprecate_renamed_parameter("by", "group_by", version="0.20.14")
@@ -5726,17 +5703,17 @@ class DataFrame:
         offset = deprecate_saturating(offset)
         return DynamicGroupBy(
             self,
-            index_column=index_column,
-            every=every,
-            period=period,
-            offset=offset,
-            truncate=truncate,
-            label=label,
-            include_boundaries=include_boundaries,
-            closed=closed,
-            group_by=group_by,
-            start_by=start_by,
-            check_sorted=check_sorted,
+            =index_column,
+            =every,
+            =period,
+            =offset,
+            =truncate,
+            =label,
+            =include_boundaries,
+            =closed,
+            =group_by,
+            =start_by,
+            =check_sorted,
         )
 
     @deprecate_renamed_parameter("by", "group_by", version="0.20.14")
@@ -6156,17 +6133,17 @@ class DataFrame:
             self.lazy()
             .join_asof(
                 other.lazy(),
-                left_on=left_on,
-                right_on=right_on,
-                on=on,
-                by_left=by_left,
-                by_right=by_right,
-                by=by,
-                strategy=strategy,
-                suffix=suffix,
-                tolerance=tolerance,
-                allow_parallel=allow_parallel,
-                force_parallel=force_parallel,
+                =left_on,
+                =right_on,
+                =on,
+                =by_left,
+                =by_right,
+                =by,
+                =strategy,
+                =suffix,
+                =tolerance,
+                =allow_parallel,
+                =force_parallel,
             )
             .collect(_eager=True)
         )
@@ -6335,14 +6312,14 @@ class DataFrame:
             self.lazy()
             .join(
                 other=other.lazy(),
-                left_on=left_on,
-                right_on=right_on,
-                on=on,
-                how=how,
-                suffix=suffix,
-                validate=validate,
-                join_nulls=join_nulls,
-                coalesce=coalesce,
+                =left_on,
+                =right_on,
+                =on,
+                =how,
+                =suffix,
+                =validate,
+                =join_nulls,
+                =coalesce,
             )
             .collect(_eager=True)
         )
@@ -6809,7 +6786,7 @@ class DataFrame:
          'bar': ['6.0', '7.0', '8.0'],
          'ham': ['2020-01-02', '2021-03-04', '2022-05-06']}
         """
-        return self.lazy().cast(dtypes, strict=strict).collect(_eager=True)
+        return self.lazy().cast(dtypes, =strict).collect(_eager=True)
 
     def clear(self, n: int = 0) -> Self:
         """
@@ -7083,7 +7060,7 @@ class DataFrame:
         """
         return (
             self.lazy()
-            .fill_null(value, strategy, limit, matches_supertype=matches_supertype)
+            .fill_null(value, strategy, limit, =matches_supertype)
             .collect(_eager=True)
         )
 
@@ -7851,7 +7828,7 @@ class DataFrame:
         │ 100 ┆ 100 │
         └─────┴─────┘
         """
-        return self.lazy().shift(n, fill_value=fill_value).collect(_eager=True)
+        return self.lazy().shift(n, =fill_value).collect(_eager=True)
 
     def is_duplicated(self) -> Series:
         """
@@ -8575,7 +8552,7 @@ class DataFrame:
             else:
                 msg = f"`null_strategy` must be one of {{'ignore', 'propagate'}}, got {null_strategy}"
                 raise ValueError(msg)
-            return self.sum_horizontal(ignore_nulls=ignore_nulls)
+            return self.sum_horizontal(=ignore_nulls)
         msg = "axis should be 0 or 1"
         raise ValueError(msg)
 
@@ -8700,7 +8677,7 @@ class DataFrame:
             else:
                 msg = f"`null_strategy` must be one of {{'ignore', 'propagate'}}, got {null_strategy}"
                 raise ValueError(msg)
-            return self.mean_horizontal(ignore_nulls=ignore_nulls)
+            return self.mean_horizontal(=ignore_nulls)
         msg = "axis should be 0 or 1"
         raise ValueError(msg)
 
@@ -9072,7 +9049,7 @@ class DataFrame:
         """
         return (
             self.lazy()
-            .unique(subset=subset, keep=keep, maintain_order=maintain_order)
+            .unique(=subset, =keep, =maintain_order)
             .collect(_eager=True)
         )
 
@@ -10278,7 +10255,7 @@ class DataFrame:
         """
         return (
             self.lazy()
-            .set_sorted(column, *more_columns, descending=descending)
+            .set_sorted(column, *more_columns, =descending)
             .collect(_eager=True)
         )
 
@@ -10425,14 +10402,7 @@ class DataFrame:
         """
         return (
             self.lazy()
-            .update(
-                other.lazy(),
-                on,
-                how,
-                left_on=left_on,
-                right_on=right_on,
-                include_nulls=include_nulls,
-            )
+            .update(other.lazy(), on, how, =left_on, =right_on, =include_nulls)
             .collect(_eager=True)
         )
 
@@ -10492,7 +10462,7 @@ class DataFrame:
         GroupBy
             Object which can be used to perform aggregations.
         """
-        return self.group_by(by, *more_by, maintain_order=maintain_order)
+        return self.group_by(by, *more_by, =maintain_order)
 
     @deprecate_renamed_function("rolling", version="0.19.0")
     def groupby_rolling(
@@ -10541,11 +10511,11 @@ class DataFrame:
         """
         return self.rolling(
             index_column,
-            period=period,
-            offset=offset,
-            closed=closed,
+            =period,
+            =offset,
+            =closed,
             group_by=by,
-            check_sorted=check_sorted,
+            =check_sorted,
         )
 
     @deprecate_renamed_function("rolling", version="0.19.9")
@@ -10595,11 +10565,11 @@ class DataFrame:
         """
         return self.rolling(
             index_column,
-            period=period,
-            offset=offset,
-            closed=closed,
+            =period,
+            =offset,
+            =closed,
             group_by=by,
-            check_sorted=check_sorted,
+            =check_sorted,
         )
 
     @deprecate_renamed_function("group_by_dynamic", version="0.19.0")
@@ -10685,15 +10655,15 @@ class DataFrame:
         """  # noqa: W505
         return self.group_by_dynamic(
             index_column,
-            every=every,
-            period=period,
-            offset=offset,
-            truncate=truncate,
-            include_boundaries=include_boundaries,
-            closed=closed,
+            =every,
+            =period,
+            =offset,
+            =truncate,
+            =include_boundaries,
+            =closed,
             group_by=by,
-            start_by=start_by,
-            check_sorted=check_sorted,
+            =start_by,
+            =check_sorted,
         )
 
     @deprecate_renamed_function("map_rows", version="0.19.0")
@@ -10720,7 +10690,7 @@ class DataFrame:
             Only used in the case when the custom function returns rows.
             This uses the first `n` rows to determine the output schema
         """
-        return self.map_rows(function, return_dtype, inference_size=inference_size)
+        return self.map_rows(function, return_dtype, =inference_size)
 
     @deprecate_function("Use `shift` instead.", version="0.19.12")
     @deprecate_renamed_parameter("periods", "n", version="0.19.11")
@@ -10743,7 +10713,7 @@ class DataFrame:
         n
             Number of places to shift (may be negative).
         """
-        return self.shift(n, fill_value=fill_value)
+        return self.shift(n, =fill_value)
 
     @deprecate_renamed_function("gather_every", version="0.19.12")
     def take_every(self, n: int, offset: int = 0) -> DataFrame:
@@ -10828,7 +10798,7 @@ class DataFrame:
         null_equal
             Consider null values as equal.
         """
-        return self.equals(other, null_equal=null_equal)
+        return self.equals(other, =null_equal)
 
 
 def _prepare_other_arg(other: Any, length: int | None = None) -> Series:
@@ -10843,6 +10813,6 @@ def _prepare_other_arg(other: Any, length: int | None = None) -> Series:
         other = pl.Series("", [other])
 
     if length and length > 1:
-        other = other.extend_constant(value=value, n=length - 1)
+        other = other.extend_constant(=value, n=length - 1)
 
     return other

@@ -48,7 +48,7 @@ def test_series_mixed_dtypes_object() -> None:
 def test_sequence_of_series_with_dtype(dtype: pl.PolarsDataType | None) -> None:
     values = [1, 2, 3]
     int_series = pl.Series(values)
-    list_series = pl.Series([int_series], dtype=dtype)
+    list_series = pl.Series([int_series], =dtype)
 
     assert list_series.to_list() == [values]
     assert list_series.dtype == pl.List(pl.Int64)
@@ -70,19 +70,19 @@ def test_sequence_of_series_with_dtype(dtype: pl.PolarsDataType | None) -> None:
 def test_upcast_primitive_and_strings(
     values: list[Any], dtype: pl.PolarsDataType, expected_dtype: pl.PolarsDataType
 ) -> None:
-    assert pl.Series(values, dtype=dtype).dtype == expected_dtype
+    assert pl.Series(values, =dtype).dtype == expected_dtype
 
 
 def test_preserve_decimal_precision() -> None:
     dtype = pl.Decimal(None, 1)
-    s = pl.Series(dtype=dtype)
+    s = pl.Series(=dtype)
     assert s.dtype == dtype
 
 
 @pytest.mark.parametrize("dtype", [None, pl.Duration("ms")])
 def test_large_timedelta(dtype: pl.DataType | None) -> None:
     values = [timedelta.min, timedelta.max]
-    s = pl.Series(values, dtype=dtype)
+    s = pl.Series(values, =dtype)
     assert s.dtype == pl.Duration("ms")
 
     # Microsecond precision is lost
@@ -94,6 +94,6 @@ def test_array_large_u64() -> None:
     u64_max = 2**64 - 1
     values = [[u64_max]]
     dtype = pl.Array(pl.UInt64, 1)
-    s = pl.Series(values, dtype=dtype)
+    s = pl.Series(values, =dtype)
     assert s.dtype == dtype
     assert s.to_list() == values

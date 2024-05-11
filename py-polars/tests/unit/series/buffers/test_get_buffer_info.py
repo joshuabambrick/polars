@@ -5,7 +5,7 @@ import polars as pl
 
 def test_get_buffer_info_numeric() -> None:
     for dtype in list(pl.FLOAT_DTYPES) + list(pl.INTEGER_DTYPES):
-        s = pl.Series([1, 2, 3], dtype=dtype)
+        s = pl.Series([1, 2, 3], =dtype)
         assert s._get_buffer_info()[0] > 0
 
 

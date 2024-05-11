@@ -34,7 +34,7 @@ def test_to_dict_misc(as_series: bool, inner_dtype: Any) -> None:
             "optional": [28, 300, None, 2, -30],
         }
     )
-    s = df.to_dict(as_series=as_series)
+    s = df.to_dict(=as_series)
     assert isinstance(s, dict)
     for v in s.values():
         assert isinstance(v, inner_dtype)

@@ -137,7 +137,7 @@ async def _surreal_query_as_frame(
     batch_params = (
         {"iter_batches": True, "batch_size": batch_size} if batch_size else {}
     )
-    async with MockSurrealConnection(url=url, mock_data=SURREAL_MOCK_DATA) as client:
+    async with MockSurrealConnection(=url, mock_data=SURREAL_MOCK_DATA) as client:
         await client.use(namespace="test", database="test")
         return pl.read_database(  # type: ignore[no-any-return,call-overload]
             query=query,
@@ -153,7 +153,7 @@ def test_surrealdb_fetchall(batch_size: int | None) -> None:
         _surreal_query_as_frame(
             url="ws://localhost:8000/rpc",
             query="SELECT * FROM item",
-            batch_size=batch_size,
+            =batch_size,
         )
     )
     if batch_size:

@@ -58,22 +58,22 @@ def test_rolling_map_np_nansum() -> None:
 
 @pytest.mark.parametrize("dtype", [pl.Float32, pl.Float64])
 def test_rolling_map_std(dtype: pl.PolarsDataType) -> None:
-    s = pl.Series("A", [1.0, 2.0, 9.0, 2.0, 13.0], dtype=dtype)
+    s = pl.Series("A", [1.0, 2.0, 9.0, 2.0, 13.0], =dtype)
     result = s.rolling_map(function=lambda s: s.std(), window_size=3)
 
-    expected = pl.Series("A", [None, None, 4.358899, 4.041452, 5.567764], dtype=dtype)
+    expected = pl.Series("A", [None, None, 4.358899, 4.041452, 5.567764], =dtype)
     assert_series_equal(result, expected)
 
 
 @pytest.mark.parametrize("dtype", [pl.Float32, pl.Float64])
 def test_rolling_map_std_weights(dtype: pl.PolarsDataType) -> None:
-    s = pl.Series("A", [1.0, 2.0, 9.0, 2.0, 13.0], dtype=dtype)
+    s = pl.Series("A", [1.0, 2.0, 9.0, 2.0, 13.0], =dtype)
 
     result = s.rolling_map(
         function=lambda s: s.std(), window_size=3, weights=[1.0, 2.0, 3.0]
     )
 
-    expected = pl.Series("A", [None, None, 14.224392, 8.326664, 18.929694], dtype=dtype)
+    expected = pl.Series("A", [None, None, 14.224392, 8.326664, 18.929694], =dtype)
     assert_series_equal(result, expected)
 
 

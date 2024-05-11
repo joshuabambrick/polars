@@ -47,7 +47,7 @@ def test_agg_after_head() -> None:
     expected = pl.DataFrame({"a": [1, 2, 3], "b": [6, 9, 21]})
 
     for maintain_order in [True, False]:
-        out = df.group_by("a", maintain_order=maintain_order).agg(
+        out = df.group_by("a", =maintain_order).agg(
             [pl.col("b").head(3).sum()]
         )
 
@@ -121,12 +121,12 @@ def test_sorted_group_by_optimization() -> None:
     # groups, so this is tests that we hit the sorted optimization
     for descending in [True, False]:
         sorted_implicit = (
-            df.with_columns(pl.col("a").sort(descending=descending))
+            df.with_columns(pl.col("a").sort(=descending))
             .group_by("a")
             .agg(pl.len())
         )
         sorted_explicit = (
-            df.group_by("a").agg(pl.len()).sort("a", descending=descending)
+            df.group_by("a").agg(pl.len()).sort("a", =descending)
         )
         assert_frame_equal(sorted_explicit, sorted_implicit)
 
